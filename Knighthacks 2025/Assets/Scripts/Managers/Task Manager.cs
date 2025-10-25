@@ -89,7 +89,7 @@ public class TaskManager : MonoBehaviour
         lookedBack = false;
     }
 
-    public bool completeOrder(CustomerManager customerManager)
+    public void completeOrder(CustomerManager customerManager)
     {
         if(snackChosen && teaChosen && flowerChosen)
         {
@@ -103,13 +103,12 @@ public class TaskManager : MonoBehaviour
                     if (Accusation.accuse(anomaly, customerManager.customers[i])) 
                     {
                         customerManager.customers[i].served = true;
-                        return true;
+                        //Call destroyCustomer from Customer Manager
+                        customerManager.destroyCustomer(i);
                     }
                 }
             }
-            return false;
         }
-        return false;
     }
 
     public void moveFront()

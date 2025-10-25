@@ -182,10 +182,11 @@ public class CustomerManager : MonoBehaviour
         customerGO.Add(newCustomer);
 
         moveCustomerToRegister(newCustomer);
-        if (DialogueManager.PlayOrderSequenceForCustomer(customer, customer.orderSprites))
+        /*if (DialogueManager.PlayOrderSequenceForCustomer(customer, customer.orderSprites))
         {
             moveCustomerToWaitingLine(newCustomer);
         }
+        */
 
         //StartCoroutine(timewaste(newCustomer, 7.0f));
     }
@@ -237,6 +238,41 @@ public class CustomerManager : MonoBehaviour
             );
             yield return null;
         }
+    }
+
+    //Function that deletes a customer when their order has been fulfilled
+    public bool destroyCustomer(int index)
+    {
+        if(!(index >= customerGO.Count))
+        {
+            //Make the Game Object slowly fade away
+            StartCoroutine(FadeOutSprite(customerGO[index]));
+            customers.RemoveAt(index);
+            customerGO.RemoveAt(index);
+            
+            return true;
+        }
+        return false;
+    }
+
+    private IEnumerator FadeOutSprite(GameObject obj)
+    {
+        SpriteRenderer sr = obj.GetComponent<SpriteRenderer>();
+        Color color = sr.color;
+        float startAlpha = color.a;
+
+        float fadeDuration = 2f;
+
+        for(float t = 0; t < fadeDuration; t+= Time.deltaTime)
+        {
+            float normalizedTime = t / fadeDuration;
+            color.a = Mathf.Lerp(startAlpha, 0f, normalizedTime);
+            sr.color = color;
+            yield return null;
+        }
+
+        color.a = 0f;
+        sr.color = color;
     }
 
     //DELETE THIS SIDDU, BRI, JUAN, JAHYR
