@@ -9,7 +9,8 @@ public class AnomalyManager : MonoBehaviour
     public CustomerManager customerManager;
     public GameObject[] possibleAnomalies;
     public List<GameObject> activeAnomalies;
-    public int odds;
+    public int startingOdds = 10;
+    private int odds;
 
     //Variables that will be passed into different anomaly types
     public Sprite[] possibleObviousSprites;
@@ -21,6 +22,11 @@ public class AnomalyManager : MonoBehaviour
 
     public Sprite normalTVSprite;
     public Sprite anomalyTVSprite;
+
+    void Awake() 
+    {
+        odds = startingOdds;
+    }
 
     //Determines if a customer rolls into being an anomaly
     public bool rollForAnomaly()
