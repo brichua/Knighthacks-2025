@@ -13,11 +13,22 @@ public class DialogueManager : MonoBehaviour
     public GameObject orderImagesContainer;
     // Three item slots (left-to-right). Only these three are used by the sequence.
     public Image[] orderImages = new Image[3];
-    // Plus sign image shown between first and second item
+    // The speech-bubble graphic (optional - part of the container)
+    // This `Image` will display the assigned `speechBubbleSprite`.
     public Image speechBubble;
+    // Assign a Sprite asset from the project here (drag a Sprite into this field).
+    public Sprite speechBubbleSprite;
+
+    [Header("Follow settings")]
+    // Canvas that contains `orderImagesContainer`. If null, the manager will attempt to find one.
+    public Canvas uiCanvas;
+    // Camera used to project world -> screen. If null, Camera.main will be used.
+    public Camera worldCamera;
+    // Offset in world units to position the bubble above the customer's head.
+    public Vector3 bubbleWorldOffset = new Vector3(0f, 2.0f, 0f);
 
     [Header("Sequence Timing")]
-    // time between reveals (image -> plus -> image -> image)
+    // time between reveals (image -> image -> image)
     public float revealDelay = 0.5f;
     // how fast the customer's mouth toggles while speaking
     public float mouthToggleInterval = 0.12f;
@@ -28,6 +39,11 @@ public class DialogueManager : MonoBehaviour
     private Coroutine sequenceCoroutine;
     private Coroutine mouthCoroutine;
 
+    // follow state
+    private Customer trackedCustomer;
+    private RectTransform containerRect;
+    private RectTransform canvasRect;
+
     void Awake()
     {
         if (Instance == null) Instance = this;
@@ -36,7 +52,39 @@ public class DialogueManager : MonoBehaviour
 
     void Start()
     {
+        // cache references, try to auto-find if not assigned
+        if (uiCanvas == null) uiCanvas = FindObjectOfType<Canvas>();
+        if (worldCamera == null) worldCamera = Camera.main;
+        if (orderImagesContainer != null) containerRect = orderImagesContainer.GetComponent<RectTransform>();
+        if (uiCanvas != null) canvasRect = uiCanvas.GetComponent<RectTransform>();
+
+        // If a sprite is assigned, apply it to the Image so it's ready
+        if (speechBubble != null && speechBubbleSprite != null)
+            speechBubble.sprite = speechBubbleSprite;
+
         HideOrderImages();
+    }
+
+    void Update()
+    {
+        // If we are tracking a customer, update the UI container position each frame
+        if (trackedCustomer != null && orderImagesContainer != null && canvasRect != null)
+        {
+            // World position to place bubble above customer's head
+            Vector3 worldPos = trackedCustomer.transform.position + bubbleWorldOffset;
+            Camera cam = worldCamera != null ? worldCamera : Camera.main;
+
+            Vector2 screenPoint = RectTransformUtility.WorldToScreenPoint(cam, worldPos);
+
+            // Convert screen point to canvas local point
+            Vector2 localPoint;
+            // Choose camera for ScreenPoint -> LocalPoint depending on render mode
+            Camera camParam = (uiCanvas.renderMode == RenderMode.ScreenSpaceOverlay) ? null : cam;
+            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPoint, camParam, out localPoint))
+            {
+                containerRect.localPosition = localPoint;
+            }
+        }
     }
 
     // Public entry point:
@@ -51,19 +99,25 @@ public class DialogueManager : MonoBehaviour
         if (customerIds == null)
             customerIds = customer.order;
 
-        // cancel any running sequence
-        if (sequenceCoroutine != null) StopCoroutine(sequenceCoroutine);
-        sequenceCoroutine = StartCoroutine(OrderSequenceCoroutine(customer, customer.orderSprites, customerIds));
+        // ensure we are tracking this customer so Update() moves the bubble
+        trackedCustomer = customer;
+
+        // ensure speechBubble Image uses the assigned sprite (in case it changed at runtime)
+        if (speechBubble != null && speechBubbleSprite != null)
+            speechBubble.sprite = speechBubbleSprite;
+
+        if (orderImagesContainer != null) orderImagesContainer.SetActive(true);
+        sequenceCoroutine = StartCoroutine(OrderSequenceCoroutine(customer, orderSprites, customerIds));
         return true;
     }
 
     // Core coroutine: handles bubble, images and mouth animation
     private IEnumerator OrderSequenceCoroutine(Customer customer, Sprite[] orderSprites, string[] orderIds)
     {
-        // Prepare UI
+        // Prepare UI (already activated in PlayOrderSequenceForCustomer, but be safe)
         if (orderImagesContainer != null) orderImagesContainer.SetActive(true);
 
-        // Hide all image slots and plus sign initially
+        // Hide all image slots and bubble initially
         for (int i = 0; i < orderImages.Length; i++)
             if (orderImages[i] != null) orderImages[i].gameObject.SetActive(false);
         if (speechBubble != null) speechBubble.gameObject.SetActive(false);
@@ -86,23 +140,32 @@ public class DialogueManager : MonoBehaviour
             }
         }
 
+        // Ensure bubble graphic visible before reveals and apply sprite if present
+        if (speechBubble != null)
+        {
+            if (speechBubbleSprite != null)
+                speechBubble.sprite = speechBubbleSprite;
+            speechBubble.gameObject.SetActive(true);
+        }
+
         // If we have a spriteRenderer and at least one mouth sprite, start toggling
         if (custRenderer != null && (openSprite != null || closedSprite != null))
         {
             mouthCoroutine = StartCoroutine(MouthToggleCoroutine(custRenderer, openSprite, closedSprite, mouthToggleInterval));
         }
 
+        
         // Step 1: reveal first item (index 0)
         if (orderImages.Length >= 1 && orderImages[0] != null)
             SetSlotSprite(orderImages[0], orderSprites, orderIds, 0);
         yield return new WaitForSeconds(revealDelay);
 
-        // Step 3: reveal second item (index 1)
+        // Step 2: reveal second item (index 1)
         if (orderImages.Length >= 2 && orderImages[1] != null)
             SetSlotSprite(orderImages[1], orderSprites, orderIds, 1);
         yield return new WaitForSeconds(revealDelay);
 
-        // Step 4: reveal third item (index 2)
+        // Step 3: reveal third item (index 2)
         if (orderImages.Length >= 3 && orderImages[2] != null)
             SetSlotSprite(orderImages[2], orderSprites, orderIds, 2);
         yield return new WaitForSeconds(revealDelay);
@@ -121,6 +184,11 @@ public class DialogueManager : MonoBehaviour
         {
             yield return new WaitForSeconds(autoHideAfter);
             HideOrderImages();
+        }
+        else
+        {
+            // Stop following but leave visible if autoHideAfter == 0
+            trackedCustomer = null;
         }
 
         sequenceCoroutine = null;
@@ -190,11 +258,14 @@ public class DialogueManager : MonoBehaviour
             mouthCoroutine = null;
         }
 
+        trackedCustomer = null;
+
         if (orderImagesContainer != null) orderImagesContainer.SetActive(false);
         if (orderImages != null)
         {
             for (int i = 0; i < orderImages.Length; i++)
                 if (orderImages[i] != null) orderImages[i].gameObject.SetActive(false);
         }
+        if (speechBubble != null) speechBubble.gameObject.SetActive(false);
     }
 }
