@@ -27,10 +27,6 @@ public class TaskManager : MonoBehaviour
     public Sprite trayBackground;
     public Sprite noTrayBackground;
 
-    public SpriteRenderer snackImage;
-    public SpriteRenderer teaImage;
-    public SpriteRenderer flowerImage;
-    public SpriteRenderer decorationImage;
     public Sprite cookieSprite;
     public Sprite cakeSprite;
     public Sprite crackerSprite;
@@ -78,7 +74,7 @@ public class TaskManager : MonoBehaviour
     public bool kettleOnStove = false;
     public bool waterBoiled = false;
 
-    public TextMeshPro reminder;
+    public TextMeshProUGUI reminder;
 
     public GameObject front;
     public GameObject back;
@@ -148,7 +144,7 @@ public class TaskManager : MonoBehaviour
         }
         snack = "cookie";
         snackObject.SetActive(true);
-        snackImage.sprite = cookieSprite;
+        snackObject.GetComponent<SpriteRenderer>().sprite = cookieSprite;
         snackChosen = true;
     }
 
@@ -161,7 +157,7 @@ public class TaskManager : MonoBehaviour
         }
         snack = "cake";
         snackObject.SetActive(true);
-        snackImage.sprite = cakeSprite;
+        snackObject.GetComponent<SpriteRenderer>().sprite = cakeSprite;
         snackChosen = true;
     }
 
@@ -174,7 +170,7 @@ public class TaskManager : MonoBehaviour
         }
         snack = "cracker";
         snackObject.SetActive(true);
-        snackImage.sprite = crackerSprite;
+        snackObject.GetComponent<SpriteRenderer>().sprite = crackerSprite;
         snackChosen = true;
     }
 
@@ -187,7 +183,7 @@ public class TaskManager : MonoBehaviour
         }
         anomaly = false;
         decorationObject.SetActive(true);
-        decorationImage.sprite = regularFlower;
+        decorationObject.GetComponent<SpriteRenderer>().sprite = regularFlower;
         flowerChosen = true;
     }
 
@@ -200,7 +196,7 @@ public class TaskManager : MonoBehaviour
         }
         anomaly = true;
         decorationObject.SetActive(true);
-        decorationImage.sprite = anomalyFlower;
+        decorationObject.GetComponent<SpriteRenderer>().sprite = anomalyFlower;
         flowerChosen = true;
     }
 
@@ -370,25 +366,25 @@ public class TaskManager : MonoBehaviour
         switch (flower)
         {
             case "rose":
-                flowerImage.sprite = rose;
+                flowerObject.GetComponent<SpriteRenderer>().sprite = rose;
                 break;
             case "daisy":
-                flowerImage.sprite = daisy;
+                flowerObject.GetComponent<SpriteRenderer>().sprite = daisy;
                 break;
             case "bluebell":
-                flowerImage.sprite = bluebell;
+                flowerObject.GetComponent<SpriteRenderer>().sprite = bluebell;
                 break;
         }
         switch (tea)
         {
             case "green":
-                teaImage.sprite = (size == "small") ? smallGreen : largeGreen;
+                teaObject.GetComponent<SpriteRenderer>().sprite = (size == "small") ? smallGreen : largeGreen;
                 break;
             case "oolong":
-                teaImage.sprite = (size == "small") ? smallOolong : largeOolong;
+                teaObject.GetComponent<SpriteRenderer>().sprite = (size == "small") ? smallOolong : largeOolong;
                 break;
             case "black":
-                teaImage.sprite = (size == "small") ? smallBlack : largeBlack;
+                teaObject.GetComponent<SpriteRenderer>().sprite = (size == "small") ? smallBlack : largeBlack;
                 break;
         }
         teaObject.SetActive(true);
