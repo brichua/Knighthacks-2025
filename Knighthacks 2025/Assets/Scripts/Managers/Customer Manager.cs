@@ -230,32 +230,34 @@ public class CustomerManager : MonoBehaviour
         if (canvas != null)
         {
             canvas.gameObject.SetActive(false);
-        }   
+        }
+
         Vector3 targetPosition = new Vector3(0, 0, 10f);
         float speed = 5f;
-        for (int i = 0; i < customerGO.Count; i++)
+
+        // Determine this customer's position in line
+        int indexInLine = customerLine.IndexOf(customer);
+
+        switch (indexInLine)
         {
-            if (customerGO[i] != null) 
-            {
-                switch (i){
-                    case 0:
-                        targetPosition.x = -8.08f;
-                        targetPosition.y = 0.53f;
-                        break;
-                    case 1:
-                        targetPosition.x = -4.65f;
-                        targetPosition.y = 0.53f;
-                        break;
-                    case 2:
-                        targetPosition.x = -1.18f;
-                        targetPosition.y = 0.53f;
-                        break;
-                }
-            }
+            case 0:
+                targetPosition.x = -8.08f;
+                targetPosition.y = 0.53f;
+                break;
+            case 1:
+                targetPosition.x = -4.65f;
+                targetPosition.y = 0.53f;
+                break;
+            case 2:
+                targetPosition.x = -1.18f;
+                targetPosition.y = 0.53f;
+                break;
         }
+
         StartCoroutine(MoveCustomerCoroutine(customer, targetPosition, speed));
         registerOccupied = false;
     }
+
     //Smoothly moves the customer
     private IEnumerator MoveCustomerCoroutine(GameObject customer, Vector3 targetPos, float speed)
     {
