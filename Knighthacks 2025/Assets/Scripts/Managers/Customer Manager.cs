@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Timers;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CustomerManager : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class CustomerManager : MonoBehaviour
     public int maxCustomers = 12;
     public AnomalyManager AnomalyManager;
     public DialogueManager DialogueManager;
+    public TaskManager TaskManager;
+    public Camera UICamera;
     static Timer customerSpawnTimer;
     bool spawnRequested = false;
     public bool stopSpawning = false;
@@ -60,6 +63,82 @@ public class CustomerManager : MonoBehaviour
         GameObject newCustomer = Instantiate(customerPrefab, new Vector3(13f, -0.76f, 10f), Quaternion.identity);
         Customer customer = newCustomer.GetComponent<Customer>();
         maxCustomers--;
+
+        // If the prefab has a Canvas, assign its render camera to the UICamera field (if provided)
+        // and force the Canvas to render above the customer's SpriteRenderers.
+        Canvas canvas = newCustomer.GetComponentInChildren<Canvas>(true);
+        if (canvas != null)
+        {
+            if (UICamera != null)
+            {
+                // Ensure canvas uses a camera-based render mode so worldCamera takes effect.
+                if (canvas.renderMode != RenderMode.ScreenSpaceCamera)
+                {
+                    canvas.renderMode = RenderMode.ScreenSpaceCamera;
+                }
+                canvas.worldCamera = UICamera;
+            }
+            else
+            {
+                Debug.LogWarning("CustomerManager.UICamera not assigned. Canvas.worldCamera not set.");
+            }
+
+            // Ensure this prefab's Canvas always renders on top of the prefab sprites:
+            // - overrideSorting makes the canvas use its own sortingOrder regardless of parent.
+            // - set sortingOrder high enough to be above sprite renderers (adjust as needed).
+            canvas.overrideSorting = true;
+            canvas.sortingOrder = 1000;
+            // Optional: place on a known sorting layer (uncomment if you have a "UI" sorting layer).
+            // canvas.sortingLayerName = "UI";
+        }
+
+        // Assign the prefab's Button (which likely lives under the Canvas child) to call TaskManager.takeOrder(customer)
+        Button orderButton = null;
+        if (canvas != null)
+        {
+            Button[] buttons = canvas.GetComponentsInChildren<Button>(true);
+            if (buttons.Length == 1)
+            {
+                orderButton = buttons[0];
+            }
+            else if (buttons.Length > 1)
+            {
+                // prefer a button whose GameObject name contains "order"; otherwise take the first
+                foreach (var b in buttons)
+                {
+                    if (b.gameObject.name.ToLower().Contains("order"))
+                    {
+                        orderButton = b;
+                        break;
+                    }
+                }
+                if (orderButton == null)
+                    orderButton = buttons[0];
+            }
+        }
+        else
+        {
+            // fallback: find any Button in children (covers non-Canvas or unexpected hierarchies)
+            orderButton = newCustomer.GetComponentInChildren<Button>(true);
+        }
+
+        if (orderButton != null)
+        {
+            if (TaskManager != null)
+            {
+                orderButton.onClick.RemoveAllListeners();
+                orderButton.onClick.AddListener(() => TaskManager.takeOrder(customer));
+            }
+            else
+            {
+                Debug.LogWarning("CustomerManager.TaskManager reference not set in inspector. Cannot assign takeOrder listener.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Customer prefab is missing a Button component (searched Canvas child first).");
+        }
+        // -----------------------------------------------------------------------
 
         //Generate Order
         int snackRoll = Random.Range(0, pastryTypes.Length);

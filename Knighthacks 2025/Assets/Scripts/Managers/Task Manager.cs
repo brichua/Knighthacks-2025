@@ -82,6 +82,7 @@ public class TaskManager : MonoBehaviour
 
     public void takeOrder(Customer customer)
     {
+        Debug.Log("Taking order from customer.");
         tray = true;
         background.sprite = trayBackground;
         dialogueManager.PlayOrderSequenceForCustomer(customer);
