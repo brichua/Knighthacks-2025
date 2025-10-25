@@ -9,8 +9,10 @@ public class CustomerManager : MonoBehaviour
 {
     public GameObject customerPrefab;
     public TaskManager taskManager;
+    //Determines who's in line waiting for an order
     public List<Customer> customers = new List<Customer>();
     public List<GameObject> customerGO = new List<GameObject>();
+    //Determines who's in line waiting to order
     public List<GameObject> customerLine = new List<GameObject>();
     public int maxCustomers = 12;
     public AnomalyManager AnomalyManager;
@@ -48,7 +50,7 @@ public class CustomerManager : MonoBehaviour
             //Check queues to make sure customer can actually spawn
             //Customer will NOT spawn if customerGO size => 3 OR if customerLine size >= 3
             //Customer will also NOT spawn if maxCustomers <= 0
-            if (customerGO.Count <= 3 && customerLine.Count <= 3 && maxCustomers > 0)
+            if (customerGO.Count < 3 && customerLine.Count < 3 && maxCustomers > 0)
             {
                 //Spawn can happen
                 SpawnCustomer();
