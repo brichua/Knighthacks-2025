@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     //together 
     public AnomalyManager anomalyManager;
     public CustomerManager customerManager;
+    public TaskManager taskManager;
 
     public GameObject startButton;
     public GameObject canvas;
@@ -49,6 +50,18 @@ public class GameManager : MonoBehaviour
             if (customerManager.customers.Count == 0) 
             { 
                 EndDaySequence();
+            }
+        }
+        if (taskManager.snackChosen && taskManager.teaChosen && taskManager.flowerChosen) 
+        {
+            if (!taskManager.completeOrder(customerManager))
+            {
+                health--;
+                taskManager.resetTasks();
+            }
+            else 
+            {
+                taskManager.resetTasks();
             }
         }
     }

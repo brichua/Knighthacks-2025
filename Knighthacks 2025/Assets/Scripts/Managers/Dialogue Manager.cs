@@ -14,7 +14,7 @@ public class DialogueManager : MonoBehaviour
     // Three item slots (left-to-right). Only these three are used by the sequence.
     public Image[] orderImages = new Image[3];
     // Plus sign image shown between first and second item
-    public Image plusImage;
+    public Image speechBubble;
 
     [Header("Sequence Timing")]
     // time between reveals (image -> plus -> image -> image)
@@ -53,7 +53,7 @@ public class DialogueManager : MonoBehaviour
 
         // cancel any running sequence
         if (sequenceCoroutine != null) StopCoroutine(sequenceCoroutine);
-        sequenceCoroutine = StartCoroutine(OrderSequenceCoroutine(customer, orderSprites, customerIds));
+        sequenceCoroutine = StartCoroutine(OrderSequenceCoroutine(customer, customer.orderSprites, customerIds));
         return true;
     }
 
@@ -66,7 +66,7 @@ public class DialogueManager : MonoBehaviour
         // Hide all image slots and plus sign initially
         for (int i = 0; i < orderImages.Length; i++)
             if (orderImages[i] != null) orderImages[i].gameObject.SetActive(false);
-        if (plusImage != null) plusImage.gameObject.SetActive(false);
+        if (speechBubble != null) speechBubble.gameObject.SetActive(false);
 
         // Start mouth animation (if possible)
         SpriteRenderer custRenderer = null;
@@ -95,11 +95,6 @@ public class DialogueManager : MonoBehaviour
         // Step 1: reveal first item (index 0)
         if (orderImages.Length >= 1 && orderImages[0] != null)
             SetSlotSprite(orderImages[0], orderSprites, orderIds, 0);
-        yield return new WaitForSeconds(revealDelay);
-
-        // Step 2: reveal plus sign
-        if (plusImage != null)
-            plusImage.gameObject.SetActive(true);
         yield return new WaitForSeconds(revealDelay);
 
         // Step 3: reveal second item (index 1)
@@ -201,6 +196,5 @@ public class DialogueManager : MonoBehaviour
             for (int i = 0; i < orderImages.Length; i++)
                 if (orderImages[i] != null) orderImages[i].gameObject.SetActive(false);
         }
-        if (plusImage != null) plusImage.gameObject.SetActive(false);
     }
 }
