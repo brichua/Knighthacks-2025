@@ -10,6 +10,7 @@ public class Customer : MonoBehaviour
 
     //Order index 0 is for the Drink, order index 1 is for the Snack, order index 2 is for tea flower.
     public string[] order = new string[3];
+    //Declare sprites for order
     public bool hasOrdered;
     public bool served;
     public bool isAnomaly;
@@ -31,6 +32,6 @@ public class Customer : MonoBehaviour
     {
         hallucinating = true;
         fakeOrder = (string[])order.Clone();
-        fakeOrder[1] = null;
+        fakeOrder[2] = null;
     }
 }
