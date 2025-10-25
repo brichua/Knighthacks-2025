@@ -2,16 +2,18 @@ using UnityEngine;
 
 public class AnomalyManager : MonoBehaviour
 {
-    public MonoBehaviour anomalySpawnManager;
-    public MonoBehaviour[] activeAnomalies;
-    void Start()
-    {
-        
-    }
+    public GameObject[] possibleAnomalies;
+    public GameObject[] activeAnomalies;
 
-    // Update is called once per frame
-    void Update()
+    public bool rollForAnomaly()
     {
-        
+        int roll = UnityEngine.Random.Range(1, possibleAnomalies.Length);
+        if (roll <= 1)
+        {
+            //Succeeds, generate random Anomaly
+            return true;
+        }
+        //Fails
+        return false;
     }
 }

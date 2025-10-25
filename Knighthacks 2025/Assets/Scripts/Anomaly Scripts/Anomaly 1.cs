@@ -1,14 +1,22 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Anomaly1
+public class Anomaly1 : Anomaly
 {
+    //Variables
+    private int customerIndex;
+
+    public Anomaly1()
+    {
+        //do nothing lmao
+    }
+
     //Spawn Conditions:
     // -Customers exist (denoted by n)
     // -Customer has ordered and is still waiting for order
     // -If conditions are met, return index of customer to hallucinate.
     // -If conditions are NOT met, return -1
-    public int canSpawn(Customer[] customerList)
+    public void checkSpawnConditions(Customer[] customerList)
     {
         if(customerList.Length != 0)
         {
@@ -16,10 +24,16 @@ public class Anomaly1
             {
                 if (customerList[i].hasOrdered == true && customerList[i].served == false)
                 {
-                    return i;
+                    customerIndex = i;
                 }
             }
         }
-        return -1;
+        customerIndex = -1;
+    }
+
+    //Actually returns whether or not a customer can spawn
+    public override bool canSpawn()
+    {
+        return customerIndex > -1;
     }
 }
