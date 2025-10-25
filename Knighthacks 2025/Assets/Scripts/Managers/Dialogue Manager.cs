@@ -1,5 +1,5 @@
-csharp Assets\Scripts\Managers\Dialogue Manager.cs
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
