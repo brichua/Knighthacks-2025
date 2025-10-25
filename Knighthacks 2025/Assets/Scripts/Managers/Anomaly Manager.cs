@@ -28,6 +28,37 @@ public class AnomalyManager : MonoBehaviour
         odds = startingOdds;
     }
 
+    private void Update()
+    {
+        //This will check if the user is turned to the backside to trigger anomalies
+        if (customerManager.TaskManager.lookedBack == true)
+        {
+            for (int i = 0; i < customerManager.customers.Count; i++)
+            {
+                //If the customer is an anomaly AND has not been activated, activate it
+                if (customerManager.customers[i].isAnomaly == true && customerManager.customers[i].hasActivated == false)
+                {
+                    switch (i)
+                    {
+                        case 0:
+                            customerManager.customers[i].updateHallucination();
+                            customerManager.customers[i].hasActivated = true;
+                            break;
+                        case 1:
+                            customerManager.customers[i].anomaly.ApplyToCustomer(customerManager.customers[i]);
+                            break;
+                        case 2:
+                            customerManager.customers[i].anomaly.ApplyToCustomer(customerManager.customers[i]);
+                            break;
+                        case 3:
+                            customerManager.customers[i].anomaly.ApplyToCustomer(customerManager.customers[i]);
+                            break;
+                    }
+                }
+            }
+        }
+    }
+
     //Determines if a customer rolls into being an anomaly
     public bool rollForAnomaly()
     {
@@ -65,7 +96,8 @@ public class AnomalyManager : MonoBehaviour
                     {
                         //Generate Anomaly!
                         activeAnomalies.Add(possibleAnomalies[0]);
-                        customer.updateHallucination();
+                        customer.anomaly = anomaly1;
+                        //customer.updateHallucination();
                         return true;
                     }
                     break;
@@ -76,7 +108,8 @@ public class AnomalyManager : MonoBehaviour
                     {
                         //Generate Anomaly!
                         activeAnomalies.Add(possibleAnomalies[1]);
-                        anomaly2.ApplyToCustomer(customer);
+                        customer.anomaly = anomaly2;
+                        //anomaly2.ApplyToCustomer(customer);
                         return true;
                     }
                     break;
@@ -87,7 +120,8 @@ public class AnomalyManager : MonoBehaviour
                     {
                         //Generate Anomaly
                         activeAnomalies.Add(possibleAnomalies[2]);
-                        anomaly3.ApplyToCustomer(customer);
+                        customer.anomaly = anomaly3;
+                        //anomaly3.ApplyToCustomer(customer);
                         return true;
                     }
                     break;
@@ -97,7 +131,8 @@ public class AnomalyManager : MonoBehaviour
                     if (anomaly4.CanSpawn() == true)
                     {
                         activeAnomalies.Add(possibleAnomalies[3]);
-                        anomaly4.ApplyToCustomer(customer);
+                        customer.anomaly = anomaly4;
+                        //anomaly4.ApplyToCustomer(customer);
                         return true;
                     }
                     break;
@@ -108,7 +143,7 @@ public class AnomalyManager : MonoBehaviour
                     {
                         activeAnomalies.Add(possibleAnomalies[4]);
                         // Make sure to find way to make this stock later
-                        anomaly5.makeGameObjectInvisible(customer.SpriteRenderer);
+                        //anomaly5.makeGameObjectInvisible(customer.SpriteRenderer);
                         return true;
                     }
                     break;
@@ -141,7 +176,7 @@ public class AnomalyManager : MonoBehaviour
                     {
                         activeAnomalies.Add(possibleAnomalies[7]);
                         // Rooms! (said in same intonation as Log! from CR)
-                        anomaly8.changeGameObjectSprite(customer.SpriteRenderer);
+                        //anomaly8.changeGameObjectSprite(customer.SpriteRenderer);
                         return true;
                     }
                     break;
@@ -152,7 +187,7 @@ public class AnomalyManager : MonoBehaviour
                     {
                         activeAnomalies.Add(possibleAnomalies[8]);
                         // Swap in sprite for the TV sprite renderer
-                        anomaly9.changeGameObjectSprite(customer.SpriteRenderer);
+                        //anomaly9.changeGameObjectSprite(customer.SpriteRenderer);
                         return true;
                     }
                     break;
