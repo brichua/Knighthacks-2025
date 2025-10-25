@@ -135,7 +135,7 @@ public class CustomerManager : MonoBehaviour
             if (TaskManager != null)
             {
                 orderButton.onClick.RemoveAllListeners();
-                orderButton.onClick.AddListener(() => TaskManager.takeOrder(customer));
+                orderButton.onClick.AddListener(() => TaskManager.takeOrder(newCustomer, customer));
             }
             else
             {

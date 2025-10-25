@@ -81,13 +81,13 @@ public class TaskManager : MonoBehaviour
     public GameObject back;
     public bool lookedBack = false;
 
-    public void takeOrder(Customer customer)
+    public void takeOrder(GameObject customer1, Customer customer2)
     {
         Debug.Log("Taking order from customer.");
         tray = true;
         background.sprite = trayBackground;
-        dialogueManager.PlayOrderSequenceForCustomer(customer);
-        customerManager.moveCustomerToWaitingLine(customer);
+        dialogueManager.PlayOrderSequenceForCustomer(customer2);
+        customerManager.moveCustomerToWaitingLine(customer1);
         lookedBack = false;
     }
 
