@@ -7,14 +7,15 @@ public class GameManager : MonoBehaviour
 {
     //This script will mainly be focused on making sure all of the other scripts can work
     //together 
-    //public MonoBehaviour anomalyManager;
-    //public MonoBehaviour customerManager;
+    public MonoBehaviour anomalyManager;
+    public MonoBehaviour customerManager;
 
     public GameObject startButton;
     public GameObject canvas;
     public GameObject taskButtons;
     public GameObject dayTextObject;
     public GameObject tvObject;
+    public GameObject endButton;
 
     public CanvasGroup blackImage;
     public SpriteRenderer background;
@@ -25,9 +26,13 @@ public class GameManager : MonoBehaviour
     public Sprite tvStatus1;
     public Sprite tvStatus2;
     public Sprite tvStatus3;
+    
+
+    static Timer dayTimer;
 
     public int health;
     public int day;
+    public bool dayEnd = false;
 
     void Start()
     {
@@ -37,7 +42,14 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (dayEnd) 
+        {
+            customerManager.stopSpawning = true;
+            if (customerManager.customers.empty()) 
+            { 
 
+            }
+        }
     }
 
     public void startGame()
@@ -57,6 +69,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator StartDaySequence(int dayNumber)
     {
+
         // Safety checks
         if (blackImage == null || dayTextObject == null || tv == null)
         {
@@ -88,6 +101,10 @@ public class GameManager : MonoBehaviour
 
         // Activate day text and set its content
         dayTextObject.SetActive(true);
+        // Set timer
+        dayTimer = new Timer(300000); // 5 minutes per day
+        dayTimer.Elapsed += (s, e) => { dayEnd = true; };
+        dayTimer.Start();
         // Try TMP first, then legacy Text
         TMP_Text tmp = dayTextObject.GetComponentInChildren<TMP_Text>();
         if (tmp != null)
@@ -126,5 +143,13 @@ public class GameManager : MonoBehaviour
         dayTextObject.SetActive(false);
         tvObject.SetActive(true);
         if (tvStatus1 != null) tv.sprite = tvStatus1;
+    }
+
+    IEnumerator EndDaySequence() 
+    {
+        dayEnd = false;
+        endButton.SetActive(true);
+        day++;
+        background.sprite = night;
     }
 }

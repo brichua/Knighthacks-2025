@@ -9,7 +9,7 @@ public class CustomerManager : MonoBehaviour
     public AnomalyManager AnomalyManager;
     static Timer customerSpawnTimer;
     bool spawnRequested = false;
-    bool stopSpawning = false;
+    public bool stopSpawning = false;
     string[] pastryTypes = { "cookie", "cake", "cheese", "cracker" };
     string[] teaFlowerTypes = { "rose", "bluebell", "daisy" };
     string[] drinkTypes = { "black", "green", "oolong" };
