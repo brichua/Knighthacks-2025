@@ -9,7 +9,7 @@ public class CustomerManager : MonoBehaviour
     static Timer customerSpawnTimer;
     bool spawnRequested = false;
     string[] pastryTypes = { "cookie", "cake", "cheese", "cracker" };
-    string[] flowerTypes = { "rose", "bluebell", "daisy" };
+    string[] teaFlowerTypes = { "rose", "bluebell", "daisy" };
     string[] drinkTypes = { "black", "green", "oolong" };
 
     void Start()
@@ -36,20 +36,19 @@ public class CustomerManager : MonoBehaviour
     void SpawnCustomer()
     {
         int snackRoll = Random.Range(0, pastryTypes.Length);
-        int flowerRoll = Random.Range(0, flowerTypes.Length);
+        int flowerRoll = Random.Range(0, teaFlowerTypes.Length);
         int drinkRoll = Random.Range(0, drinkTypes.Length);
-        string snack = flowerTypes[flowerRoll] + " " + drinkTypes[drinkRoll];
-        string[] choices = { snack, pastryTypes[snackRoll] };
+        string[] choices = { drinkTypes[drinkRoll], pastryTypes[snackRoll], teaFlowerTypes[flowerRoll] };
 
         //Roll for if customer will be an anomaly
         if (AnomalyManager.rollForAnomaly()) {
-            // idk evil customer
-            Customer customer = new Customer(choices);
-            customer.updateHallucination();
+            // Customer is an anomaly
+            Customer customer = new Customer(choices, true);
+            AnomalyManager.generateAnomaly(customer);
         }
         else {
             // normal customer
-            Customer customer = new Customer(choices);
+            Customer customer = new Customer(choices, false);
         }
     }
 }

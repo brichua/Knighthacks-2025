@@ -29,7 +29,7 @@ public class AnomalyManager : MonoBehaviour
 
     //Generates an anomoly, if it succeeds, add the anomaly to the active anomalies list and return true.
     //If it bizarrely fails, return false
-    public bool generateAnomaly()
+    public bool generateAnomaly(Customer customer)
     {
         int iterations = 0;
         int roll;
@@ -39,35 +39,46 @@ public class AnomalyManager : MonoBehaviour
             roll = Random.Range(0, possibleAnomalies.Length);
             switch (roll){
                 case 0:
+                    //Hallucinate Order Anomaly
                     Anomaly1 anomaly1 = new Anomaly1();
                     anomaly1.checkSpawnConditions(customerManager.customers);
                     if(anomaly1.canSpawn() == true)
                     {
+                        //Generate Anomaly!
                         activeAnomalies.Add(possibleAnomalies[0]);
+                        customer.updateHallucination();
                         return true;
                     }
                     break;
                 case 1:
+                    //Obvious Sprite Change Anomaly
                     Anomaly2 anomaly2 = new Anomaly2();
                     if(anomaly2.canSpawn() == true)
                     {
+                        //Generate Anomaly!
                         activeAnomalies.Add(possibleAnomalies[1]);
+                        anomaly2.changeGameObjectSprite(customer.SpriteRenderer);
                         return true;
                     }
                     break;
                 case 2:
+                    //Subtle Sprite Change Anomaly
                     Anomaly3 anomaly3 = new Anomaly3();
                     if (anomaly3.canSpawn() == true)
                     {
+                        //Generate Anomaly
                         activeAnomalies.Add(possibleAnomalies[2]);
+                        anomaly3.changeGameObjectSprite(customer.SpriteRenderer);
                         return true;
                     }
                     break;
                 case 3:
+                    //Spooky Sprite Change Anomaly
                     Anomaly4 anomaly4 = new Anomaly4();
                     if (anomaly4.canSpawn() == true)
                     {
                         activeAnomalies.Add(possibleAnomalies[3]);
+                        anomaly4.changeGameObjectSprite(customer.SpriteRenderer);
                         return true;
                     }
                     break;
