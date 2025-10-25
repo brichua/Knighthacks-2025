@@ -20,6 +20,7 @@ public class CustomerManager : MonoBehaviour
     bool spawnRequested = false;
     public bool stopSpawning = false;
     public bool isOrdering;
+    public bool registerOccupied;
 
     string[] pastryTypes = { "cookie", "cake", "cracker" };
     string[] teaFlowerTypes = { "rose", "bluebell", "daisy" };
@@ -160,7 +161,7 @@ public class CustomerManager : MonoBehaviour
         orderSprites[2] = teaFlowerSprites[flowerRoll];
         
         //Generate Customer Sprite
-        int spriteIndex = Random.Range(0, 2);
+        int spriteIndex = Random.Range(0, 3);
 
         //Roll for if customer will be an anomaly
         if (AnomalyManager.rollForAnomaly()) {

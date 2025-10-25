@@ -2713,6 +2713,7 @@ MonoBehaviour:
   UICamera: {fileID: 1883118161}
   stopSpawning: 0
   isOrdering: 0
+  registerOccupied: 0
   drinkSprites:
   - {fileID: -2301601824389577311, guid: 3eda1ee812eb5f748859bf8b2912c8fa, type: 3}
   - {fileID: -5630434496311538506, guid: 303fd941824882745a580f5698591d97, type: 3}
@@ -4032,6 +4033,9 @@ MonoBehaviour:
   kettleOnStove: 0
   waterBoiled: 0
   reminder: {fileID: 0}
+  front: {fileID: 0}
+  back: {fileID: 0}
+  lookedBack: 0
 --- !u!4 &1572841598
 Transform:
   m_ObjectHideFlags: 0
@@ -5587,12 +5591,15 @@ MonoBehaviour:
   possibleObviousSprites:
   - {fileID: -6097274898374520218, guid: ea496b69c315bcf4dbf35a7bd7f31c34, type: 3}
   - {fileID: 940144791894296791, guid: e069805f6daf2884fb94f32f2a423821, type: 3}
+  - {fileID: 4529935679018320529, guid: 30d0c3227a9b36b4db25c92a3344101e, type: 3}
   possibleSubtleSprites:
   - {fileID: -9145568248037843510, guid: 4d0548150beea0546805f74febf76876, type: 3}
   - {fileID: -222607851706403029, guid: 3ae47f1af7773e74384ea2b48a38eb98, type: 3}
+  - {fileID: 1944921302010482682, guid: bdf2eba26c681b84c9ad09a3e3138e0c, type: 3}
   possibleSpookySprites:
   - {fileID: -3543814495099850191, guid: 0d953f450e1e5e040a86cd245a21af1f, type: 3}
   - {fileID: 1893780208129416594, guid: 13b2a8699bc0e674ab424d1ebdfacba0, type: 3}
+  - {fileID: 299069027816977391, guid: b1e931ae4a80c154b98160162c1b2cea, type: 3}
   normalRoomSprite: {fileID: 0}
   anomalyRoomSprite: {fileID: 0}
   normalTVSprite: {fileID: 0}
