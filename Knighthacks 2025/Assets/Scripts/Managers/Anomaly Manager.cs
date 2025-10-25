@@ -36,12 +36,12 @@ public class AnomalyManager : MonoBehaviour
     public bool generateAnomaly(Customer customer)
     {
         int iterations = 0;
-        int roll;
+        int rollAnomaly;
         while(true)
         {
             if(iterations++ == 1000) { return false; }
-            roll = Random.Range(0, possibleAnomalies.Length);
-            switch (roll){
+            rollAnomaly = Random.Range(0, possibleAnomalies.Length);
+            switch (rollAnomaly){
                 case 0:
                     //Hallucinate Order Anomaly
                     Anomaly1 anomaly1 = new Anomaly1();

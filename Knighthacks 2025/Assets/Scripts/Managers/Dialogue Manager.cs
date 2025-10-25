@@ -15,8 +15,6 @@ public class DialogueManager : MonoBehaviour
     public Image[] orderImages = new Image[3];
     // Plus sign image shown between first and second item
     public Image plusImage;
-    // Database to resolve item name -> sprite
-    public ItemDatabase itemDatabase;
 
     [Header("Sequence Timing")]
     // time between reveals (image -> plus -> image -> image)
@@ -41,19 +39,25 @@ public class DialogueManager : MonoBehaviour
         HideOrderImages();
     }
 
-    // Public entry point: plays the ordered reveal sequence for a given customer.
-    // If order is null it will use the customer's `order` field.
-    public void PlayOrderSequenceForCustomer(Customer customer, string[] order = null)
+    // Public entry point:
+    // - Provide `orderSprites` to use sprites directly (preferred).
+    // - Or provide `orderIds` or let the manager use the customer's `order` strings and attempt Resources.Load with path "Resources/ItemSprites/{id}".
+    public void PlayOrderSequenceForCustomer(Customer customer, Sprite[] orderSprites = null, string[] orderIds = null)
     {
         if (customer == null) return;
-        if (order == null) order = customer.order;
+
+        // Determine fallback ids from customer if none provided
+        string[] customerIds = orderIds;
+        if (customerIds == null)
+            customerIds = customer.order;
+
         // cancel any running sequence
         if (sequenceCoroutine != null) StopCoroutine(sequenceCoroutine);
-        sequenceCoroutine = StartCoroutine(OrderSequenceCoroutine(customer, order));
+        sequenceCoroutine = StartCoroutine(OrderSequenceCoroutine(customer, orderSprites, customerIds));
     }
 
     // Core coroutine: handles bubble, images and mouth animation
-    private IEnumerator OrderSequenceCoroutine(Customer customer, string[] order)
+    private IEnumerator OrderSequenceCoroutine(Customer customer, Sprite[] orderSprites, string[] orderIds)
     {
         // Prepare UI
         if (orderImagesContainer != null) orderImagesContainer.SetActive(true);
@@ -70,7 +74,6 @@ public class DialogueManager : MonoBehaviour
         if (customer != null)
         {
             custRenderer = customer.SpriteRenderer;
-            // try to resolve closed/open sprites from Customer.possibleNormalSprites using spriteIndex
             if (customer.possibleNormalSprites != null)
             {
                 int baseIndex = customer.spriteIndex * 2;
@@ -90,7 +93,7 @@ public class DialogueManager : MonoBehaviour
 
         // Step 1: reveal first item (index 0)
         if (orderImages.Length >= 1 && orderImages[0] != null)
-            SetSlotSprite(orderImages[0], order, 0);
+            SetSlotSprite(orderImages[0], orderSprites, orderIds, 0);
         yield return new WaitForSeconds(revealDelay);
 
         // Step 2: reveal plus sign
@@ -100,12 +103,12 @@ public class DialogueManager : MonoBehaviour
 
         // Step 3: reveal second item (index 1)
         if (orderImages.Length >= 2 && orderImages[1] != null)
-            SetSlotSprite(orderImages[1], order, 1);
+            SetSlotSprite(orderImages[1], orderSprites, orderIds, 1);
         yield return new WaitForSeconds(revealDelay);
 
         // Step 4: reveal third item (index 2)
         if (orderImages.Length >= 3 && orderImages[2] != null)
-            SetSlotSprite(orderImages[2], order, 2);
+            SetSlotSprite(orderImages[2], orderSprites, orderIds, 2);
         yield return new WaitForSeconds(revealDelay);
 
         // Sequence finished: stop mouth animation and set closed sprite
@@ -127,15 +130,25 @@ public class DialogueManager : MonoBehaviour
         sequenceCoroutine = null;
     }
 
-    // helper to set the sprite for a slot from order[] using itemDatabase
-    private void SetSlotSprite(Image slotImage, string[] order, int index)
+    // helper to set the sprite for a slot. Prefer `orderSprites` if provided.
+    // If `orderSprites` is null, manager will attempt to load from Resources/ItemSprites/{id} using `orderIds[index]`.
+    private void SetSlotSprite(Image slotImage, Sprite[] orderSprites, string[] orderIds, int index)
     {
         if (slotImage == null) return;
-        if (order != null && index < order.Length && !string.IsNullOrEmpty(order[index]))
+
+        Sprite s = null;
+        // Use provided sprites first
+        if (orderSprites != null && index < orderSprites.Length)
+            s = orderSprites[index];
+
+        // Fallback: try to load by ID from Resources
+        if (s == null && orderIds != null && index < orderIds.Length && !string.IsNullOrEmpty(orderIds[index]))
+            s = LoadSpriteFromResources(orderIds[index]);
+
+        if (s != null)
         {
-            Sprite s = itemDatabase != null ? itemDatabase.GetSprite(order[index]) : null;
             slotImage.sprite = s;
-            slotImage.gameObject.SetActive(s != null);
+            slotImage.gameObject.SetActive(true);
         }
         else
         {
@@ -143,10 +156,17 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
+    // Attempt to load a sprite from Resources/ItemSprites/{id}
+    private Sprite LoadSpriteFromResources(string id)
+    {
+        if (string.IsNullOrEmpty(id)) return null;
+        // Place your item sprites under Assets/Resources/ItemSprites/ named exactly as the id string
+        return Resources.Load<Sprite>($"ItemSprites/{id}");
+    }
+
     // toggles customer's mouth between open and closed until stopped
     private IEnumerator MouthToggleCoroutine(SpriteRenderer renderer, Sprite openSprite, Sprite closedSprite, float interval)
     {
-        // prefer toggling between provided open and closed; if openSprite missing, toggle visibility using closed only
         bool showOpen = true;
         while (true)
         {
@@ -154,7 +174,6 @@ public class DialogueManager : MonoBehaviour
             {
                 if (showOpen && openSprite != null) renderer.sprite = openSprite;
                 else if (!showOpen && closedSprite != null) renderer.sprite = closedSprite;
-                // if one of the sprites is null we simply leave whatever sprite is available
             }
             showOpen = !showOpen;
             yield return new WaitForSeconds(interval);
