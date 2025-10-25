@@ -1514,14 +1514,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -765150924802650856, guid: 5070dad80b6ed424e9f80be672059724, type: 3}
+  m_Sprite: {fileID: 7259517905286814884, guid: b0f497873817cf74aae96efee9963d3f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1912,7 +1912,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &613042281
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1993,8 +1993,8 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 5
+  m_SortingLayerID: 1979406777
+  m_SortingOrder: 10
   m_TargetDisplay: 0
 --- !u!225 &613042285
 CanvasGroup:
@@ -2004,7 +2004,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 613042280}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -3257,6 +3257,10 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   speechBubble: {fileID: 0}
+  speechBubbleSprite: {fileID: 0}
+  uiCanvas: {fileID: 0}
+  worldCamera: {fileID: 0}
+  bubbleWorldOffset: {x: 0, y: 2, z: 0}
   revealDelay: 0.5
   mouthToggleInterval: 0.12
   autoHideAfter: 0.5
@@ -4788,6 +4792,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TaskManager
   dialogueManager: {fileID: 1071829121}
+  customerManager: {fileID: 0}
   snack: 
   size: 
   tea: 
@@ -4978,7 +4983,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -765150924802650856, guid: 5070dad80b6ed424e9f80be672059724, type: 3}
+  m_Sprite: {fileID: 7259517905286814884, guid: b0f497873817cf74aae96efee9963d3f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5786,8 +5791,8 @@ Camera:
   m_GameObject: {fileID: 1883118159}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 4
-  m_BackGroundColor: {r: 0.70440245, g: 0, b: 0.0688061, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 1, g: 1, b: 1, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -6861,6 +6866,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AnomalyManager
   customerManager: {fileID: 1198674598}
+  gameManager: {fileID: 0}
   possibleAnomalies:
   - {fileID: 0}
   - {fileID: 0}
@@ -6879,6 +6885,9 @@ MonoBehaviour:
   - {fileID: 1893780208129416594, guid: 13b2a8699bc0e674ab424d1ebdfacba0, type: 3}
   normalRoomSprite: {fileID: -4364034832326165938, guid: 017de083c84eb3a44a1691108a095e6f, type: 3}
   anomalyRoomSprite: {fileID: -8483731395159641348, guid: 50ddbcfbea40ff842bcb59d4752358c3, type: 3}
+  tvStatus1: {fileID: 0}
+  tvStatus2: {fileID: 0}
+  tvStatus3: {fileID: 0}
   normalTVSprite: {fileID: -3667019684146795, guid: 030781877fed9844097be6561109e99f, type: 3}
   anomalyTVSprite: {fileID: -3742553133711965971, guid: 51f24b49fd57965499070761f1b5da41, type: 3}
 --- !u!4 &2135412579
