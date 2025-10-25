@@ -9,8 +9,10 @@ public class CustomerManager : MonoBehaviour
 {
     public GameObject customerPrefab;
     public TaskManager taskManager;
+    //Determines who's in line waiting for an order
     public List<Customer> customers = new List<Customer>();
     public List<GameObject> customerGO = new List<GameObject>();
+    //Determines who's in line waiting to order
     public List<GameObject> customerLine = new List<GameObject>();
     public int maxCustomers = 12;
     public AnomalyManager AnomalyManager;
@@ -48,14 +50,14 @@ public class CustomerManager : MonoBehaviour
             // Check if there are fewer than 3 customers waiting
             int waitingCount = customerGO.Count; // or use customerLine.Count if that better reflects "waiting area"
 
-            // Only spawn if there’s room in the waiting area
+            // Only spawn if thereï¿½s room in the waiting area
             if (waitingCount < 3 && maxCustomers > 0)
             {
                 SpawnCustomer();
             }
             else
             {
-                Debug.Log("Spawn paused — waiting area full.");
+                Debug.Log("Spawn paused ï¿½ waiting area full.");
             }
 
             // Reset spawn timer regardless
@@ -311,7 +313,7 @@ public class CustomerManager : MonoBehaviour
             customerSpawnTimer.Dispose();
         }
 
-        double interval = Random.Range(20000, 40000); // 20–40 seconds
+        double interval = Random.Range(20000, 40000); // 20ï¿½40 seconds
         customerSpawnTimer = new Timer(interval);
         customerSpawnTimer.Elapsed += (s, e) => { spawnRequested = true; };
         customerSpawnTimer.Start();
