@@ -5,13 +5,22 @@ using UnityEngine.Rendering;
 
 public class AnomalyManager : MonoBehaviour
 {
-    public Sprite[] possibleObviousSprites;
-    public Sprite[] possibleSubtleSprites;
-    public Sprite[] possibleSpookySprites;
+    //Variables for AnomalyManager
     public CustomerManager customerManager;
     public GameObject[] possibleAnomalies;
     public List<GameObject> activeAnomalies;
     public int odds;
+
+    //Variables that will be passed into different anomaly types
+    public Sprite[] possibleObviousSprites;
+    public Sprite[] possibleSubtleSprites;
+    public Sprite[] possibleSpookySprites;
+
+    public Sprite normalRoomSprite;
+    public Sprite anomalyRoomSprite;
+
+    public Sprite normalTVSprite;
+    public Sprite anomalyTVSprite;
 
     //Determines if a customer rolls into being an anomaly
     public bool rollForAnomaly()
@@ -121,7 +130,7 @@ public class AnomalyManager : MonoBehaviour
                     break;
                 case 7:
                     // Major room change
-                    Anomaly8 anomaly8 = new Anomaly8();
+                    Anomaly8 anomaly8 = new Anomaly8(normalRoomSprite, anomalyRoomSprite);
                     if (anomaly8.CanSpawn() == true)
                     {
                         activeAnomalies.Add(possibleAnomalies[7]);
@@ -132,7 +141,7 @@ public class AnomalyManager : MonoBehaviour
                     break;
                 case 8:
                     // Minor room change
-                    Anomaly9 anomaly9 = new Anomaly9();
+                    Anomaly9 anomaly9 = new Anomaly9(normalTVSprite, anomalyTVSprite);
                     if (anomaly9.CanSpawn() == true)
                     {
                         activeAnomalies.Add(possibleAnomalies[8]);
