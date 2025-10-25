@@ -1,8 +1,10 @@
 using System.Collections;
+using System.Timers;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
-using System.Timers;
+using UnityEngine.Rendering.Universal;
 
 public class GameManager : MonoBehaviour
 {
@@ -18,6 +20,18 @@ public class GameManager : MonoBehaviour
     public GameObject dayTextObject;
     public GameObject tvObject;
     public GameObject endButton;
+
+    public Volume mainVolume;
+    public Volume scareVolume;
+    private Vignette vignette;
+
+    public SpriteRenderer scareSpriteRenderer;
+    public Sprite[] scareSprites;
+    public CanvasGroup fadeCanvasGroup;
+
+    public float vignetteMaxIntensity = 0.6f;
+    public float vignetteGrowTime = 1.2f;
+    public float scareDuration = 0.6f;
 
     public CanvasGroup blackImage;
     public SpriteRenderer background;
@@ -219,6 +233,9 @@ public class GameManager : MonoBehaviour
             else if (health == 1 && tvStatus3 != null)
             {
                 tv.sprite = tvStatus3;
+            }else if(health <= 0)
+            {
+                StartCoroutine(ScareAndResetSequence());
             }
             else if (tvStatus1 != null)
             {
@@ -237,4 +254,144 @@ public class GameManager : MonoBehaviour
         day++;
         background.sprite = night;
     }
+
+    public IEnumerator ScareAndResetSequence()
+    {
+        Debug.Log("Starting scare sequence...");
+
+        // --- PREPARE ---
+        if (mainVolume == null || scareVolume == null)
+        {
+            Debug.LogWarning("Missing volume references!");
+            yield break;
+        }
+
+        if (scareVolume.profile.TryGet(out Vignette vignetteEffect))
+        {
+            vignette = vignetteEffect;
+        }
+        else if (mainVolume.profile.TryGet(out Vignette fallbackVignette))
+        {
+            vignette = fallbackVignette;
+        }
+        else
+        {
+            Debug.LogWarning("No vignette found in volumes!");
+            yield break;
+        }
+
+        // Initial setup
+        scareVolume.weight = 0f;
+        vignette.intensity.Override(0f);
+        fadeCanvasGroup.alpha = 0f;
+        fadeCanvasGroup.gameObject.SetActive(true);
+        canvas.SetActive(true);
+
+        // --- 1. GROW VIGNETTE + BLEND IN SECOND VOLUME ---
+        float elapsed = 0f;
+        while (elapsed < vignetteGrowTime)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / vignetteGrowTime;
+
+            vignette.intensity.Override(Mathf.Lerp(0f, vignetteMaxIntensity, t));
+            scareVolume.weight = Mathf.Lerp(0f, 1f, t);
+            yield return null;
+        }
+        vignette.intensity.Override(vignetteMaxIntensity);
+        scareVolume.weight = 1f;
+
+        // --- 2. SPAWN RANDOM SCARE SPRITE ---
+        if (scareSprites != null && scareSprites.Length > 0 && scareSpriteRenderer != null)
+        {
+            scareSpriteRenderer.sprite = scareSprites[Random.Range(0, scareSprites.Length)];
+            scareSpriteRenderer.gameObject.SetActive(true);
+            scareSpriteRenderer.transform.localScale = Vector3.one * 0.8f;
+
+            // Bounce effect
+            float bounceTime = 0.1f;
+            Vector3 originalScale = scareSpriteRenderer.transform.localScale;
+            Vector3 targetScale = originalScale * 1.3f;
+
+            // Scale up fast
+            float t = 0f;
+            while (t < bounceTime)
+            {
+                t += Time.deltaTime;
+                scareSpriteRenderer.transform.localScale = Vector3.Lerp(originalScale, targetScale, t / bounceTime);
+                yield return null;
+            }
+
+            // Scale back down quickly
+            t = 0f;
+            while (t < bounceTime)
+            {
+                t += Time.deltaTime;
+                scareSpriteRenderer.transform.localScale = Vector3.Lerp(targetScale, originalScale, t / bounceTime);
+                yield return null;
+            }
+
+            yield return new WaitForSeconds(scareDuration);
+            scareSpriteRenderer.gameObject.SetActive(false);
+        }
+
+        // --- 3. FADE TO BLACK WITH FLICKER ---
+        const float fadeDuration = 1.2f;
+        elapsed = 0f;
+
+        // Flicker parameters
+        float flickerChance = 0.25f; // 25% chance per frame to toggle
+        float flickerCooldown = 0f;
+
+        while (elapsed < fadeDuration)
+        {
+            elapsed += Time.deltaTime;
+            fadeCanvasGroup.alpha = Mathf.Lerp(0f, 1f, elapsed / fadeDuration);
+
+            // Handle random flicker
+            flickerCooldown -= Time.deltaTime;
+            if (flickerCooldown <= 0f && Random.value < flickerChance)
+            {
+                canvas.SetActive(!canvas.activeSelf);
+                flickerCooldown = Random.Range(0.05f, 0.15f); // small delay before next flicker check
+            }
+
+            yield return null;
+        }
+
+        // Ensure full black and canvas is back on
+        fadeCanvasGroup.alpha = 1f;
+        canvas.SetActive(true);
+
+        // --- 4. RESET GAME STATE ---
+        Debug.Log("Resetting game...");
+        health = 3;
+        day = 1;
+        taskManager.resetTasks();
+        customerManager.customers.Clear();
+        customerManager.stopSpawning = true;
+        canvas.SetActive(false);
+        scareVolume.weight = 0f;
+        vignette.intensity.Override(0f);
+
+        yield return new WaitForSeconds(0.5f);
+
+        // --- 5. FADE FROM BLACK ---
+        elapsed = 0f;
+        while (elapsed < fadeDuration)
+        {
+            elapsed += Time.deltaTime;
+            fadeCanvasGroup.alpha = Mathf.Lerp(1f, 0f, elapsed / fadeDuration);
+            yield return null;
+        }
+        fadeCanvasGroup.alpha = 0f;
+        fadeCanvasGroup.gameObject.SetActive(false);
+
+        // --- 6. ENABLE START BUTTON AGAIN ---
+        startButton.SetActive(true);
+
+        Debug.Log("Scare and reset complete.");
+    }
+
+
 }

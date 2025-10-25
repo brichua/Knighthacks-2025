@@ -45,21 +45,27 @@ public class CustomerManager : MonoBehaviour
     {
         if (spawnRequested)
         {
-            //Check queues to make sure customer can actually spawn
-            //Customer will NOT spawn if customerGO size => 3 OR if customerLine size >= 3
-            //Customer will also NOT spawn if maxCustomers <= 0
-            if (customerGO.Count <= 3 && customerLine.Count <= 3 && maxCustomers > 0)
+            // Check if there are fewer than 3 customers waiting
+            int waitingCount = customerGO.Count; // or use customerLine.Count if that better reflects "waiting area"
+
+            // Only spawn if there’s room in the waiting area
+            if (waitingCount < 3 && maxCustomers > 0)
             {
-                //Spawn can happen
                 SpawnCustomer();
             }
-            //Reset timer regardless of whether the customer can spawn or not
+            else
+            {
+                Debug.Log("Spawn paused — waiting area full.");
+            }
+
+            // Reset spawn timer regardless
             spawnRequested = false;
             double interval = Random.Range(20000, 40000);
-            customerSpawnTimer = new Timer(interval);
+            customerSpawnTimer = new System.Timers.Timer(interval);
             customerSpawnTimer.Elapsed += (s, e) => { spawnRequested = true; };
             customerSpawnTimer.Start();
         }
+
         if (stopSpawning) 
         {
             customerSpawnTimer.Stop();

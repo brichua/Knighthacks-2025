@@ -211,6 +211,8 @@ MonoBehaviour:
   - {fileID: -1464399247040549787, guid: 7a23a24090372e34785c4a880fa26b14, type: 3}
   - {fileID: -7894651147183679348, guid: 77cf644c2ab3a044687d43434afdba92, type: 3}
   - {fileID: -6901809819362451541, guid: b0c58e91991cb4b4389bf8d091ff7730, type: 3}
+  - {fileID: 8580613364119093560, guid: dbc4476475683074c9807cb5be70674f, type: 3}
+  - {fileID: 3237667764140052165, guid: d8bbb68bba95dca4f93501533ffd3e33, type: 3}
   SpriteRenderer: {fileID: 3242357005695749654}
   order: []
   orderSprites:

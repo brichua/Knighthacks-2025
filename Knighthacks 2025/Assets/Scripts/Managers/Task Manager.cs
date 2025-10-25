@@ -96,19 +96,23 @@ public class TaskManager : MonoBehaviour
 
     public bool completeOrder(CustomerManager customerManager)
     {
-        if(snackChosen && teaChosen && flowerChosen)
+        if (snackChosen && teaChosen && flowerChosen)
         {
-            tray = false;
-            background.sprite = noTrayBackground;
-            for (int i = 0; i < customerManager.customers.Count; i++) 
+            // Only remove tray if no one is waiting
+            if (customerManager.customers.Count <= 1)
+            {
+                tray = false;
+                background.sprite = noTrayBackground;
+            }
+
+            for (int i = 0; i < customerManager.customers.Count; i++)
             {
                 if (size == customerManager.customers[i].order[0] && tea == customerManager.customers[i].order[1] &&
-                    snack == customerManager.customers[i].order[2] && flower == customerManager.customers[i].order[3]) 
+                    snack == customerManager.customers[i].order[2] && flower == customerManager.customers[i].order[3])
                 {
-                    if (Accusation.accuse(anomaly, customerManager.customers[i])) 
+                    if (Accusation.accuse(anomaly, customerManager.customers[i]))
                     {
                         customerManager.customers[i].served = true;
-                        //Call destroyCustomer from Customer Manager
                         customerManager.destroyCustomer(i);
                         return true;
                     }
@@ -117,6 +121,7 @@ public class TaskManager : MonoBehaviour
             return false;
         }
         return false;
+
     }
 
     public void moveFront()
