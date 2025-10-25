@@ -14,9 +14,9 @@ public class Customer : MonoBehaviour
     public Sprite[] orderSprites = new Sprite[3];
     public bool hasOrdered;
     public bool served;
+    public bool mouthOpen;
     public bool isAnomaly;
     public int spriteIndex;
-
     //Anomaly Variables
     public bool hallucinating;
     public string[] fakeOrder;
@@ -26,8 +26,20 @@ public class Customer : MonoBehaviour
         this.order = order;
         this.isAnomaly = isAnomaly;
         this.spriteIndex = spriteIndex;
-        this.SpriteRenderer.sprite = possibleNormalSprites[spriteIndex * 2 + UnityEngine.Random.Range(0, 2)];
+        this.SpriteRenderer.sprite = possibleNormalSprites[0];
         this.orderSprites = orderSprites;
+    }
+
+    public void UpdateMouth() 
+    {
+        if (mouthOpen)
+        {
+            SpriteRenderer.sprite = possibleNormalSprites[0];
+        }
+        else 
+        {
+            SpriteRenderer.sprite = possibleNormalSprites[1];
+        }
     }
 
     public void updateHallucination()
