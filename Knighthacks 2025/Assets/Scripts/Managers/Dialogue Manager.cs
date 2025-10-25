@@ -42,9 +42,9 @@ public class DialogueManager : MonoBehaviour
     // Public entry point:
     // - Provide `orderSprites` to use sprites directly (preferred).
     // - Or provide `orderIds` or let the manager use the customer's `order` strings and attempt Resources.Load with path "Resources/ItemSprites/{id}".
-    public void PlayOrderSequenceForCustomer(Customer customer, Sprite[] orderSprites = null, string[] orderIds = null)
+    public bool PlayOrderSequenceForCustomer(Customer customer, Sprite[] orderSprites = null, string[] orderIds = null)
     {
-        if (customer == null) return;
+        if (customer == null) return false;
 
         // Determine fallback ids from customer if none provided
         string[] customerIds = orderIds;
@@ -54,6 +54,7 @@ public class DialogueManager : MonoBehaviour
         // cancel any running sequence
         if (sequenceCoroutine != null) StopCoroutine(sequenceCoroutine);
         sequenceCoroutine = StartCoroutine(OrderSequenceCoroutine(customer, orderSprites, customerIds));
+        return true;
     }
 
     // Core coroutine: handles bubble, images and mouth animation
