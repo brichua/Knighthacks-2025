@@ -115,7 +115,7 @@ GameObject:
   - component: {fileID: 7817423259057372000}
   m_Layer: 0
   m_Name: Customer
-  m_TagString: Untagged
+  m_TagString: Customer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -219,6 +219,7 @@ MonoBehaviour:
   - {fileID: 0}
   hasOrdered: 0
   served: 0
+  mouthOpen: 0
   isAnomaly: 0
   spriteIndex: 0
   hallucinating: 0
