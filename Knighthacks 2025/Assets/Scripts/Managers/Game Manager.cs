@@ -85,6 +85,7 @@ public class GameManager : MonoBehaviour
         day = 1;
         canvas.SetActive(true);
         startDay(day);
+        customerManager.StartCustomerSpawnTimer();
     }
 
     public void startDay(int day)
@@ -169,6 +170,8 @@ public class GameManager : MonoBehaviour
         dayTextObject.SetActive(false);
         tvObject.SetActive(true);
         if (tvStatus1 != null) tv.sprite = tvStatus1;
+
+        customerManager.SpawnCustomer();
     }
 
     // Handles the sequence when an order fails:

@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class CustomerManager : MonoBehaviour
 {
     public GameObject customerPrefab;
+    public TaskManager taskManager;
     public List<Customer> customers = new List<Customer>();
     public List<GameObject> customerGO = new List<GameObject>();
     public List<GameObject> customerLine = new List<GameObject>();
@@ -34,10 +35,10 @@ public class CustomerManager : MonoBehaviour
 
     void Start()
     {
-        double interval = Random.Range(20000, 40000);
+        /*double interval = Random.Range(20000, 40000);
         customerSpawnTimer = new Timer(interval);
         customerSpawnTimer.Elapsed += (s, e) => { spawnRequested = true; };
-        customerSpawnTimer.Start();
+        customerSpawnTimer.Start();*/
     }
 
     void Update()
@@ -73,12 +74,18 @@ public class CustomerManager : MonoBehaviour
         }
     }
 
-    void SpawnCustomer()
+    public void SpawnCustomer()
     {
         //Generate Prefab
+        
         GameObject newCustomer = Instantiate(customerPrefab, new Vector3(13f, -0.76f, 10f), Quaternion.identity);
         Customer customer = newCustomer.GetComponent<Customer>();
         maxCustomers--;
+
+        if(taskManager.getInBack() == false)
+        {
+            newCustomer.SetActive(true);
+        }
 
         // If the prefab has a Canvas, assign its render camera to the UICamera field (if provided)
         // and force the Canvas to render above the customer's SpriteRenderers.
@@ -185,7 +192,6 @@ public class CustomerManager : MonoBehaviour
         }
         //Set newCustomer GameObject as active, add customer object to list, add
         //newCustomer GameObject to customerGO
-        newCustomer.SetActive(true);
         customers.Add(customer);
         customerGO.Add(newCustomer);
         customerLine.Add(newCustomer);
@@ -287,6 +293,21 @@ public class CustomerManager : MonoBehaviour
         color.a = 0f;
         sr.color = color;
     }
+
+    public void StartCustomerSpawnTimer()
+    {
+        if (customerSpawnTimer != null)
+        {
+            customerSpawnTimer.Stop();
+            customerSpawnTimer.Dispose();
+        }
+
+        double interval = Random.Range(20000, 40000); // 20–40 seconds
+        customerSpawnTimer = new Timer(interval);
+        customerSpawnTimer.Elapsed += (s, e) => { spawnRequested = true; };
+        customerSpawnTimer.Start();
+    }
+
 
     //DELETE THIS SIDDU, BRI, JUAN, JAHYR
     private IEnumerator timewaste(GameObject newCustomer, float time)

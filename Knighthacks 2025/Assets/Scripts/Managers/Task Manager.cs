@@ -82,6 +82,7 @@ public class TaskManager : MonoBehaviour
     public GameObject front;
     public GameObject back;
     public bool lookedBack = false;
+    public bool inBack = false;
 
     public void takeOrder(GameObject customer1, Customer customer2)
     {
@@ -122,29 +123,34 @@ public class TaskManager : MonoBehaviour
     {
         front.SetActive(true);
         back.SetActive(false);
-        GameObject[] customers = GameObject.FindGameObjectsWithTag("Customer");
-        foreach (GameObject customer in customers)
-        {
-            customer.SetActive(true);
-        }
+        foreach (GameObject customer in customerManager.customerGO)
+            if (customer != null)
+                customer.SetActive(true);
+        inBack = false;
     }
 
     public void moveBack()
     {
         front.SetActive(false);
         back.SetActive(true);
-        GameObject[] customers = GameObject.FindGameObjectsWithTag("Customer");
-        foreach (GameObject customer in customers)
-        {
-            customer.SetActive(false);
-        }
+        foreach (GameObject customer in customerManager.customerGO)
+            if (customer != null)
+                customer.SetActive(false);
         lookedBack = true;
+        inBack = true;
     }
+
+
+    public bool getInBack()
+    {
+        return inBack;
+    } 
 
     public void selectCookie()
     {
         if (!tray)
         {
+            StartCoroutine(fadeText());
             return;
         }
         snack = "cookie";
@@ -157,6 +163,7 @@ public class TaskManager : MonoBehaviour
     {
         if (!tray)
         {
+            StartCoroutine(fadeText());
             return;
         }
         snack = "cake";
@@ -169,6 +176,7 @@ public class TaskManager : MonoBehaviour
     {
         if (!tray)
         {
+            StartCoroutine(fadeText());
             return;
         }
         snack = "cracker";
@@ -181,6 +189,7 @@ public class TaskManager : MonoBehaviour
     {
         if (!tray)
         {
+            StartCoroutine(fadeText());
             return;
         }
         anomaly = false;
@@ -193,6 +202,7 @@ public class TaskManager : MonoBehaviour
     {
         if (!tray)
         {
+            StartCoroutine(fadeText());
             return;
         }
         anomaly = true;
@@ -230,6 +240,7 @@ public class TaskManager : MonoBehaviour
     {
         if (step != 1)
         {
+            StartCoroutine(fadeText());
             return;
         }
         flower = "rose";
@@ -242,6 +253,7 @@ public class TaskManager : MonoBehaviour
     {
         if (step != 1)
         {
+            StartCoroutine(fadeText());
             return;
         }
         flower = "daisy";
@@ -254,6 +266,7 @@ public class TaskManager : MonoBehaviour
     {
         if (step != 1)
         {
+            StartCoroutine(fadeText());
             return;
         }
         flower = "bluebell";
@@ -266,6 +279,7 @@ public class TaskManager : MonoBehaviour
     {
         if (step != 2)
         {
+            StartCoroutine(fadeText());
             return;
         }
         tea = "green";
@@ -278,6 +292,7 @@ public class TaskManager : MonoBehaviour
     {
         if (step != 2)
         {
+            StartCoroutine(fadeText());
             return;
         }
         tea = "oolong";
@@ -290,6 +305,7 @@ public class TaskManager : MonoBehaviour
     {
         if (step != 2)
         {
+            StartCoroutine(fadeText());
             return;
         }
         tea = "oolong";
@@ -310,6 +326,7 @@ public class TaskManager : MonoBehaviour
     {
         if (step != 3 || !waterBoiled)
         {
+            StartCoroutine(fadeText());
             return;
         }
         kettle.transform.position = kettleCup.position;
@@ -354,6 +371,7 @@ public class TaskManager : MonoBehaviour
     {
         if (step != 4)
         {
+            StartCoroutine(fadeText());
             return;
         }
         switch (flower)
@@ -420,5 +438,17 @@ public class TaskManager : MonoBehaviour
             yield return null;
         }
         reminder.alpha = 1f;
+
+        yield return new WaitForSeconds(0.75f);
+
+        t = 0f;
+        while (t < fadeDuration)
+        {
+            t += Time.deltaTime;
+            reminder.alpha = Mathf.Lerp(1f, 0f, t / fadeDuration);
+            yield return null;
+        }
+        reminder.alpha = 0f;
+        reminder.gameObject.SetActive(false);
     }
 }
