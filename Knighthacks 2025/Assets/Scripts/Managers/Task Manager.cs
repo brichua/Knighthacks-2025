@@ -1,146 +1,353 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
-public enum TaskType { GrabTray, PickLeaves, PickGlass, BoilWater, PickSnack, DeliverFlower }
-public enum TaskLocation { Front, Back }
-public enum TaskState { Locked, Available, InProgress, Completed }
-
-[Serializable]
-public class OrderTask
-{
-    public TaskType type;
-    public TaskLocation location;
-    public TaskState state = TaskState.Locked;
-    public string requiredItemId; // null/empty if no specific item required (e.g., GrabTray, BoilWater)
-
-    public bool IsComplete => state == TaskState.Completed;
-    public bool IsAvailable => state == TaskState.Available || state == TaskState.InProgress;
-}
-
 public class TaskManager : MonoBehaviour
 {
-    public static TaskManager Instance { get; private set; }
+    public string snack;
+    public string size;
+    public string tea;
+    public string flower;
+    public bool anomaly;
+    public bool tray;
 
-    // Current sequence for active customer
-    public List<OrderTask> currentTasks = new List<OrderTask>();
+    public bool snackChosen;
+    public bool teaChosen;
+    public bool flowerChosen;
 
-    // Events
-    public event Action<OrderTask> TaskCompleted;
-    public event Action AllTasksCompleted;
-    public UnityEvent onOrderCompleted; // inspector hook
+    public GameObject snackObject;
+    public GameObject teaObject;
+    public GameObject flowerObject;
+    public GameObject decorationObject;
 
-    void Awake()
+    public SpriteRenderer background;
+    public Sprite trayBackground;
+    public Sprite noTrayBackground;
+
+    public SpriteRenderer snackImage;
+    public SpriteRenderer teaImage;
+    public SpriteRenderer flowerImage;
+    public SpriteRenderer decorationImage;
+    public Sprite cookieSprite;
+    public Sprite cakeSprite;
+    public Sprite crackerSprite;
+    public Sprite anomalyFlower;
+    public Sprite regularFlower;
+
+    public Sprite rose;
+    public Sprite daisy;
+    public Sprite bluebell;
+    public Sprite smallGreen;
+    public Sprite largeGreen;
+    public Sprite smallOolong;
+    public Sprite largeOolong;
+    public Sprite smallBlack;
+    public Sprite largeBlack;
+
+    public Transform kettleStove;
+    public Transform kettleTable;
+    public Transform kettleCup;
+    public Transform strainerSmall;
+    public Transform strainerLarge;
+
+    public Sprite roseTea;
+    public Sprite daisyTea;
+    public Sprite bluebellTea;
+    public Sprite smallGreenTea;
+    public Sprite largeGreenTea;
+    public Sprite smallOolongTea;
+    public Sprite largeOolongTea;
+    public Sprite smallBlackTea;
+    public Sprite largeBlackTea;
+    public Sprite greenStrainer;
+    public Sprite oolongStrainer;
+    public Sprite blackStrainer;
+
+    public Sprite smallCup;
+    public Sprite largeCup;
+
+    public GameObject cup;
+    public GameObject strainer;
+    public GameObject teaFlower;
+    public GameObject kettle;
+
+    public int step = 0;
+    public bool kettleOnStove = false;
+    public bool waterBoiled = false;
+
+    public TextMeshPro reminder;
+
+    public void takeOrder()
     {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
+        tray = true;
+        background.sprite = trayBackground;
     }
 
-    // Build the canonical task list for a customer order and unlock the first task.
-    // customer.order format: [drink, snack, flower] (matches your project)
-    public void StartTasksForCustomer(Customer customer)
+    public void completeOrder()
     {
-        if (customer == null) return;
-
-        currentTasks.Clear();
-
-        // 1. Grab tray (back)
-        currentTasks.Add(new OrderTask { type = TaskType.GrabTray, location = TaskLocation.Back, requiredItemId = null });
-
-        // 2. Pick tea leaves/flower from back (flower is index 2)
-        string flowerId = (customer.order != null && customer.order.Length > 2) ? customer.order[2] : null;
-        currentTasks.Add(new OrderTask { type = TaskType.PickLeaves, location = TaskLocation.Back, requiredItemId = flowerId });
-
-        // 3. Pick glass size from front (use drink id as required item if you map it to a glass)
-        string drinkId = (customer.order != null && customer.order.Length > 0) ? customer.order[0] : null;
-        currentTasks.Add(new OrderTask { type = TaskType.PickGlass, location = TaskLocation.Front, requiredItemId = drinkId });
-
-        // 4. Boil water from back
-        currentTasks.Add(new OrderTask { type = TaskType.BoilWater, location = TaskLocation.Back, requiredItemId = null });
-
-        // 5. Pick snack from front (snack is index 1)
-        string snackId = (customer.order != null && customer.order.Length > 1) ? customer.order[1] : null;
-        currentTasks.Add(new OrderTask { type = TaskType.PickSnack, location = TaskLocation.Front, requiredItemId = snackId });
-
-        // 6. Pick flower and deliver from front (deliver the flower)
-        currentTasks.Add(new OrderTask { type = TaskType.DeliverFlower, location = TaskLocation.Front, requiredItemId = flowerId });
-
-        // Unlock first task
-        if (currentTasks.Count > 0)
-            currentTasks[0].state = TaskState.Available;
-    }
-
-    // Returns the first available (not completed) task, or null
-    public OrderTask GetNextAvailableTask()
-    {
-        foreach (var t in currentTasks)
-            if (t.IsAvailable) return t;
-        return null;
-    }
-
-    // Attempt to complete a task. This is the API other systems should call when the player performs an action.
-    // - `providedItemId` is the id/name of the item the player used (can be null for actions like BoilWater/GrabTray).
-    // - `location` is where the player performed the action (front/back).
-    // Returns true if a task was validated and marked completed.
-    public bool TryCompleteTask(TaskType attemptedType, string providedItemId, TaskLocation location)
-    {
-        // find the earliest available task that matches type and location
-        for (int i = 0; i < currentTasks.Count; i++)
+        if(snackChosen && teaChosen && flowerChosen)
         {
-            var t = currentTasks[i];
-            if (!t.IsAvailable) continue;
-            if (t.type != attemptedType) continue;
-            if (t.location != location) continue;
-
-            // validate item if required
-            if (!string.IsNullOrEmpty(t.requiredItemId))
-            {
-                if (string.IsNullOrEmpty(providedItemId)) return false; // item required but not provided
-                if (!string.Equals(t.requiredItemId, providedItemId, StringComparison.OrdinalIgnoreCase)) return false; // wrong item
-            }
-
-            // passed checks -> mark complete
-            t.state = TaskState.Completed;
-            TaskCompleted?.Invoke(t);
-
-            // Unlock next task in sequence (if any)
-            UnlockNextTask(i + 1);
-
-            // If all tasks completed, fire completed events
-            if (AllTasksAreComplete())
-            {
-                AllTasksCompleted?.Invoke();
-                onOrderCompleted?.Invoke();
-            }
-            return true;
+            tray = false;
+            background.sprite = noTrayBackground;
         }
-
-        return false;
     }
 
-    private void UnlockNextTask(int startIndex)
+    public void selectCookie()
     {
-        for (int i = startIndex; i < currentTasks.Count; i++)
+        if (!tray)
         {
-            if (!currentTasks[i].IsComplete)
+            reminder.text = "You may be forgetting something...";
+            return;
+        }
+        snack = "cookie";
+        snackObject.SetActive(true);
+        snackImage.sprite = cookieSprite;
+        snackChosen = true;
+    }
+
+    public void selectCake()
+    {
+        if (!tray)
+        {
+            reminder.text = "You may be forgetting something...";
+            return;
+        }
+        snack = "cake";
+        snackObject.SetActive(true);
+        snackImage.sprite = cakeSprite;
+        snackChosen = true;
+    }
+
+    public void selectCracker()
+    {
+        if (!tray)
+        {
+            reminder.text = "You may be forgetting something...";
+            return;
+        }
+        snack = "cracker";
+        snackObject.SetActive(true);
+        snackImage.sprite = crackerSprite;
+        snackChosen = true;
+    }
+
+    public void selectRegularFlower()
+    {
+        if (!tray)
+        {
+            reminder.text = "You may be forgetting something...";
+            return;
+        }
+        anomaly = false;
+        decorationObject.SetActive(true);
+        decorationImage.sprite = regularFlower;
+        flowerChosen = true;
+    }
+
+    public void selectAnomalyFlower()
+    {
+        if (!tray)
+        {
+            reminder.text = "You may be forgetting something...";
+            return;
+        }
+        anomaly = true;
+        decorationObject.SetActive(true);
+        decorationImage.sprite = anomalyFlower;
+        flowerChosen = true;
+    }
+
+    public void selectSmallCup()
+    {
+        size = "small";
+        cup.GetComponent<SpriteRenderer>().sprite = smallCup;
+        cup.SetActive(true);
+        step = 1;
+    }
+
+    public void selectLargeCup()
+    {
+        size = "large";
+        cup.GetComponent<SpriteRenderer>().sprite = largeCup;
+        cup.SetActive(true);
+        step = 1;
+    }
+
+    public void trash()
+    {
+        step = 0;
+        tea = null;
+        cup.SetActive(false);
+        strainer.SetActive(false);
+        teaFlower.SetActive(false);
+    }
+
+    public void selectRose()
+    {
+        if (step != 1)
+        {
+            reminder.text = "You may be forgetting something...";
+            return;
+        }
+        flower = "rose";
+        step = 2;
+        teaFlower.GetComponent<SpriteRenderer>().sprite = roseTea;
+        teaFlower.SetActive(true);
+    }
+
+    public void selectDaisy()
+    {
+        if (step != 1)
+        {
+            reminder.text = "You may be forgetting something...";
+            return;
+        }
+        flower = "daisy";
+        step = 2;
+        teaFlower.GetComponent<SpriteRenderer>().sprite = daisyTea;
+        teaFlower.SetActive(true);
+    }
+
+    public void selectBluebell()
+    {
+        if (step != 1)
+        {
+            reminder.text = "You may be forgetting something...";
+            return;
+        }
+        flower = "bluebell";
+        step = 2;
+        teaFlower.GetComponent<SpriteRenderer>().sprite = bluebellTea;
+        teaFlower.SetActive(true);
+    }
+
+    public void selectGreenTea()
+    {
+        if (step != 2)
+        {
+            reminder.text = "You may be forgetting something...";
+            return;
+        }
+        tea = "green";
+        step = 3;
+        strainer.GetComponent<SpriteRenderer>().sprite = greenStrainer;
+        strainer.SetActive(true);
+    }
+
+    public void selectOolongTea()
+    {
+        if (step != 2)
+        {
+            reminder.text = "You may be forgetting something...";
+            return;
+        }
+        tea = "oolong";
+        step = 3;
+        strainer.GetComponent<SpriteRenderer>().sprite = oolongStrainer;
+        strainer.SetActive(true);
+    }
+
+    public void selectBlackTea()
+    {
+        if (step != 2)
+        {
+            reminder.text = "You may be forgetting something...";
+            return;
+        }
+        tea = "oolong";
+        step = 3;
+        strainer.GetComponent<SpriteRenderer>().sprite = blackStrainer;
+        strainer.SetActive(true);
+    }
+
+    public void boilWater()
+    {
+        kettle.transform.position = kettleStove.position;
+        //wait for some time to simulate boiling
+        //finished boiling animation
+        waterBoiled = true;
+    }
+
+    public void pourTea()
+    {
+        if (step != 3 || !waterBoiled)
+        {
+            reminder.text = "You may be forgetting something...";
+            return;
+        }
+        kettle.transform.position = kettleCup.position;
+        //pouring animation
+        kettle.transform.position = kettleTable.position;
+        if (size == "small")
+        {
+            if (tea == "green")
             {
-                currentTasks[i].state = TaskState.Available;
+                teaFlower.GetComponent<SpriteRenderer>().sprite = smallGreenTea;
+            }
+            else if (tea == "oolong")
+            {
+                teaFlower.GetComponent<SpriteRenderer>().sprite = smallOolongTea;
+            }
+            else if (tea == "black")
+            {
+                teaFlower.GetComponent<SpriteRenderer>().sprite = smallBlackTea;
+            }
+        }
+        else if (size == "large")
+        {
+            if (tea == "green")
+            {
+                teaFlower.GetComponent<SpriteRenderer>().sprite = largeGreenTea;
+            }
+            else if (tea == "oolong")
+            {
+                teaFlower.GetComponent<SpriteRenderer>().sprite = largeOolongTea;
+            }
+            else if (tea == "black")
+            {
+                teaFlower.GetComponent<SpriteRenderer>().sprite = largeBlackTea;
+            }
+        }
+        strainer.SetActive(false);
+        step = 4;
+        //cup sparkle animation
+    }
+
+    public void finishTea()
+    {
+        if (step != 4)
+        {
+            reminder.text = "You may be forgetting something...";
+            return;
+        }
+        switch (flower)
+        {
+            case "rose":
+                flowerImage.sprite = rose;
                 break;
-            }
+            case "daisy":
+                flowerImage.sprite = daisy;
+                break;
+            case "bluebell":
+                flowerImage.sprite = bluebell;
+                break;
         }
-    }
-
-    private bool AllTasksAreComplete()
-    {
-        foreach (var t in currentTasks)
-            if (!t.IsComplete) return false;
-        return true;
-    }
-
-    // Utility to cancel/reset current task list
-    public void CancelCurrentTasks()
-    {
-        currentTasks.Clear();
+        switch (tea)
+        {
+            case "green":
+                teaImage.sprite = (size == "small") ? smallGreen : largeGreen;
+                break;
+            case "oolong":
+                teaImage.sprite = (size == "small") ? smallOolong : largeOolong;
+                break;
+            case "black":
+                teaImage.sprite = (size == "small") ? smallBlack : largeBlack;
+                break;
+        }
+        teaObject.SetActive(true);
+        flowerObject.SetActive(true);
+        teaChosen = true;
     }
 }
