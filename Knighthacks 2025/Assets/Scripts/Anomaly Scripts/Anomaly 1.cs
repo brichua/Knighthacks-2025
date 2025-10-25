@@ -1,10 +1,11 @@
 using Unity.VisualScripting;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Anomaly1 : Anomaly
 {
     //Variables
-    private int customerIndex;
+    public int customerIndex;
 
     public Anomaly1()
     {
@@ -16,11 +17,11 @@ public class Anomaly1 : Anomaly
     // -Customer has ordered and is still waiting for order
     // -If conditions are met, return index of customer to hallucinate.
     // -If conditions are NOT met, return -1
-    public void checkSpawnConditions(Customer[] customerList)
+    public void checkSpawnConditions(List<Customer> customerList)
     {
-        if(customerList.Length != 0)
+        if(customerList.Count != 0)
         {
-            for (int i = 0; i < customerList.Length; i++) 
+            for (int i = 0; i < customerList.Count; i++) 
             {
                 if (customerList[i].hasOrdered == true && customerList[i].served == false)
                 {

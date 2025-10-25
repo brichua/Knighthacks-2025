@@ -8,6 +8,7 @@ public class Customer
     public string[] order;
     public bool hasOrdered;
     public bool served;
+    public bool isAnomaly;
 
     //Anomaly Variables
     public bool hallucinating;

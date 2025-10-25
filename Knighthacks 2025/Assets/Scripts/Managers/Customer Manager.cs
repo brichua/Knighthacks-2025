@@ -1,12 +1,13 @@
 using System.Timers;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CustomerManager : MonoBehaviour
 {
-    public Customer[] customers;
+    public List<Customer> customers = new List<Customer>();
+    public AnomalyManager AnomalyManager;
     static Timer customerSpawnTimer;
     bool spawnRequested = false;
-    int anomalyChance = 10;
     string[] pastryTypes = { "cookie", "cake", "cheese", "cracker" };
     string[] flowerTypes = { "rose", "bluebell", "daisy" };
     string[] drinkTypes = { "black", "green", "oolong" };
@@ -39,15 +40,15 @@ public class CustomerManager : MonoBehaviour
         int drinkRoll = Random.Range(0, drinkTypes.Length);
         string snack = flowerTypes[flowerRoll] + " " + drinkTypes[drinkRoll];
         string[] choices = { snack, pastryTypes[snackRoll] };
-        if (Random.Range(0, anomalyChance) <= 1) {
+
+        //Roll for if customer will be an anomaly
+        if (AnomalyManager.rollForAnomaly()) {
             // idk evil customer
-            anomalyChance = 10;
             Customer customer = new Customer(choices);
             customer.updateHallucination();
         }
         else {
             // normal customer
-            anomalyChance -= 2;
             Customer customer = new Customer(choices);
         }
     }

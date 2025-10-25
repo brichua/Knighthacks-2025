@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class Anomaly
+public abstract class Anomaly : MonoBehaviour
 {
     //public string name;
 
