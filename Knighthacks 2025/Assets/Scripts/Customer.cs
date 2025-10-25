@@ -15,10 +15,12 @@ public class Customer : MonoBehaviour
     public bool hasOrdered;
     public bool served;
     public bool mouthOpen;
-    public bool isAnomaly;
     public int spriteIndex;
     //Anomaly Variables
+    public Anomaly anomaly;
+    public bool isAnomaly;
     public bool hallucinating;
+    public bool hasActivated = false;
     public string[] fakeOrder;
 
     public void Initialize (string[] order, bool isAnomaly, int spriteIndex, Sprite[] orderSprites)
