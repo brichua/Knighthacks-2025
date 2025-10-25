@@ -202,6 +202,7 @@ public class CustomerManager : MonoBehaviour
         */
 
         //StartCoroutine(timewaste(newCustomer, 7.0f));
+        SetCustomerOrderButtonActive(newCustomer, false);
     }
 
     //Function that moves le customer to the cashier
@@ -210,11 +211,13 @@ public class CustomerManager : MonoBehaviour
         Vector3 targetPosition = new Vector3(7.4f, -0.76f, 10f);
         float speed = 5f;
         StartCoroutine(MoveCustomerCoroutine(customer, targetPosition, speed));
+        SetCustomerOrderButtonActive(customer, true);
     }
 
     //Function that moves le customer to the waiting line
     public void moveCustomerToWaitingLine(GameObject customer)
     {
+        SetCustomerOrderButtonActive(customer, false);
         Canvas canvas = customer.GetComponentInChildren<Canvas>(true);
         if (canvas != null)
         {
@@ -308,6 +311,16 @@ public class CustomerManager : MonoBehaviour
         customerSpawnTimer.Start();
     }
 
+    private void SetCustomerOrderButtonActive(GameObject customer, bool active)
+    {
+        if (customer == null) return;
+
+        Button orderButton = customer.GetComponentInChildren<Button>(true);
+        if (orderButton != null)
+        {
+            orderButton.gameObject.SetActive(active);
+        }
+    }
 
     //DELETE THIS SIDDU, BRI, JUAN, JAHYR
     private IEnumerator timewaste(GameObject newCustomer, float time)
