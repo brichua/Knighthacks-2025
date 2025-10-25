@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CustomerManager : MonoBehaviour
 {
+    public GameObject customerPrefab;
     public List<Customer> customers = new List<Customer>();
     public AnomalyManager AnomalyManager;
     static Timer customerSpawnTimer;
@@ -35,20 +36,30 @@ public class CustomerManager : MonoBehaviour
 
     void SpawnCustomer()
     {
+        //Generate Prefab
+        GameObject newCustomer = Instantiate(customerPrefab, new Vector3(Random.Range(-5f, 5f), 0, 0), Quaternion.identity);
+        Customer customer = newCustomer.GetComponent<Customer>();
+
+        //Generate Order
         int snackRoll = Random.Range(0, pastryTypes.Length);
         int flowerRoll = Random.Range(0, teaFlowerTypes.Length);
         int drinkRoll = Random.Range(0, drinkTypes.Length);
         string[] choices = { drinkTypes[drinkRoll], pastryTypes[snackRoll], teaFlowerTypes[flowerRoll] };
+        //Generate Customer Sprite
+        int spriteIndex = Random.Range(0, 2);
 
         //Roll for if customer will be an anomaly
         if (AnomalyManager.rollForAnomaly()) {
             // Customer is an anomaly
-            Customer customer = new Customer(choices, true);
+            Debug.Log("Anomaly Spawned");
+            customer.Initialize(choices, true, spriteIndex);
             AnomalyManager.generateAnomaly(customer);
         }
         else {
             // normal customer
-            Customer customer = new Customer(choices, false);
+            Debug.Log("Normal Ass Customer Spawned");
+            customer.Initialize(choices, false, spriteIndex);
         }
+        newCustomer.SetActive(true);
     }
 }

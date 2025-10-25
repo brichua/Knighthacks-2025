@@ -7,9 +7,13 @@ public class Anomaly7 : Anomaly
     {
 
     }
-    public override bool canSpawn()
+    public override bool CanSpawn()
     {
         return true;
+    }
+    public override void ApplyToCustomer(Customer customer)
+    {
+        throw new System.NotImplementedException();
     }
 
     public void copyLabels(SpriteRenderer changedItem, Sprite copiedItem)

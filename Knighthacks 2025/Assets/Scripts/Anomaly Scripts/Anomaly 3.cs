@@ -2,20 +2,29 @@ using UnityEngine;
 
 public class Anomaly3 : Anomaly
 {
-    //Handles the Subtle Character appearance change
-    public Sprite characterChangeSprite;
+    public Sprite[] characterChangeSprites;
 
-    public Anomaly3()
+    public Anomaly3(Sprite[] sprites)
     {
-
+        characterChangeSprites = sprites;
     }
-    public override bool canSpawn()
+
+    public override bool CanSpawn()
     {
+        // Add custom spawn logic here
         return true;
     }
 
-    public void changeGameObjectSprite(SpriteRenderer obj)
+    public override void ApplyToCustomer(Customer customer)
     {
-        obj.sprite = characterChangeSprite;
+        int index = customer.spriteIndex;
+        if (characterChangeSprites != null && characterChangeSprites.Length > index)
+        {
+            customer.SpriteRenderer.sprite = characterChangeSprites[index];
+        }
+        else
+        {
+            Debug.LogWarning("Anomaly3 sprites not set correctly!");
+        }
     }
 }

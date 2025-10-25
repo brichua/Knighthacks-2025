@@ -35,8 +35,12 @@ public class Anomaly1 : Anomaly
     }
 
     //Actually returns whether or not a customer can spawn
-    public override bool canSpawn()
+    public override bool CanSpawn()
     {
         return customerIndex > -1;
+    }
+    public override void ApplyToCustomer(Customer customer)
+    {
+        throw new System.NotImplementedException();
     }
 }

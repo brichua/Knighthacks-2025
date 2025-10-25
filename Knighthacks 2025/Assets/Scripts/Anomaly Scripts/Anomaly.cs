@@ -1,12 +1,9 @@
 using UnityEngine;
 
-public abstract class Anomaly : MonoBehaviour
+public abstract class Anomaly
 {
-    //public string name;
+    //public int anomalyIndex;
+    public abstract bool CanSpawn();
+    public abstract void ApplyToCustomer(Customer customer);
 
-    public Anomaly()
-    {
-    }
-
-    public abstract bool canSpawn();
 }

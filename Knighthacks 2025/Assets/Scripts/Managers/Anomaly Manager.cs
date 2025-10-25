@@ -5,6 +5,9 @@ using UnityEngine.Rendering;
 
 public class AnomalyManager : MonoBehaviour
 {
+    public Sprite[] possibleObviousSprites;
+    public Sprite[] possibleSubtleSprites;
+    public Sprite[] possibleSpookySprites;
     public CustomerManager customerManager;
     public GameObject[] possibleAnomalies;
     public List<GameObject> activeAnomalies;
@@ -43,7 +46,7 @@ public class AnomalyManager : MonoBehaviour
                     //Hallucinate Order Anomaly
                     Anomaly1 anomaly1 = new Anomaly1();
                     anomaly1.checkSpawnConditions(customerManager.customers);
-                    if(anomaly1.canSpawn() == true)
+                    if(anomaly1.CanSpawn() == true)
                     {
                         //Generate Anomaly!
                         activeAnomalies.Add(possibleAnomalies[0]);
@@ -53,40 +56,40 @@ public class AnomalyManager : MonoBehaviour
                     break;
                 case 1:
                     //Obvious Sprite Change Anomaly
-                    Anomaly2 anomaly2 = new Anomaly2();
-                    if(anomaly2.canSpawn() == true)
+                    Anomaly2 anomaly2 = new Anomaly2(possibleObviousSprites);
+                    if(anomaly2.CanSpawn() == true)
                     {
                         //Generate Anomaly!
                         activeAnomalies.Add(possibleAnomalies[1]);
-                        anomaly2.changeGameObjectSprite(customer.SpriteRenderer);
+                        anomaly2.ApplyToCustomer(customer);
                         return true;
                     }
                     break;
                 case 2:
                     //Subtle Sprite Change Anomaly
-                    Anomaly3 anomaly3 = new Anomaly3();
-                    if (anomaly3.canSpawn() == true)
+                    Anomaly3 anomaly3 = new Anomaly3(possibleSubtleSprites);
+                    if (anomaly3.CanSpawn() == true)
                     {
                         //Generate Anomaly
                         activeAnomalies.Add(possibleAnomalies[2]);
-                        anomaly3.changeGameObjectSprite(customer.SpriteRenderer);
+                        anomaly3.ApplyToCustomer(customer);
                         return true;
                     }
                     break;
                 case 3:
                     //Spooky Sprite Change Anomaly
-                    Anomaly4 anomaly4 = new Anomaly4();
-                    if (anomaly4.canSpawn() == true)
+                    Anomaly4 anomaly4 = new Anomaly4(possibleSpookySprites);
+                    if (anomaly4.CanSpawn() == true)
                     {
                         activeAnomalies.Add(possibleAnomalies[3]);
-                        anomaly4.changeGameObjectSprite(customer.SpriteRenderer);
+                        anomaly4.ApplyToCustomer(customer);
                         return true;
                     }
                     break;
                 case 4:
                     // Stock disappearance anomaly
                     Anomaly5 anomaly5 = new Anomaly5();
-                    if (anomaly5.canSpawn() == true)
+                    if (anomaly5.CanSpawn() == true)
                     {
                         activeAnomalies.Add(possibleAnomalies[4]);
                         // Make sure to find way to make this stock later
@@ -97,7 +100,7 @@ public class AnomalyManager : MonoBehaviour
                 case 5:
                     // Stock swap
                     Anomaly6 anomaly6 = new Anomaly6();
-                    if (anomaly6.canSpawn() == true)
+                    if (anomaly6.CanSpawn() == true)
                     {
                         activeAnomalies.Add(possibleAnomalies[5]);
                         // get this in later lmao
@@ -108,7 +111,7 @@ public class AnomalyManager : MonoBehaviour
                 case 6:
                     // Stock label copy
                     Anomaly7 anomaly7 = new Anomaly7();
-                    if (anomaly7.canSpawn() == true)
+                    if (anomaly7.CanSpawn() == true)
                     {
                         activeAnomalies.Add(possibleAnomalies[6]);
                         // get this in later
@@ -119,7 +122,7 @@ public class AnomalyManager : MonoBehaviour
                 case 7:
                     // Major room change
                     Anomaly8 anomaly8 = new Anomaly8();
-                    if (anomaly8.canSpawn() == true)
+                    if (anomaly8.CanSpawn() == true)
                     {
                         activeAnomalies.Add(possibleAnomalies[7]);
                         // Rooms! (said in same intonation as Log! from CR)
@@ -130,7 +133,7 @@ public class AnomalyManager : MonoBehaviour
                 case 8:
                     // Minor room change
                     Anomaly9 anomaly9 = new Anomaly9();
-                    if (anomaly9.canSpawn() == true)
+                    if (anomaly9.CanSpawn() == true)
                     {
                         activeAnomalies.Add(possibleAnomalies[8]);
                         // Swap in sprite for the TV sprite renderer
@@ -141,7 +144,7 @@ public class AnomalyManager : MonoBehaviour
                 case 9:
                     // The water boiler
                     Anomaly10 anomaly10 = new Anomaly10();
-                    if (anomaly10.canSpawn() == true)
+                    if (anomaly10.CanSpawn() == true)
                     {
                         activeAnomalies.Add(possibleAnomalies[9]);
                         // Implement this, just put spriterenderer for normal kettle on first

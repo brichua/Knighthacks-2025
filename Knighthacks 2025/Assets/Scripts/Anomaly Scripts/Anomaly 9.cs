@@ -8,9 +8,13 @@ public class Anomaly9 : Anomaly
     {
 
     }
-    public override bool canSpawn()
+    public override bool CanSpawn()
     {
         return true;
+    }
+    public override void ApplyToCustomer(Customer customer)
+    {
+        throw new System.NotImplementedException();
     }
 
     public void changeGameObjectSprite(SpriteRenderer obj)

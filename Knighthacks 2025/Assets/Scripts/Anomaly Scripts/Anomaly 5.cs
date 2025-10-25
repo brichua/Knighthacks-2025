@@ -7,11 +7,15 @@ public class Anomaly5 : Anomaly
     {
 
     }
-    public override bool canSpawn()
+    public override bool CanSpawn()
     {
         return true;
     }
 
+    public override void ApplyToCustomer(Customer customer)
+    {
+        throw new System.NotImplementedException();
+    }
     public void makeGameObjectInvisible(SpriteRenderer obj)
     {
         Color invisibleColor = obj.color;
