@@ -2238,6 +2238,112 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 886963666}
   m_CullTransparentMesh: 1
+--- !u!1 &902425677
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 902425679}
+  - component: {fileID: 902425678}
+  m_Layer: 0
+  m_Name: Task Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &902425678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 902425677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5558dbed011b64445ba38c9d55ed487e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TaskManager
+  dialogueManager: {fileID: 1071829121}
+  snack: 
+  size: 
+  tea: 
+  flower: 
+  anomaly: 0
+  tray: 0
+  snackChosen: 0
+  teaChosen: 0
+  flowerChosen: 0
+  snackObject: {fileID: 0}
+  teaObject: {fileID: 0}
+  flowerObject: {fileID: 0}
+  decorationObject: {fileID: 0}
+  background: {fileID: 0}
+  trayBackground: {fileID: 0}
+  noTrayBackground: {fileID: 0}
+  snackImage: {fileID: 0}
+  teaImage: {fileID: 0}
+  flowerImage: {fileID: 0}
+  decorationImage: {fileID: 0}
+  cookieSprite: {fileID: 0}
+  cakeSprite: {fileID: 0}
+  crackerSprite: {fileID: 0}
+  anomalyFlower: {fileID: 0}
+  regularFlower: {fileID: 0}
+  rose: {fileID: 0}
+  daisy: {fileID: 0}
+  bluebell: {fileID: 0}
+  smallGreen: {fileID: 0}
+  largeGreen: {fileID: 0}
+  smallOolong: {fileID: 0}
+  largeOolong: {fileID: 0}
+  smallBlack: {fileID: 0}
+  largeBlack: {fileID: 0}
+  kettleStove: {fileID: 0}
+  kettleTable: {fileID: 0}
+  kettleCup: {fileID: 0}
+  strainerSmall: {fileID: 0}
+  strainerLarge: {fileID: 0}
+  roseTea: {fileID: 0}
+  daisyTea: {fileID: 0}
+  bluebellTea: {fileID: 0}
+  smallGreenTea: {fileID: 0}
+  largeGreenTea: {fileID: 0}
+  smallOolongTea: {fileID: 0}
+  largeOolongTea: {fileID: 0}
+  smallBlackTea: {fileID: 0}
+  largeBlackTea: {fileID: 0}
+  greenStrainer: {fileID: 0}
+  oolongStrainer: {fileID: 0}
+  blackStrainer: {fileID: 0}
+  smallCup: {fileID: 0}
+  largeCup: {fileID: 0}
+  cup: {fileID: 0}
+  strainer: {fileID: 0}
+  teaFlower: {fileID: 0}
+  kettle: {fileID: 0}
+  step: 0
+  kettleOnStove: 0
+  waterBoiled: 0
+  reminder: {fileID: 0}
+--- !u!4 &902425679
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 902425677}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.11094, y: 0.44264, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &954985178
 GameObject:
   m_ObjectHideFlags: 0
@@ -2508,6 +2614,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1071829120}
+  - component: {fileID: 1071829121}
   m_Layer: 0
   m_Name: Dialogue Manager
   m_TagString: Untagged
@@ -2530,6 +2637,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1071829121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1071829119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30da4d50d0499a745a52d883de740468, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueManager
+  orderImagesContainer: {fileID: 0}
+  orderImages:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  speechBubble: {fileID: 0}
+  revealDelay: 0.5
+  mouthToggleInterval: 0.12
+  autoHideAfter: 0.5
 --- !u!1 &1125052647
 GameObject:
   m_ObjectHideFlags: 0
@@ -2686,7 +2814,11 @@ MonoBehaviour:
   customerLine: []
   maxCustomers: 12
   AnomalyManager: {fileID: 2135412578}
+  DialogueManager: {fileID: 0}
+  TaskManager: {fileID: 0}
+  UICamera: {fileID: 0}
   stopSpawning: 0
+  isOrdering: 0
   drinkSprites:
   - {fileID: -2301601824389577311, guid: 3eda1ee812eb5f748859bf8b2912c8fa, type: 3}
   - {fileID: -5630434496311538506, guid: 303fd941824882745a580f5698591d97, type: 3}
@@ -3879,8 +4011,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36aee4cf97db9644394ef38d02b32beb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  anomalyManager: {fileID: 0}
-  customerManager: {fileID: 0}
+  anomalyManager: {fileID: 2135412578}
+  customerManager: {fileID: 1198674598}
+  taskManager: {fileID: 0}
   startButton: {fileID: 1031918271}
   canvas: {fileID: 0}
   taskButtons: {fileID: 154960567}
@@ -5563,6 +5696,7 @@ SceneRoots:
   - {fileID: 1198674599}
   - {fileID: 2135412579}
   - {fileID: 1071829120}
+  - {fileID: 902425679}
   - {fileID: 739625988}
   - {fileID: 1964501144}
   - {fileID: 1927277379}

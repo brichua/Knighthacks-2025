@@ -43,8 +43,16 @@ public class CustomerManager : MonoBehaviour
     {
         if (spawnRequested)
         {
+            //Check queues to make sure customer can actually spawn
+            //Customer will NOT spawn if customerGO size => 3 OR if customerLine size >= 3
+            //Customer will also NOT spawn if maxCustomers <= 0
+            if (customerGO.Count <= 3 && customerLine.Count <= 3 && maxCustomers > 0)
+            {
+                //Spawn can happen
+                SpawnCustomer();
+            }
+            //Reset timer regardless of whether the customer can spawn or not
             spawnRequested = false;
-            SpawnCustomer();
             double interval = Random.Range(20000, 40000);
             customerSpawnTimer = new Timer(interval);
             customerSpawnTimer.Elapsed += (s, e) => { spawnRequested = true; };
@@ -58,7 +66,6 @@ public class CustomerManager : MonoBehaviour
 
     void SpawnCustomer()
     {
-        if (maxCustomers == 0) { return; }
         //Generate Prefab
         GameObject newCustomer = Instantiate(customerPrefab, new Vector3(13f, -0.76f, 10f), Quaternion.identity);
         Customer customer = newCustomer.GetComponent<Customer>();
@@ -140,7 +147,7 @@ public class CustomerManager : MonoBehaviour
         }
         // -----------------------------------------------------------------------
 
-        //Generate Order
+        //Generate Customer Order
         int snackRoll = Random.Range(0, pastryTypes.Length);
         int flowerRoll = Random.Range(0, teaFlowerTypes.Length);
         int drinkRoll = Random.Range(0, drinkTypes.Length);
@@ -167,6 +174,8 @@ public class CustomerManager : MonoBehaviour
             Debug.Log("Normal Ass Customer Spawned");
             customer.Initialize(choices, false, spriteIndex, orderSprites);
         }
+        //Set newCustomer GameObject as active, add customer object to list, add
+        //newCustomer GameObject to customerGO
         newCustomer.SetActive(true);
         customers.Add(customer);
         customerGO.Add(newCustomer);
