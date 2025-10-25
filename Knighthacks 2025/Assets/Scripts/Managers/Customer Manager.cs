@@ -63,6 +63,14 @@ public class CustomerManager : MonoBehaviour
         {
             customerSpawnTimer.Stop();
         }
+
+        //Add if statement to check if register is occupied, if not, move next customer in line to register
+        if (!registerOccupied && customerLine.Count > 0) 
+        {
+            moveCustomerToRegister(customerLine[0]);
+            customerLine.RemoveAt(0);
+            registerOccupied = true;
+        }
     }
 
     void SpawnCustomer()
@@ -180,8 +188,7 @@ public class CustomerManager : MonoBehaviour
         newCustomer.SetActive(true);
         customers.Add(customer);
         customerGO.Add(newCustomer);
-
-        moveCustomerToRegister(newCustomer);
+        customerLine.Add(newCustomer);
         /*if (DialogueManager.PlayOrderSequenceForCustomer(customer, customer.orderSprites))
         {
             moveCustomerToWaitingLine(newCustomer);
@@ -202,6 +209,11 @@ public class CustomerManager : MonoBehaviour
     //Function that moves le customer to the waiting line
     public void moveCustomerToWaitingLine(GameObject customer)
     {
+        Canvas canvas = customer.GetComponentInChildren<Canvas>(true);
+        if (canvas != null)
+        {
+            canvas.gameObject.SetActive(false);
+        }   
         Vector3 targetPosition = new Vector3(0, 0, 10f);
         float speed = 5f;
         for (int i = 0; i < customerGO.Count; i++)
@@ -225,6 +237,7 @@ public class CustomerManager : MonoBehaviour
             }
         }
         StartCoroutine(MoveCustomerCoroutine(customer, targetPosition, speed));
+        registerOccupied = false;
     }
     //Smoothly moves the customer
     private IEnumerator MoveCustomerCoroutine(GameObject customer, Vector3 targetPos, float speed)
