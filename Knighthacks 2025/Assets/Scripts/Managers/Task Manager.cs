@@ -7,6 +7,7 @@ using UnityEngine.Events;
 public class TaskManager : MonoBehaviour
 {
     public DialogueManager dialogueManager;
+    public CustomerManager customerManager;
     public string snack;
     public string size;
     public string tea;
@@ -86,10 +87,11 @@ public class TaskManager : MonoBehaviour
         tray = true;
         background.sprite = trayBackground;
         dialogueManager.PlayOrderSequenceForCustomer(customer);
+        customerManager.moveCustomerToWaitingLine(customer);
         lookedBack = false;
     }
 
-    public void completeOrder(CustomerManager customerManager)
+    public bool completeOrder(CustomerManager customerManager)
     {
         if(snackChosen && teaChosen && flowerChosen)
         {
@@ -105,10 +107,13 @@ public class TaskManager : MonoBehaviour
                         customerManager.customers[i].served = true;
                         //Call destroyCustomer from Customer Manager
                         customerManager.destroyCustomer(i);
+                        return true;
                     }
                 }
             }
+            return false;
         }
+        return false;
     }
 
     public void moveFront()
