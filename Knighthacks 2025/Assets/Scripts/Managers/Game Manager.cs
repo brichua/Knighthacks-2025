@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     public Sprite tvStatus1;
     public Sprite tvStatus2;
     public Sprite tvStatus3;
+    public Sprite tvError;
     
 
     static Timer dayTimer;
@@ -35,6 +36,9 @@ public class GameManager : MonoBehaviour
     public int health;
     public int day;
     public bool dayEnd = false;
+
+    // Prevent overlapping error sequences
+    private bool isHandlingTvError = false;
 
     void Start()
     {
@@ -56,8 +60,11 @@ public class GameManager : MonoBehaviour
         {
             if (!taskManager.completeOrder(customerManager))
             {
-                health--;
-                taskManager.resetTasks();
+                // If an order failed, run the TV error sequence which handles the health decrement
+                if (!isHandlingTvError)
+                {
+                    StartCoroutine(HandleOrderFailureSequence());
+                }
             }
             else 
             {
@@ -157,6 +164,62 @@ public class GameManager : MonoBehaviour
         dayTextObject.SetActive(false);
         tvObject.SetActive(true);
         if (tvStatus1 != null) tv.sprite = tvStatus1;
+    }
+
+    // Handles the sequence when an order fails:
+    // - change TV renderer to tvError
+    // - animate background flicker between tvOff and tvOn
+    // - decrement health
+    // - set background to tvOn and set tv sprite to status 2 (health==2) or status 3 (health==1)
+    IEnumerator HandleOrderFailureSequence()
+    {
+        if (isHandlingTvError) yield break;
+        isHandlingTvError = true;
+
+        // Set TV to error sprite immediately (if available)
+        if (tv != null && tvError != null)
+        {
+            tv.sprite = tvError;
+        }
+
+        // Flicker background
+        const int flickerCycles = 4;
+        const float flickerDelay = 0.15f;
+        for (int i = 0; i < flickerCycles; i++)
+        {
+            if (tvOff != null) background.sprite = tvOff;
+            yield return new WaitForSeconds(flickerDelay);
+            if (tvOn != null) background.sprite = tvOn;
+            yield return new WaitForSeconds(flickerDelay);
+        }
+
+        // Now apply the health penalty
+        health--;
+
+        // Reset tasks after applying the health change (preserves original behavior)
+        taskManager.resetTasks();
+
+        // Ensure background returns to tvOn and update tv status sprite based on remaining health
+        if (tvOn != null) background.sprite = tvOn;
+
+        if (tv != null)
+        {
+            if (health == 2 && tvStatus2 != null)
+            {
+                tv.sprite = tvStatus2;
+            }
+            else if (health == 1 && tvStatus3 != null)
+            {
+                tv.sprite = tvStatus3;
+            }
+            else if (tvStatus1 != null)
+            {
+                // default when health is 3 or other
+                tv.sprite = tvStatus1;
+            }
+        }
+
+        isHandlingTvError = false;
     }
 
     public void EndDaySequence()
