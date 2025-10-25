@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -76,7 +77,7 @@ public class TaskManager : MonoBehaviour
     public bool kettleOnStove = false;
     public bool waterBoiled = false;
 
-    public TextMeshProUGUI reminder;
+    public CanvasGroup reminder;
 
     public GameObject front;
     public GameObject back;
@@ -144,7 +145,6 @@ public class TaskManager : MonoBehaviour
     {
         if (!tray)
         {
-            reminder.text = "You may be forgetting something...";
             return;
         }
         snack = "cookie";
@@ -157,7 +157,6 @@ public class TaskManager : MonoBehaviour
     {
         if (!tray)
         {
-            reminder.text = "You may be forgetting something...";
             return;
         }
         snack = "cake";
@@ -170,7 +169,6 @@ public class TaskManager : MonoBehaviour
     {
         if (!tray)
         {
-            reminder.text = "You may be forgetting something...";
             return;
         }
         snack = "cracker";
@@ -183,7 +181,6 @@ public class TaskManager : MonoBehaviour
     {
         if (!tray)
         {
-            reminder.text = "You may be forgetting something...";
             return;
         }
         anomaly = false;
@@ -196,7 +193,6 @@ public class TaskManager : MonoBehaviour
     {
         if (!tray)
         {
-            reminder.text = "You may be forgetting something...";
             return;
         }
         anomaly = true;
@@ -234,7 +230,6 @@ public class TaskManager : MonoBehaviour
     {
         if (step != 1)
         {
-            reminder.text = "You may be forgetting something...";
             return;
         }
         flower = "rose";
@@ -247,7 +242,6 @@ public class TaskManager : MonoBehaviour
     {
         if (step != 1)
         {
-            reminder.text = "You may be forgetting something...";
             return;
         }
         flower = "daisy";
@@ -260,7 +254,6 @@ public class TaskManager : MonoBehaviour
     {
         if (step != 1)
         {
-            reminder.text = "You may be forgetting something...";
             return;
         }
         flower = "bluebell";
@@ -273,7 +266,6 @@ public class TaskManager : MonoBehaviour
     {
         if (step != 2)
         {
-            reminder.text = "You may be forgetting something...";
             return;
         }
         tea = "green";
@@ -286,7 +278,6 @@ public class TaskManager : MonoBehaviour
     {
         if (step != 2)
         {
-            reminder.text = "You may be forgetting something...";
             return;
         }
         tea = "oolong";
@@ -299,7 +290,6 @@ public class TaskManager : MonoBehaviour
     {
         if (step != 2)
         {
-            reminder.text = "You may be forgetting something...";
             return;
         }
         tea = "oolong";
@@ -320,7 +310,6 @@ public class TaskManager : MonoBehaviour
     {
         if (step != 3 || !waterBoiled)
         {
-            reminder.text = "You may be forgetting something...";
             return;
         }
         kettle.transform.position = kettleCup.position;
@@ -365,7 +354,6 @@ public class TaskManager : MonoBehaviour
     {
         if (step != 4)
         {
-            reminder.text = "You may be forgetting something...";
             return;
         }
         switch (flower)
@@ -415,5 +403,22 @@ public class TaskManager : MonoBehaviour
         step = 0;
         kettleOnStove = false;
         waterBoiled = false;
+    }
+
+    IEnumerator fadeText()
+    {
+        const float fadeDuration = 0.8f;
+
+        reminder.gameObject.SetActive(true);
+        reminder.alpha = 0f;
+
+        float t = 0f;
+        while (t < fadeDuration)
+        {
+            t += Time.deltaTime;
+            reminder.alpha = Mathf.Lerp(0f, 1f, t / fadeDuration);
+            yield return null;
+        }
+        reminder.alpha = 1f;
     }
 }
