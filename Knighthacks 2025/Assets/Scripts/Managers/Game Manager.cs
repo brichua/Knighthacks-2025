@@ -2,13 +2,14 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Timers;
 
 public class GameManager : MonoBehaviour
 {
     //This script will mainly be focused on making sure all of the other scripts can work
     //together 
-    public MonoBehaviour anomalyManager;
-    public MonoBehaviour customerManager;
+    public AnomalyManager anomalyManager;
+    public CustomerManager customerManager;
 
     public GameObject startButton;
     public GameObject canvas;
@@ -45,9 +46,9 @@ public class GameManager : MonoBehaviour
         if (dayEnd) 
         {
             customerManager.stopSpawning = true;
-            if (customerManager.customers.empty()) 
+            if (customerManager.customers.Count == 0) 
             { 
-
+                EndDaySequence();
             }
         }
     }
@@ -145,7 +146,7 @@ public class GameManager : MonoBehaviour
         if (tvStatus1 != null) tv.sprite = tvStatus1;
     }
 
-    IEnumerator EndDaySequence() 
+    public void EndDaySequence()
     {
         dayEnd = false;
         endButton.SetActive(true);
