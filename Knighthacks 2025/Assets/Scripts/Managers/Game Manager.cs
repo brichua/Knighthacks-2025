@@ -73,6 +73,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public int getHealth()
+    {
+        return health;
+    }
+
     public void startGame()
     {
         startButton.SetActive(false);
