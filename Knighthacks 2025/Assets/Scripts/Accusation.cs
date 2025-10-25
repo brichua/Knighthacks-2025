@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class Accusation : MonoBehaviour
 {
-    public bool accuse(string decorationFlower, Customer customer) 
+    public static bool accuse(bool declaration, Customer customer) 
     {
         // Both conditions for a correct accusation, both have same outcome
-        if ((customer.isAnomaly && decorationFlower == "black") || (!customer.isAnomaly && decorationFlower == "white")) 
+        if ((customer.isAnomaly && declaration) || (!customer.isAnomaly && !declaration)) 
         {
             return true;
         }
