@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class Anomaly8 : Anomaly
 {
-    //Handles the Creepy Character appearance change
-    public Sprite characterChangeSprite;
+    //Handles the minor change to room appearance
+    public Sprite roomChangeSprite;
 
     public Anomaly8()
     {
@@ -16,6 +16,6 @@ public class Anomaly8 : Anomaly
 
     public void changeGameObjectSprite(SpriteRenderer obj)
     {
-        obj.sprite = characterChangeSprite;
+        obj.sprite = roomChangeSprite;
     }
 }

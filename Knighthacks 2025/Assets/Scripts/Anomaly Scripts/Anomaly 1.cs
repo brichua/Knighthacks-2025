@@ -1,6 +1,7 @@
 using Unity.VisualScripting;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Xml;
 
 public class Anomaly1 : Anomaly
 {
@@ -26,6 +27,7 @@ public class Anomaly1 : Anomaly
                 if (customerList[i].hasOrdered == true && customerList[i].served == false)
                 {
                     customerIndex = i;
+                    return;
                 }
             }
         }

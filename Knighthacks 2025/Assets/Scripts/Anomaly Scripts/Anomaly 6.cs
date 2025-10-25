@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class Anomaly6 : Anomaly
 {
-    //Handles the Creepy Character appearance change
-    public Sprite characterChangeSprite;
 
     public Anomaly6()
     {
@@ -14,8 +12,11 @@ public class Anomaly6 : Anomaly
         return true;
     }
 
-    public void changeGameObjectSprite(SpriteRenderer obj)
+  // Set temp sprite so that we can swap sprites
+    public void swapSprites(SpriteRenderer stock1, SpriteRenderer stock2, Sprite sprite1, Sprite sprite2)
     {
-        obj.sprite = characterChangeSprite;
+        Sprite tempSprite1 = sprite1;
+        stock1.sprite = sprite2;
+        stock2.sprite = tempSprite1;
     }
 }

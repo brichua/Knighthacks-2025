@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.Rendering;
 
 
 public class AnomalyManager : MonoBehaviour
@@ -79,6 +80,73 @@ public class AnomalyManager : MonoBehaviour
                     {
                         activeAnomalies.Add(possibleAnomalies[3]);
                         anomaly4.changeGameObjectSprite(customer.SpriteRenderer);
+                        return true;
+                    }
+                    break;
+                case 4:
+                    // Stock disappearance anomaly
+                    Anomaly5 anomaly5 = new Anomaly5();
+                    if (anomaly5.canSpawn() == true)
+                    {
+                        activeAnomalies.Add(possibleAnomalies[4]);
+                        // Make sure to find way to make this stock later
+                        anomaly5.makeGameObjectInvisible(customer.SpriteRenderer);
+                        return true;
+                    }
+                    break;
+                case 5:
+                    // Stock swap
+                    Anomaly6 anomaly6 = new Anomaly6();
+                    if (anomaly6.canSpawn() == true)
+                    {
+                        activeAnomalies.Add(possibleAnomalies[5]);
+                        // get this in later lmao
+                        //anomaly6.swapSprites();
+                        return true;
+                    }
+                    break;
+                case 6:
+                    // Stock label copy
+                    Anomaly7 anomaly7 = new Anomaly7();
+                    if (anomaly7.canSpawn() == true)
+                    {
+                        activeAnomalies.Add(possibleAnomalies[6]);
+                        // get this in later
+                        //anomaly7.copyLabels(customer.SpriteRenderer);
+                        return true;
+                    }
+                    break;
+                case 7:
+                    // Major room change
+                    Anomaly8 anomaly8 = new Anomaly8();
+                    if (anomaly8.canSpawn() == true)
+                    {
+                        activeAnomalies.Add(possibleAnomalies[7]);
+                        // Rooms! (said in same intonation as Log! from CR)
+                        anomaly8.changeGameObjectSprite(customer.SpriteRenderer);
+                        return true;
+                    }
+                    break;
+                case 8:
+                    // Minor room change
+                    Anomaly9 anomaly9 = new Anomaly9();
+                    if (anomaly9.canSpawn() == true)
+                    {
+                        activeAnomalies.Add(possibleAnomalies[8]);
+                        // Swap in sprite for the TV sprite renderer
+                        anomaly9.changeGameObjectSprite(customer.SpriteRenderer);
+                        return true;
+                    }
+                    break;
+                case 9:
+                    // The water boiler
+                    Anomaly10 anomaly10 = new Anomaly10();
+                    if (anomaly10.canSpawn() == true)
+                    {
+                        activeAnomalies.Add(possibleAnomalies[9]);
+                        // Implement this, just put spriterenderer for normal kettle on first
+                        // and sprite for boil kettle on second
+                        //anomaly4.changeGameObjectSprite(customer.SpriteRenderer);
                         return true;
                     }
                     break;

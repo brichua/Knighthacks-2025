@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class Anomaly7 : Anomaly
 {
-    //Handles the Creepy Character appearance change
-    public Sprite characterChangeSprite;
 
     public Anomaly7()
     {
@@ -14,8 +12,8 @@ public class Anomaly7 : Anomaly
         return true;
     }
 
-    public void changeGameObjectSprite(SpriteRenderer obj)
+    public void copyLabels(SpriteRenderer changedItem, Sprite copiedItem)
     {
-        obj.sprite = characterChangeSprite;
+        changedItem.sprite = copiedItem;
     }
 }

@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class Anomaly5 : Anomaly
 {
-    //Handles the Creepy Character appearance change
-    public Sprite characterChangeSprite;
 
     public Anomaly5()
     {
@@ -14,8 +12,10 @@ public class Anomaly5 : Anomaly
         return true;
     }
 
-    public void changeGameObjectSprite(SpriteRenderer obj)
+    public void makeGameObjectInvisible(SpriteRenderer obj)
     {
-        obj.sprite = characterChangeSprite;
+        Color invisibleColor = obj.color;
+        invisibleColor.a = 0f;
+        obj.color = invisibleColor;
     }
 }

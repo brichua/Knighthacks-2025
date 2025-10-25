@@ -2,8 +2,7 @@ using UnityEngine;
 
 public class Anomaly9 : Anomaly
 {
-    //Handles the Creepy Character appearance change
-    public Sprite characterChangeSprite;
+    public Sprite evilTVSprite;
 
     public Anomaly9()
     {
@@ -16,6 +15,6 @@ public class Anomaly9 : Anomaly
 
     public void changeGameObjectSprite(SpriteRenderer obj)
     {
-        obj.sprite = characterChangeSprite;
+        obj.sprite = evilTVSprite;
     }
 }

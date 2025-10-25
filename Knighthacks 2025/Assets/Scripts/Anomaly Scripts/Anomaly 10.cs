@@ -1,21 +1,38 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Anomaly10 : Anomaly
 {
-    //Handles the Creepy Character appearance change
-    public Sprite characterChangeSprite;
+    public int customerIndex;
 
     public Anomaly10()
     {
 
     }
-    public override bool canSpawn()
+    public void checkSpawnConditions(List<Customer> customerList)
     {
-        return true;
+        if (customerList.Count != 0)
+        {
+            for (int i = 0; i < customerList.Count; i++)
+            {
+                if (customerList[i].hasOrdered == true && customerList[i].served == false)
+                {
+                    customerIndex = i;
+                    return;
+                }
+            }
+        }
+        customerIndex = -1;
     }
 
-    public void changeGameObjectSprite(SpriteRenderer obj)
+    //Actually returns whether or not a customer can spawn
+    public override bool canSpawn()
     {
-        obj.sprite = characterChangeSprite;
+        return customerIndex > -1;
+    }
+
+    public void changeGameObjectSprite(SpriteRenderer normalKettle, Sprite boilKettle)
+    {
+        normalKettle.sprite = boilKettle;
     }
 }
