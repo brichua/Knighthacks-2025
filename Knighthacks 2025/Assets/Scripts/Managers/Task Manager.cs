@@ -6,6 +6,7 @@ using UnityEngine.Events;
 
 public class TaskManager : MonoBehaviour
 {
+    public DialogueManager dialogueManager;
     public string snack;
     public string size;
     public string tea;
@@ -79,19 +80,33 @@ public class TaskManager : MonoBehaviour
 
     public TextMeshPro reminder;
 
-    public void takeOrder()
+    public void takeOrder(Customer customer)
     {
         tray = true;
         background.sprite = trayBackground;
+        dialogueManager.PlayOrderSequenceForCustomer(customer);
     }
 
-    public void completeOrder()
+    public bool completeOrder(CustomerManager customerManager)
     {
         if(snackChosen && teaChosen && flowerChosen)
         {
             tray = false;
             background.sprite = noTrayBackground;
+            for (int i = 0; i < customerManager.customers.Count; i++) 
+            {
+                if (size == customerManager.customers[i].order[0] && tea == customerManager.customers[i].order[1] &&
+                    snack == customerManager.customers[i].order[2] && flower == customerManager.customers[i].order[3]) 
+                {
+                    if (Accusation.accuse(anomaly, customerManager.customers[i])) 
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
+        return false;
     }
 
     public void selectCookie()
