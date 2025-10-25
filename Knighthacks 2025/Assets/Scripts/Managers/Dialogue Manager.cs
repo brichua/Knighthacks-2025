@@ -98,6 +98,8 @@ public class DialogueManager : MonoBehaviour
         string[] customerIds = orderIds;
         if (customerIds == null)
             customerIds = customer.order;
+        orderSprites = customer.orderSprites;
+        Debug.Log("Lagtrain");
 
         // ensure we are tracking this customer so Update() moves the bubble
         trackedCustomer = customer;
@@ -118,7 +120,7 @@ public class DialogueManager : MonoBehaviour
         if (orderImagesContainer != null) orderImagesContainer.SetActive(true);
 
         // Hide all image slots and bubble initially
-        for (int i = 0; i < orderImages.Length; i++)
+        for (int i = 0; i < 3; i++)
             if (orderImages[i] != null) orderImages[i].gameObject.SetActive(false);
         if (speechBubble != null) speechBubble.gameObject.SetActive(false);
 
@@ -159,6 +161,7 @@ public class DialogueManager : MonoBehaviour
         if (orderImages.Length >= 1 && orderImages[0] != null)
             SetSlotSprite(orderImages[0], orderSprites, orderIds, 0);
         yield return new WaitForSeconds(revealDelay);
+        Debug.Log("Rainy boots");
 
         // Step 2: reveal second item (index 1)
         if (orderImages.Length >= 2 && orderImages[1] != null)
@@ -198,24 +201,26 @@ public class DialogueManager : MonoBehaviour
     // If `orderSprites` is null, manager will attempt to load from Resources/ItemSprites/{id} using `orderIds[index]`.
     private void SetSlotSprite(Image slotImage, Sprite[] orderSprites, string[] orderIds, int index)
     {
-        if (slotImage == null) return;
 
         Sprite s = null;
         // Use provided sprites first
+        Debug.Log(index + " is index, as opposed to " + orderSprites.Length);
         if (orderSprites != null && index < orderSprites.Length)
+        {
+            Debug.Log("Lost Umbrella");
             s = orderSprites[index];
+        }
 
         // Fallback: try to load by ID from Resources
-        if (s == null && orderIds != null && index < orderIds.Length && !string.IsNullOrEmpty(orderIds[index]))
-            s = LoadSpriteFromResources(orderIds[index]);
-
         if (s != null)
         {
+            
             slotImage.sprite = s;
             slotImage.gameObject.SetActive(true);
         }
         else
         {
+            Debug.Log("");
             slotImage.gameObject.SetActive(false);
         }
     }
