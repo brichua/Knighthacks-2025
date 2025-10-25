@@ -184,7 +184,7 @@ public class CustomerManager : MonoBehaviour
         orderSprites[2] = teaFlowerSprites[flowerRoll];
         
         //Generate Customer Sprite
-        int spriteIndex = Random.Range(0, 3);
+        int spriteIndex = Random.Range(0, 3) * 2;
 
         //Roll for if customer will be an anomaly
         if (AnomalyManager.rollForAnomaly()) {

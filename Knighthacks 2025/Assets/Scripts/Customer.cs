@@ -28,7 +28,7 @@ public class Customer : MonoBehaviour
         this.order = order;
         this.isAnomaly = isAnomaly;
         this.spriteIndex = spriteIndex;
-        this.SpriteRenderer.sprite = possibleNormalSprites[0];
+        this.SpriteRenderer.sprite = possibleNormalSprites[spriteIndex];
         this.orderSprites = orderSprites;
     }
 
@@ -36,11 +36,11 @@ public class Customer : MonoBehaviour
     {
         if (mouthOpen)
         {
-            SpriteRenderer.sprite = possibleNormalSprites[0];
+            SpriteRenderer.sprite = possibleNormalSprites[spriteIndex];
         }
         else 
         {
-            SpriteRenderer.sprite = possibleNormalSprites[1];
+            SpriteRenderer.sprite = possibleNormalSprites[spriteIndex+1];
         }
     }
 

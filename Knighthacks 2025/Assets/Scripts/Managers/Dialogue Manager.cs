@@ -134,7 +134,7 @@ public class DialogueManager : MonoBehaviour
             custRenderer = customer.SpriteRenderer;
             if (customer.possibleNormalSprites != null)
             {
-                int baseIndex = customer.spriteIndex * 2;
+                int baseIndex = customer.spriteIndex;
                 if (baseIndex >= 0 && baseIndex < customer.possibleNormalSprites.Length)
                     closedSprite = customer.possibleNormalSprites[baseIndex];
                 int openIndex = baseIndex + 1;
