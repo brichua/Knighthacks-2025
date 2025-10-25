@@ -7,12 +7,14 @@ public class GameManager : MonoBehaviour
 {
     //This script will mainly be focused on making sure all of the other scripts can work
     //together 
-    public MonoBehaviour anomalyManager;
-    public MonoBehaviour customerManager;
+    //public MonoBehaviour anomalyManager;
+    //public MonoBehaviour customerManager;
 
     public GameObject startButton;
+    public GameObject canvas;
     public GameObject taskButtons;
     public GameObject dayTextObject;
+    public GameObject tvObject;
 
     public CanvasGroup blackImage;
     public SpriteRenderer background;
@@ -43,8 +45,8 @@ public class GameManager : MonoBehaviour
         startButton.SetActive(false);
         health = 3;
         day = 1;
+        canvas.SetActive(true);
         startDay(day);
-        taskButtons.SetActive(true);
     }
 
     public void startDay(int day)
@@ -81,6 +83,9 @@ public class GameManager : MonoBehaviour
         }
         blackImage.alpha = 1f;
 
+        if (tvOff != null) background.sprite = tvOff;
+        taskButtons.SetActive(true);
+
         // Activate day text and set its content
         dayTextObject.SetActive(true);
         // Try TMP first, then legacy Text
@@ -111,14 +116,15 @@ public class GameManager : MonoBehaviour
         // TV flicker: toggle between tvOff and tvOn tvFlickerCycles times
         for (int i = 0; i < tvFlickerCycles; i++)
         {
-            if (tvOff != null) tv.sprite = tvOff;
+            if (tvOff != null) background.sprite = tvOff;
             yield return new WaitForSeconds(tvToggleDelay);
-            if (tvOn != null) tv.sprite = tvOn;
+            if (tvOn != null) background.sprite = tvOn;
             yield return new WaitForSeconds(tvToggleDelay);
         }
 
         // Finalize: hide day text and set TV to stable status sprite
         dayTextObject.SetActive(false);
+        tvObject.SetActive(true);
         if (tvStatus1 != null) tv.sprite = tvStatus1;
     }
 }
