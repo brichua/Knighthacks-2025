@@ -80,12 +80,17 @@ public class TaskManager : MonoBehaviour
 
     public TextMeshPro reminder;
 
+    public GameObject front;
+    public GameObject back;
+    public bool lookedBack = false;
+
     public void takeOrder(Customer customer)
     {
         Debug.Log("Taking order from customer.");
         tray = true;
         background.sprite = trayBackground;
         dialogueManager.PlayOrderSequenceForCustomer(customer);
+        lookedBack = false;
     }
 
     public bool completeOrder(CustomerManager customerManager)
@@ -109,6 +114,29 @@ public class TaskManager : MonoBehaviour
             return false;
         }
         return false;
+    }
+
+    public void moveFront()
+    {
+        front.SetActive(true);
+        back.SetActive(false);
+        GameObject[] customers = GameObject.FindGameObjectsWithTag("Customer");
+        foreach (GameObject customer in customers)
+        {
+            customer.SetActive(true);
+        }
+    }
+
+    public void moveBack()
+    {
+        front.SetActive(false);
+        back.SetActive(true);
+        GameObject[] customers = GameObject.FindGameObjectsWithTag("Customer");
+        foreach (GameObject customer in customers)
+        {
+            customer.SetActive(false);
+        }
+        lookedBack = true;
     }
 
     public void selectCookie()
