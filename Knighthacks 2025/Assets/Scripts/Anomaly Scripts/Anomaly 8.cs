@@ -2,12 +2,14 @@ using UnityEngine;
 
 public class Anomaly8 : Anomaly
 {
-    //Handles the minor change to room appearance
-    public Sprite roomChangeSprite;
+    //Handles the major change to room appearance
+    public Sprite primaryRoom;
+    public Sprite alternateRoom;
 
-    public Anomaly8()
+    public Anomaly8(Sprite primaryRoom, Sprite alternateRoom)
     {
-
+        this.primaryRoom = primaryRoom;
+        this.alternateRoom = alternateRoom;
     }
     public override bool CanSpawn()
     {
@@ -15,11 +17,16 @@ public class Anomaly8 : Anomaly
     }
     public override void ApplyToCustomer(Customer customer)
     {
-        throw new System.NotImplementedException();
+        //Do nothing lmao.
     }
 
     public void changeGameObjectSprite(SpriteRenderer obj)
     {
-        obj.sprite = roomChangeSprite;
+        obj.sprite = alternateRoom;
+    }
+
+    public void resetLobby(SpriteRenderer obj) 
+    {
+        obj.sprite = primaryRoom;
     }
 }
