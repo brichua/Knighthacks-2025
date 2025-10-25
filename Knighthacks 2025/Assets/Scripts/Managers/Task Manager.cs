@@ -100,6 +100,7 @@ public class TaskManager : MonoBehaviour
                 {
                     if (Accusation.accuse(anomaly, customerManager.customers[i])) 
                     {
+                        customerManager.customers[i].served = true;
                         return true;
                     }
                 }
@@ -364,5 +365,25 @@ public class TaskManager : MonoBehaviour
         teaObject.SetActive(true);
         flowerObject.SetActive(true);
         teaChosen = true;
+    }
+
+    public void resetTasks()
+    {
+        snack = null;
+        size = null;
+        tea = null;
+        flower = null;
+        anomaly = false;
+        tray = false;
+        snackChosen = false;
+        teaChosen = false;
+        flowerChosen = false;
+        snackObject.SetActive(false);
+        teaObject.SetActive(false);
+        flowerObject.SetActive(false);
+        decorationObject.SetActive(false);
+        step = 0;
+        kettleOnStove = false;
+        waterBoiled = false;
     }
 }
