@@ -7,6 +7,7 @@ public class AnomalyManager : MonoBehaviour
 {
     //Variables for AnomalyManager
     public CustomerManager customerManager;
+    public GameManager gameManager;
     public GameObject[] possibleAnomalies;
     public List<GameObject> activeAnomalies;
     public int startingOdds = 10;
@@ -20,6 +21,9 @@ public class AnomalyManager : MonoBehaviour
     public Sprite normalRoomSprite;
     public Sprite anomalyRoomSprite;
 
+    public Sprite tvStatus1;
+    public Sprite tvStatus2;
+    public Sprite tvStatus3;
     public Sprite normalTVSprite;
     public Sprite anomalyTVSprite;
 
@@ -182,7 +186,19 @@ public class AnomalyManager : MonoBehaviour
                     break;
                 case 8:
                     // Minor room change
-                    Anomaly9 anomaly9 = new Anomaly9(normalTVSprite, anomalyTVSprite);
+                    if (gameManager.getHealth() == 1)
+                    {
+                        normalTVSprite = tvStatus1;
+                    }
+                    else if (gameManager.getHealth() == 2)
+                    {
+                        normalTVSprite = tvStatus2;
+                    }
+                    else
+                    {
+                        normalTVSprite = tvStatus3;
+                    }
+                        Anomaly9 anomaly9 = new Anomaly9(normalTVSprite, anomalyTVSprite);
                     if (anomaly9.CanSpawn() == true)
                     {
                         activeAnomalies.Add(possibleAnomalies[8]);
