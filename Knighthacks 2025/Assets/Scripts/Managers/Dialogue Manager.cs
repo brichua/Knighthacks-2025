@@ -35,6 +35,8 @@ public class DialogueManager : MonoBehaviour
     // after sequence ends, how long before auto-hiding the bubble (0 = don't auto-hide)
     public float autoHideAfter = 0.5f;
 
+    public bool customerBubbleUntilServed = true;
+
     // runtime
     private Coroutine sequenceCoroutine;
     private Coroutine mouthCoroutine;
@@ -183,15 +185,29 @@ public class DialogueManager : MonoBehaviour
             custRenderer.sprite = closedSprite;
 
         // Optional auto-hide
-        if (autoHideAfter > 0f)
+        if (customerBubbleUntilServed && customer != null) 
         {
-            yield return new WaitForSeconds(autoHideAfter);
+            while (customer != null && !customer.served)
+                yield return null;
+
+            // Small safety delay (optional) to allow immediate UI feedback
+            if (autoHideAfter > 0f)
+                yield return new WaitForSeconds(autoHideAfter);
+
             HideOrderImages();
         }
         else
         {
-            // Stop following but leave visible if autoHideAfter == 0
-            trackedCustomer = null;
+            if (autoHideAfter > 0f)
+            {
+                yield return new WaitForSeconds(autoHideAfter);
+                HideOrderImages();
+            }
+            else
+            {
+                // stop following but leave visible if autoHideAfter == 0 and keepBubbleUntilServed==false
+                trackedCustomer = null;
+            }
         }
 
         sequenceCoroutine = null;
