@@ -12,9 +12,11 @@ public class CustomerManager : MonoBehaviour
     public List<GameObject> customerLine = new List<GameObject>();
     public int maxCustomers = 12;
     public AnomalyManager AnomalyManager;
+    public DialogueManager DialogueManager;
     static Timer customerSpawnTimer;
     bool spawnRequested = false;
     public bool stopSpawning = false;
+    public bool isOrdering;
 
     string[] pastryTypes = { "cookie", "cake", "cracker" };
     string[] teaFlowerTypes = { "rose", "bluebell", "daisy" };
@@ -65,6 +67,12 @@ public class CustomerManager : MonoBehaviour
         int drinkRoll = Random.Range(0, drinkTypes.Length);
         int drinkSizeRoll = Random.Range(0, drinkSize.Length);
         string[] choices = { drinkTypes[drinkRoll], drinkSize[drinkSizeRoll], pastryTypes[snackRoll], teaFlowerTypes[flowerRoll] };
+        Sprite[] orderSprites = new Sprite[3];
+        //Based on the order, assign the appropriate sprite
+        orderSprites[0] = drinkSprites[(drinkRoll * 2) + drinkSizeRoll];
+        orderSprites[1] = pastrySprites[snackRoll];
+        orderSprites[2] = teaFlowerSprites[flowerRoll];
+        
         //Generate Customer Sprite
         int spriteIndex = Random.Range(0, 2);
 
@@ -72,19 +80,25 @@ public class CustomerManager : MonoBehaviour
         if (AnomalyManager.rollForAnomaly()) {
             // Customer is an anomaly
             Debug.Log("Anomaly Spawned");
-            customer.Initialize(choices, true, spriteIndex);
+            customer.Initialize(choices, true, spriteIndex, orderSprites);
             AnomalyManager.generateAnomaly(customer);
         }
         else {
             // normal customer
             Debug.Log("Normal Ass Customer Spawned");
-            customer.Initialize(choices, false, spriteIndex);
+            customer.Initialize(choices, false, spriteIndex, orderSprites);
         }
         newCustomer.SetActive(true);
         customers.Add(customer);
         customerGO.Add(newCustomer);
+
         moveCustomerToRegister(newCustomer);
-        StartCoroutine(timewaste(newCustomer, 7.0f));
+        if (DialogueManager.PlayOrderSequenceForCustomer(customer, customer.orderSprites))
+        {
+            moveCustomerToWaitingLine(newCustomer);
+        }
+
+        //StartCoroutine(timewaste(newCustomer, 7.0f));
     }
 
     //Function that moves le customer to the cashier
