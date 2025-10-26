@@ -59,6 +59,7 @@ public class DialogueBubble : MonoBehaviour
 
         foreach (var img in itemImages) if (img != null) img.gameObject.SetActive(false);
         ForceUpdateFollowPosition();
+        orderSprites = customer.orderSprites;
         Restart(orderSprites, orderIds);
     }
 
