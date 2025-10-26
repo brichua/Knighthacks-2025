@@ -19,14 +19,30 @@ public class AnomalyManager : MonoBehaviour
     public Sprite[] possibleSubtleSprites;
     public Sprite[] possibleSpookySprites;
 
+    public SpriteRenderer mainRoomRenderer;
     public Sprite normalRoomSprite;
     public Sprite anomalyRoomSprite;
+
+    public SpriteRenderer backroomRenderer;
+    public Sprite normalBackRoomSprite;
+    public Sprite missingBackRoomSprite;
+    public Sprite swappedBackRoomSprite;
+    public Sprite sameLabelBackRoomSprite;
+
 
     public Sprite tvStatus1;
     public Sprite tvStatus2;
     public Sprite tvStatus3;
     public Sprite normalTVSprite;
     public Sprite anomalyTVSprite;
+
+    public SpriteRenderer TVRenderer;
+    public Sprite tvErrorSprite;
+
+    public GameObject kettle;
+    public SpriteRenderer kettleRenderer;
+    public Sprite kettleSprite;
+
 
     void Awake() 
     {
@@ -62,8 +78,24 @@ public class AnomalyManager : MonoBehaviour
                         case 4: 
                             customerManager.customers[i].anomaly.ApplyToCustomer(customerManager.customers[i]);
                             break;
-                        //case 5:
-                            
+                        case 5:
+                            backroomRenderer.sprite = missingBackRoomSprite;
+                            break;
+                        case 6:
+                            backroomRenderer.sprite = swappedBackRoomSprite;
+                            break;
+                        case 7:
+                            backroomRenderer.sprite = sameLabelBackRoomSprite;
+                            break;
+                        case 8:
+                            mainRoomRenderer.sprite = anomalyRoomSprite;
+                            break;
+                        case 9:
+                            TVRenderer.sprite = tvErrorSprite;
+                            break;
+                        case 10:
+                            customerManager.customers[i].anomaly.changeGameObjectSprite(kettle, kettleRenderer, kettleSprite, -227f, 26f, 10);
+                            break;
                     }
                 }
             }
