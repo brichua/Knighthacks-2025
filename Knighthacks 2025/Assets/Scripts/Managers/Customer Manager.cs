@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Timers;
 using System.Xml;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,12 +15,13 @@ public class CustomerManager : MonoBehaviour
     public List<Customer> customers = new List<Customer>();
     public List<GameObject> customerGO = new List<GameObject>();
     public List<GameObject> customerLine = new List<GameObject>();
+    public GameObject[] customerWaiting = new GameObject[3];
     public int maxCustomers = 12;
     public AnomalyManager AnomalyManager;
     public DialogueManager DialogueManager;
     public TaskManager TaskManager;
     public Camera UICamera;
-    static Timer customerSpawnTimer;
+    static System.Timers.Timer customerSpawnTimer;
     bool spawnRequested = false;
     public bool stopSpawning = false;
     public bool isOrdering;
@@ -42,7 +44,7 @@ public class CustomerManager : MonoBehaviour
     void Start()
     {
         double interval = Random.Range(20000, 40000);
-        customerSpawnTimer = new Timer(interval);
+        customerSpawnTimer = new System.Timers.Timer(interval);
         customerSpawnTimer.Elapsed += (s, e) => { spawnRequested = true; };
         customerSpawnTimer.Start();
     }
@@ -61,7 +63,7 @@ public class CustomerManager : MonoBehaviour
             Debug.Log("Spawn Timer Reset");
             spawnRequested = false;
             double interval = Random.Range(20000, 40000);
-            customerSpawnTimer = new Timer(interval);
+            customerSpawnTimer = new System.Timers.Timer(interval);
             customerSpawnTimer.Elapsed += (s, e) => { spawnRequested = true; };
             customerSpawnTimer.Start();
         }
@@ -243,9 +245,9 @@ public class CustomerManager : MonoBehaviour
         }   
         Vector3 targetPosition = new Vector3(0, 0, 10f);
         float speed = 5f;
-        for (int i = 0; i < customerGO.Count; i++)
+        for (int i = 0; i < customerWaiting.Length; i++)
         {
-            if (customerGO[i] != null) 
+            if (customerWaiting[i] == null) 
             {
                 switch (i){
                     case 0:
@@ -261,6 +263,16 @@ public class CustomerManager : MonoBehaviour
                         targetPosition.y = 0.53f;
                         break;
                 }
+                for (int j = 0; j < customerGO.Count; j++)
+                {
+                    if(customerGO[j] == customer)
+                    {
+                        customerWaiting[i] = customerGO[j];
+                        customers[j].waitingIndex = i;
+                        break;
+                    }
+                }
+                break;
             }
         }
         StartCoroutine(MoveCustomerCoroutine(customer, targetPosition, speed));
@@ -292,9 +304,10 @@ public class CustomerManager : MonoBehaviour
             {
                 deleteAnomalyDamage(customers[index], index);
             }
+            customerWaiting[customers[index].waitingIndex] = null;
             customers.RemoveAt(index);
             customerGO.RemoveAt(index);
-            
+
             return true;
         }
         return false;
@@ -327,8 +340,10 @@ public class CustomerManager : MonoBehaviour
             {
                 deleteAnomalyDamage(customers[index], index);
             }
+            //Remove customer from customers, customerGO, and customerWaiting lists/arrays
             customers.RemoveAt(index);
             customerGO.RemoveAt(index);
+            customerWaiting[customer.waitingIndex] = null;
 
             return true;
         }
@@ -407,7 +422,7 @@ public class CustomerManager : MonoBehaviour
         }
 
         double interval = Random.Range(5000, 10000); // 5-10 seconds
-        customerSpawnTimer = new Timer(interval);
+        customerSpawnTimer = new System.Timers.Timer(interval);
         customerSpawnTimer.Elapsed += (s, e) => { spawnRequested = true; };
         customerSpawnTimer.Start();
     }

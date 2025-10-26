@@ -21,6 +21,7 @@ public class Customer : MonoBehaviour
     public bool served;
     public bool mouthOpen;
     public int spriteIndex;
+    public int waitingIndex;
     //Anomaly Variables
     public Anomaly anomaly;
     public bool isAnomaly;
