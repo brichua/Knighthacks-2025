@@ -5815,14 +5815,14 @@ MonoBehaviour:
   tvObject: {fileID: 131679597}
   endButton: {fileID: 2085881787}
   bgMusic: {fileID: 0}
-  scareVolume: {fileID: 0}
-  scareSpriteRenderer: {fileID: 0}
+  scareVolume: {fileID: 254203013}
+  scareSpriteRenderer: {fileID: 169235308}
   scareSprites:
   - {fileID: -3543814495099850191, guid: 0d953f450e1e5e040a86cd245a21af1f, type: 3}
   - {fileID: 940144791894296791, guid: e069805f6daf2884fb94f32f2a423821, type: 3}
   - {fileID: 299069027816977391, guid: b1e931ae4a80c154b98160162c1b2cea, type: 3}
   fadeCanvasGroup: {fileID: 613042285}
-  vignetteMaxIntensity: 0.6
+  vignetteMaxIntensity: 1
   vignetteGrowTime: 1.2
   scareDuration: 0.6
   blackImage: {fileID: 613042285}
@@ -8201,7 +8201,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   activeAnomalies: []
-  startingOdds: 5
+  startingOdds: 4
   possibleObviousSprites:
   - {fileID: -6097274898374520218, guid: ea496b69c315bcf4dbf35a7bd7f31c34, type: 3}
   - {fileID: 940144791894296791, guid: e069805f6daf2884fb94f32f2a423821, type: 3}

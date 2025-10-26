@@ -190,59 +190,76 @@ public class DialogueBubble : MonoBehaviour
     public void CompleteOrder()
     {
         if (customer == null || taskManager == null || gameManager == null) return;
-        
+    
         bool sizeMatch = taskManager.tea == customer.order[0];
         bool teaMatch = taskManager.size == customer.order[1];
         bool snackMatch = taskManager.snack == customer.order[2];
         bool flowerMatch = taskManager.flower == customer.order[3];
         bool orderMatch = sizeMatch && teaMatch && snackMatch && flowerMatch;
-        
-        Debug.Log($"Order Match Details:\n" +
-                  $"Size: {taskManager.tea} vs {customer.order[0]} = {teaMatch}\n" +
-                  $"Tea: {taskManager.size} vs {customer.order[1]} = {sizeMatch}\n" +
-                  $"Snack: {taskManager.snack} vs {customer.order[2]} = {snackMatch}\n" +
-                  $"Flower: {taskManager.flower} vs {customer.order[3]} = {flowerMatch}\n" +
-                  $"Overall Match: {orderMatch}");
-        
+    
         bool accusationCorrect = Accusation.accuse(taskManager.anomaly, customer);
-        Debug.Log($"Accusation correct: {accusationCorrect} (Customer isAnomaly: {customer.isAnomaly}, Accused anomaly: {taskManager.anomaly})");
-        
-        // If either order is wrong or accusation is incorrect, subtract health
-        if (!orderMatch || !accusationCorrect)
-        {
-            gameManager.subtractHealth();
-        }
-        
-        // Only mark as served if both order and accusation are correct
-        if (orderMatch && accusationCorrect)
-        {
-            customer.served = true;
-        }
+        bool finalCorrect = orderMatch && accusationCorrect;
 
-        // Hide all objects
+        // Update player health
+        if (!finalCorrect) gameManager.subtractHealth();
+
+        // Serve only if correct
+        if (finalCorrect) customer.served = true;
+
+        // Hide held items
         if (taskManager.snackObject != null) taskManager.snackObject.SetActive(false);
         if (taskManager.teaObject != null) taskManager.teaObject.SetActive(false);
         if (taskManager.decorationObject != null) taskManager.decorationObject.SetActive(false);
         if (taskManager.teaFlower != null) taskManager.teaFlower.SetActive(false);
 
-        // Check remaining customers and update background
+        // Update tray background
         GameObject[] remainingCustomers = GameObject.FindGameObjectsWithTag("Customer");
-        if (remainingCustomers.Length <= 2) // 1 because current customer hasn't been destroyed yet
-        {
-            taskManager.background.sprite = taskManager.noTrayBackground;
-            taskManager.tray = false;
-        }
-        else
-        {
-            taskManager.background.sprite = taskManager.trayBackground;
-            taskManager.tray = true;
-        }
+        taskManager.background.sprite = (remainingCustomers.Length <= 2)
+            ? taskManager.noTrayBackground
+            : taskManager.trayBackground;
+        taskManager.tray = remainingCustomers.Length > 2;
 
-        // Start quarantine sequence and reset tasks
-        StartCoroutine(QuarantineAndDestroy());
+        // Show result + fade out
+        StartCoroutine(ShowResultAndRemoveCustomer());
+        StartCoroutine(FadeEffect(finalCorrect));
+
+
         taskManager.resetTasks();
         DestroySelf();
     }
+
+    private IEnumerator ShowResultAndRemoveCustomer()
+    {
+        if (customer == null) yield break;
+
+        // Fade and destroy
+        if (taskManager != null && taskManager.customerManager != null)
+        {
+            yield return taskManager.customerManager.StartCoroutine(
+                taskManager.customerManager.FadeOutSprite(customer.gameObject)
+            );
+            Destroy(customer.gameObject);
+        }
+    }
+
+    private IEnumerator FadeEffect (bool isCorrect)
+    {
+        if (customer == null) yield break;
+
+        // Activate the correct image
+        GameObject resultImage = isCorrect ? customer.correctImage : customer.wrongImage;
+        if (resultImage != null)
+            resultImage.SetActive(true);
+
+
+        if (taskManager != null && taskManager.customerManager != null)
+        {
+            yield return taskManager.customerManager.StartCoroutine(
+                taskManager.customerManager.FadeOutSprite(resultImage)
+            );
+        }
+    }
+
 
     private void OnDestroy()
     {

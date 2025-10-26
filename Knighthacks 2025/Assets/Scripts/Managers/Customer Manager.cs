@@ -360,7 +360,7 @@ public class CustomerManager : MonoBehaviour
         }
     }
 
-    private IEnumerator FadeOutSprite(GameObject obj)
+    public IEnumerator FadeOutSprite(GameObject obj)
     {
         SpriteRenderer sr = obj.GetComponent<SpriteRenderer>();
         Color color = sr.color;

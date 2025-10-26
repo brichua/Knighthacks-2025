@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
     public Sprite tvStatus2;
     public Sprite tvStatus3;
     public Sprite tvError;
-    
+
 
     static Timer dayTimer;
 
@@ -63,11 +63,11 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (dayEnd) 
+        if (dayEnd)
         {
             customerManager.stopSpawning = true;
-            if (customerManager.customers.Count == 0) 
-            { 
+            if (customerManager.customers.Count == 0)
+            {
                 EndDaySequence();
             }
         }
@@ -75,7 +75,7 @@ public class GameManager : MonoBehaviour
 
     public void subtractHealth()
     {
-        health --;
+        health--;
         if (!isHandlingTvError)
         {
             StartCoroutine(HandleOrderFailureSequence());
@@ -228,7 +228,7 @@ public class GameManager : MonoBehaviour
             else if (health == 1 && tvStatus3 != null)
             {
                 tv.sprite = tvStatus3;
-            }else if(health <= 0)
+            } else if (health <= 0)
             {
                 StartCoroutine(ScareAndResetSequence());
             }
@@ -258,9 +258,16 @@ public class GameManager : MonoBehaviour
     public IEnumerator ScareAndResetSequence()
     {
         Debug.Log("Starting scare sequence...");
-        background.sprite= night;
-        for(int i = 0; i < customerManager.customerGO.Count; i++){
+        background.sprite = night;
+        for (int i = 0; i < customerManager.customerGO.Count; i++) {
             customerManager.destroyCustomer(i);
+        }
+        try {
+            for (int i = 0; i <= customerManager.customerGO.Count; i++)
+            {
+                customerManager.destroyCustomer(i);
+            }
+        }catch (System.Exception e) {
         }
         gameStart = false;
         // --- PREPARE ---

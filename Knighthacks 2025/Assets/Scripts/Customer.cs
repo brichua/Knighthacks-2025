@@ -10,6 +10,8 @@ public class Customer : MonoBehaviour
     public Sprite angryExpression;
     public SpriteRenderer SpriteRenderer;
     public SpriteRenderer ExpressionRenderer;
+    public GameObject correctImage;
+    public GameObject wrongImage;
     //Order index 0 is for the Drink, order index 1 is for the drink size, order index 2
     //is the Snack, order index 3 is for tea flower.
     public string[] order = new string[4];

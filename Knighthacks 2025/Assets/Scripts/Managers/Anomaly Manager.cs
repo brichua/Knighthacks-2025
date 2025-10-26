@@ -110,7 +110,7 @@ public class AnomalyManager : MonoBehaviour
             if (roll <= 1)
             {
                 //Succeeds, generate random Anomaly
-                odds = 5;
+                odds = 4;
                 return true;
             }
             //Fails
