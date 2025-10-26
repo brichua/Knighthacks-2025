@@ -158,8 +158,8 @@ public class AnomalyManager : MonoBehaviour
                     }
                     break;
                 case 2:
-                    //Subtle Sprite Change Anomaly
-                    Anomaly3 anomaly3 = new Anomaly3(possibleSubtleSprites);
+                    //Subtle Sprite Change Anomaly REMOVED
+                    /* Anomaly3 anomaly3 = new Anomaly3(possibleSubtleSprites);
                     if (anomaly3.CanSpawn() == true)
                     {
                         //Generate Anomaly
@@ -169,6 +169,7 @@ public class AnomalyManager : MonoBehaviour
                         //anomaly3.ApplyToCustomer(customer);
                         return true;
                     }
+                    */
                     break;
                 case 3:
                     //Spooky Sprite Change Anomaly
