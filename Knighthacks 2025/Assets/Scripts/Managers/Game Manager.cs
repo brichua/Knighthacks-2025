@@ -1,5 +1,5 @@
 using System.Collections;
-using System.Timers;
+// replaced System.Timers.Timer with Unity Coroutines for WebGL compatibility
 using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviour
     public Sprite tvError;
 
 
-    static Timer dayTimer;
+    private Coroutine dayCoroutine = null;
 
     public int health;
     public int day;
@@ -165,10 +165,9 @@ public class GameManager : MonoBehaviour
 
         // Activate day text and set its content
         dayTextObject.SetActive(true);
-        // Set timer
-        dayTimer = new Timer(300000); // 5 minutes per day
-        dayTimer.Elapsed += (s, e) => { dayEnd = true; };
-        dayTimer.Start();
+    // Start a Unity coroutine to end the day after 300 seconds (5 minutes)
+    if (dayCoroutine != null) StopCoroutine(dayCoroutine);
+    dayCoroutine = StartCoroutine(DayTimerCoroutine(120f));
         // Try TMP first, then legacy Text
         TMP_Text tmp = dayTextObject.GetComponentInChildren<TMP_Text>();
         if (tmp != null)
@@ -209,6 +208,13 @@ public class GameManager : MonoBehaviour
         if (tvStatus1 != null) tv.sprite = tvStatus1;
 
         customerManager.SpawnCustomer();
+    }
+
+    private IEnumerator DayTimerCoroutine(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        dayEnd = true;
+        dayCoroutine = null;
     }
 
     // Handles the sequence when an order fails:

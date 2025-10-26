@@ -28,6 +28,7 @@ public class AnomalyManager : MonoBehaviour
     public Sprite missingBackRoomSprite;
     public Sprite swappedBackRoomSprite;
     public Sprite sameLabelBackRoomSprite;
+    public Sprite missingItemSprite;
     public Sprite tvRoomSprite;
 
 
@@ -180,7 +181,7 @@ public class AnomalyManager : MonoBehaviour
                     break;
                 case 3:
                     // Stock disappearance anomaly
-                    Anomaly5 anomaly5 = new Anomaly5();
+                    Anomaly5 anomaly5 = new Anomaly5(normalRoomSprite, missingItemSprite);
                     if (anomaly5.CanSpawn() == true)
                     {
                         activeAnomalies.Add(possibleAnomalies[4]);

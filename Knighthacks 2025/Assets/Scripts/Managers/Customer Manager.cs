@@ -1,7 +1,7 @@
 using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
-using System.Timers;
+// replaced System.Timers.Timer with Unity Coroutines for WebGL compatibility
 using System.Xml;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -21,8 +21,7 @@ public class CustomerManager : MonoBehaviour
     public DialogueManager DialogueManager;
     public TaskManager TaskManager;
     public Camera UICamera;
-    static System.Timers.Timer customerSpawnTimer;
-    bool spawnRequested = false;
+    private Coroutine customerSpawnCoroutine = null;
     public bool stopSpawning = false;
     public bool isOrdering;
     public bool registerOccupied;
@@ -36,6 +35,10 @@ public class CustomerManager : MonoBehaviour
     public Sprite[] pastrySprites;
     public Sprite[] teaFlowerSprites;
 
+    // Track last two sprite indexes to avoid three identical sprites in a row
+    private int lastSpriteMostRecent = -1;
+    private int lastSpritePrevious = -1;
+
     [Header("Audio")]
     // Assign either an AudioSource to play via PlayOneShot, or leave sfxSource null to fallback to PlayClipAtPoint.
     public AudioSource sfxSource;
@@ -43,34 +46,20 @@ public class CustomerManager : MonoBehaviour
 
     void Start()
     {
-        double interval = Random.Range(20000, 40000);
-        customerSpawnTimer = new System.Timers.Timer(interval);
-        customerSpawnTimer.Elapsed += (s, e) => { spawnRequested = true; };
-        customerSpawnTimer.Start();
+        // Don't start spawning automatically here. Spawning is controlled by GameManager.startGame()
+        // which will call StartCustomerSpawnTimer(). This avoids lifecycle/order issues in builds.
     }
 
     void Update()
     {
-        if (spawnRequested)
+        // spawn loop runs in coroutine; if stopSpawning is set, stop the coroutine
+        if (stopSpawning)
         {
-            //Check queues to make sure customer can actually spawn
-            if (customerGO.Count < 3 && customerLine.Count < 3 && maxCustomers > 0 && gameManager.getStartGame())
+            if (customerSpawnCoroutine != null)
             {
-                //Spawn can happen
-                SpawnCustomer();
+                StopCoroutine(customerSpawnCoroutine);
+                customerSpawnCoroutine = null;
             }
-            //Reset timer regardless of whether the customer can spawn or not
-            Debug.Log("Spawn Timer Reset");
-            spawnRequested = false;
-            double interval = Random.Range(20000, 40000);
-            customerSpawnTimer = new System.Timers.Timer(interval);
-            customerSpawnTimer.Elapsed += (s, e) => { spawnRequested = true; };
-            customerSpawnTimer.Start();
-        }
-
-        if (stopSpawning) 
-        {
-            customerSpawnTimer.Stop();
         }
 
         //Add if statement to check if register is occupied, if not, move next customer in line to register
@@ -182,7 +171,22 @@ public class CustomerManager : MonoBehaviour
         orderSprites[2] = teaFlowerSprites[flowerRoll];
         
         //Generate Customer Sprite
-        int spriteIndex = Random.Range(0, 2) * 2;
+        // There are two base sprite indices (0 and 2). Prevent three identical sprite indexes in a row
+        int randomChoice = Random.Range(0, 2) * 2; // 0 or 2
+        int spriteIndex;
+        if (lastSpriteMostRecent != -1 && lastSpriteMostRecent == lastSpritePrevious)
+        {
+            // Last two picks are identical; force the other sprite
+            spriteIndex = (lastSpriteMostRecent == 0) ? 2 : 0;
+        }
+        else
+        {
+            spriteIndex = randomChoice;
+        }
+
+        // shift history
+        lastSpritePrevious = lastSpriteMostRecent;
+        lastSpriteMostRecent = spriteIndex;
 
         //Roll for if customer will be an anomaly
         if (AnomalyManager.rollForAnomaly()) {
@@ -209,6 +213,39 @@ public class CustomerManager : MonoBehaviour
 
         //StartCoroutine(timewaste(newCustomer, 7.0f));
         SetCustomerOrderButtonActive(newCustomer, false);
+    }
+
+    // Coroutine that handles periodic customer spawning. Uses seconds (20-40s default).
+    private IEnumerator CustomerSpawnLoop()
+    {
+        while (true)
+        {
+            // Wait for a random interval between spawns (20-40 seconds)
+            float interval = Random.Range(20f, 40f);
+            Debug.Log($"CustomerSpawnLoop: waiting {interval} seconds (stopSpawning={stopSpawning})");
+            yield return new WaitForSeconds(interval);
+
+            if (stopSpawning)
+            {
+                Debug.Log("CustomerSpawnLoop: stopSpawning detected, exiting spawn loop.");
+                yield break;
+            }
+
+            // Check queues to make sure customer can actually spawn
+            if (customerGO.Count < 3 && customerLine.Count < 3 && maxCustomers > 0 && gameManager != null && gameManager.getStartGame())
+            {
+                // Wrap spawn in try/catch to prevent coroutine from dying silently in builds
+                try
+                {
+                    SpawnCustomer();
+                }
+                catch (System.Exception ex)
+                {
+                    Debug.LogError($"SpawnCustomer threw exception: {ex}");
+                }
+            }
+            // otherwise loop and wait for next interval
+        }
     }
 
     //Function that moves le customer to the cashier
@@ -422,16 +459,33 @@ public class CustomerManager : MonoBehaviour
 
     public void StartCustomerSpawnTimer()
     {
-        if (customerSpawnTimer != null)
+        // Stop existing coroutine if running
+        if (customerSpawnCoroutine != null)
         {
-            customerSpawnTimer.Stop();
-            customerSpawnTimer.Dispose();
+            StopCoroutine(customerSpawnCoroutine);
+            customerSpawnCoroutine = null;
         }
 
-        double interval = Random.Range(5000, 10000); // 5-10 seconds
-        customerSpawnTimer = new System.Timers.Timer(interval);
-        customerSpawnTimer.Elapsed += (s, e) => { spawnRequested = true; };
-        customerSpawnTimer.Start();
+        // Start a spawn loop but with a faster initial interval (5-10 seconds) before the next regular spawn
+        customerSpawnCoroutine = StartCoroutine(CustomerSpawnLoopWithInitialDelay());
+    }
+
+    private IEnumerator CustomerSpawnLoopWithInitialDelay()
+    {
+        // initial shorter delay (5-10s)
+        float initialDelay = Random.Range(5f, 10f);
+        yield return new WaitForSeconds(initialDelay);
+
+        if (stopSpawning) yield break;
+
+        // Attempt spawn once immediately if conditions allow
+        if (customerGO.Count < 3 && customerLine.Count < 3 && maxCustomers > 0 && gameManager.getStartGame())
+        {
+            SpawnCustomer();
+        }
+
+        // Continue with normal looping
+        customerSpawnCoroutine = StartCoroutine(CustomerSpawnLoop());
     }
 
     private void SetCustomerOrderButtonActive(GameObject customer, bool active)

@@ -217,7 +217,9 @@ public class DialogueBubble : MonoBehaviour
         taskManager.background.sprite = (remainingCustomers.Length <= 1)
             ? taskManager.noTrayBackground
             : taskManager.trayBackground;
+        Debug.Log("Remaining Customers: " + remainingCustomers.Length);
         taskManager.tray = remainingCustomers.Length > 1;
+        Debug.Log("Tray Active: " + taskManager.tray);
 
         // Show result + fade out
         StartCoroutine(ShowResultAndRemoveCustomer());

@@ -123,7 +123,6 @@ public class TaskManager : MonoBehaviour
             // Only remove tray if no one is waiting
             if (customerManager.customers.Count <= 1)
             {
-                tray = false;
                 background.sprite = noTrayBackground;
             }
 
@@ -507,7 +506,6 @@ public class TaskManager : MonoBehaviour
         tea = null;
         flower = null;
         anomaly = false;
-        tray = false;
         snackChosen = false;
         teaChosen = false;
         flowerChosen = false;

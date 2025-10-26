@@ -2636,7 +2636,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -5253,7 +5253,7 @@ Transform:
   m_GameObject: {fileID: 1323318285}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 10}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5476,7 +5476,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -6401,7 +6401,7 @@ Transform:
   m_GameObject: {fileID: 1615410075}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.75, z: 10}
+  m_LocalPosition: {x: 0, y: -1.75, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6829,7 +6829,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -7422,7 +7422,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 0.95, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1125052648}
@@ -8613,6 +8613,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 0}
   activeAnomalies: []
   startingOdds: 6
   possibleObviousSprites:
@@ -8635,7 +8636,8 @@ MonoBehaviour:
   missingBackRoomSprite: {fileID: 4912634911728840606, guid: 8e7699cbc2095d849ae97d78726dd871, type: 3}
   swappedBackRoomSprite: {fileID: -8824931570626994710, guid: 00ca426c680676d4291e52d4f3404121, type: 3}
   sameLabelBackRoomSprite: {fileID: 4114270848842129476, guid: ac71efe83bb8c7446b8e78ec9b48e077, type: 3}
-  tvRoomSprite: {fileID: 0}
+  missingItemSprite: {fileID: 4912634911728840606, guid: 8e7699cbc2095d849ae97d78726dd871, type: 3}
+  tvRoomSprite: {fileID: 3565912861589298917, guid: 214e77b9646dd9c459e8203d6188f820, type: 3}
   tvStatus1: {fileID: -3667019684146795, guid: 030781877fed9844097be6561109e99f, type: 3}
   tvStatus2: {fileID: 2876168249497698210, guid: 63f26867b3b55954cb50aba7665d66d4, type: 3}
   tvStatus3: {fileID: 4318337310983461068, guid: 3b2cdcbd625fce448aae7f6a315b8dd5, type: 3}
@@ -8813,7 +8815,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9047974665680313635, guid: b65550b525813674c817e63bc438fa5a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 10
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9047974665680313635, guid: b65550b525813674c817e63bc438fa5a, type: 3}
       propertyPath: m_LocalRotation.w
