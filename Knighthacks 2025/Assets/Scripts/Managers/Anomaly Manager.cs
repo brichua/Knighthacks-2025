@@ -35,6 +35,7 @@ public class AnomalyManager : MonoBehaviour
     public Sprite tvStatus3;
     public Sprite normalTVSprite;
     public Sprite anomalyTVSprite;
+    public Sprite currentTVSprite;
 
     public SpriteRenderer TVRenderer;
     public Sprite tvErrorSprite;
@@ -60,7 +61,7 @@ public class AnomalyManager : MonoBehaviour
                 //If the customer is an anomaly AND has not been activated, activate it
                 if (customerManager.customers[i].isAnomaly == true && customerManager.customers[i].hasActivated == false)
                 {
-                    switch (i)
+                    switch (customerManager.customers[i].anomalyIndex)
                     {
                         case 0:
                             customerManager.customers[i].updateHallucination();
@@ -75,25 +76,23 @@ public class AnomalyManager : MonoBehaviour
                         case 3:
                             customerManager.customers[i].anomaly.ApplyToCustomer(customerManager.customers[i]);
                             break;
-                        case 4: 
-                            customerManager.customers[i].anomaly.ApplyToCustomer(customerManager.customers[i]);
-                            break;
-                        case 5:
+                        case 4:
                             backroomRenderer.sprite = missingBackRoomSprite;
                             break;
-                        case 6:
+                        case 5:
                             backroomRenderer.sprite = swappedBackRoomSprite;
                             break;
-                        case 7:
+                        case 6:
                             backroomRenderer.sprite = sameLabelBackRoomSprite;
                             break;
-                        case 8:
+                        case 7:
                             mainRoomRenderer.sprite = anomalyRoomSprite;
                             break;
-                        case 9:
+                        case 8:
+                            currentTVSprite = TVRenderer.sprite;
                             TVRenderer.sprite = tvErrorSprite;
                             break;
-                        case 10:
+                        case 9:
                             customerManager.customers[i].anomaly.changeGameObjectSprite(kettle, kettleRenderer, kettleSprite, -227f, 26f, 10);
                             break;
                     }
@@ -140,6 +139,7 @@ public class AnomalyManager : MonoBehaviour
                         //Generate Anomaly!
                         activeAnomalies.Add(possibleAnomalies[0]);
                         customer.anomaly = anomaly1;
+                        customer.anomalyIndex = 0;
                         //customer.updateHallucination();
                         return true;
                     }
@@ -152,6 +152,7 @@ public class AnomalyManager : MonoBehaviour
                         //Generate Anomaly!
                         activeAnomalies.Add(possibleAnomalies[1]);
                         customer.anomaly = anomaly2;
+                        customer.anomalyIndex = 1;
                         //anomaly2.ApplyToCustomer(customer);
                         return true;
                     }
@@ -164,6 +165,7 @@ public class AnomalyManager : MonoBehaviour
                         //Generate Anomaly
                         activeAnomalies.Add(possibleAnomalies[2]);
                         customer.anomaly = anomaly3;
+                        customer.anomalyIndex = 2;
                         //anomaly3.ApplyToCustomer(customer);
                         return true;
                     }
@@ -175,6 +177,7 @@ public class AnomalyManager : MonoBehaviour
                     {
                         activeAnomalies.Add(possibleAnomalies[3]);
                         customer.anomaly = anomaly4;
+                        customer.anomalyIndex = 3;
                         //anomaly4.ApplyToCustomer(customer);
                         return true;
                     }
@@ -185,6 +188,8 @@ public class AnomalyManager : MonoBehaviour
                     if (anomaly5.CanSpawn() == true)
                     {
                         activeAnomalies.Add(possibleAnomalies[4]);
+                        customer.anomaly = anomaly5;
+                        customer.anomalyIndex = 4;
                         // Make sure to find way to make this stock later
                         //anomaly5.makeGameObjectInvisible(customer.SpriteRenderer);
                         return true;
@@ -196,6 +201,8 @@ public class AnomalyManager : MonoBehaviour
                     if (anomaly6.CanSpawn() == true)
                     {
                         activeAnomalies.Add(possibleAnomalies[5]);
+                        customer.anomaly = anomaly6;
+                        customer.anomalyIndex = 5;
                         // get this in later lmao
                         //anomaly6.swapSprites();
                         return true;
@@ -207,6 +214,8 @@ public class AnomalyManager : MonoBehaviour
                     if (anomaly7.CanSpawn() == true)
                     {
                         activeAnomalies.Add(possibleAnomalies[6]);
+                        customer.anomaly = anomaly7;
+                        customer.anomalyIndex = 6;
                         // get this in later
                         //anomaly7.copyLabels(customer.SpriteRenderer);
                         return true;
@@ -218,6 +227,8 @@ public class AnomalyManager : MonoBehaviour
                     if (anomaly8.CanSpawn() == true)
                     {
                         activeAnomalies.Add(possibleAnomalies[7]);
+                        customer.anomaly = anomaly8;
+                        customer.anomalyIndex = 7;
                         // Rooms! (said in same intonation as Log! from CR)
                         //anomaly8.changeGameObjectSprite(customer.SpriteRenderer);
                         return true;
@@ -241,6 +252,8 @@ public class AnomalyManager : MonoBehaviour
                     if (anomaly9.CanSpawn() == true)
                     {
                         activeAnomalies.Add(possibleAnomalies[8]);
+                        customer.anomaly = anomaly9;
+                        customer.anomalyIndex = 8;
                         // Swap in sprite for the TV sprite renderer
                         //anomaly9.changeGameObjectSprite(customer.SpriteRenderer);
                         return true;
@@ -252,6 +265,8 @@ public class AnomalyManager : MonoBehaviour
                     if (anomaly10.CanSpawn() == true)
                     {
                         activeAnomalies.Add(possibleAnomalies[9]);
+                        customer.anomaly = anomaly10;
+                        customer.anomalyIndex = 9;
                         // Implement this, just put spriterenderer for normal kettle on first
                         // and sprite for boil kettle on second
                         //anomaly4.changeGameObjectSprite(customer.SpriteRenderer);
@@ -261,7 +276,6 @@ public class AnomalyManager : MonoBehaviour
                 default:
                     //Do nothing lmao?
                     break;
-
             }
         }
     }

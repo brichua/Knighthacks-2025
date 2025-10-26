@@ -7,7 +7,6 @@ public class Anomaly10 : Anomaly
 
     public Anomaly10()
     {
-
     }
     public void checkSpawnConditions(List<Customer> customerList)
     {

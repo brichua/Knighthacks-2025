@@ -2,6 +2,7 @@ using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using System.Timers;
+using System.Xml;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,7 +27,7 @@ public class CustomerManager : MonoBehaviour
     string[] pastryTypes = { "cookie", "cake", "cracker" };
     string[] teaFlowerTypes = { "rose", "bluebell", "daisy" };
     string[] drinkTypes = { "black", "green", "oolong" };
-    string[] drinkSize = { "large", "small" };
+    string[] drinkSize = { "small", "large" };
 
     public Sprite[] drinkSprites; 
     public Sprite[] pastrySprites;
@@ -168,7 +169,7 @@ public class CustomerManager : MonoBehaviour
         string[] choices = { drinkTypes[drinkRoll], drinkSize[drinkSizeRoll], pastryTypes[snackRoll], teaFlowerTypes[flowerRoll] };
         Sprite[] orderSprites = new Sprite[3];
         //Based on the order, assign the appropriate sprite
-        orderSprites[0] = drinkSprites[(drinkRoll * 2) + drinkSizeRoll];
+        orderSprites[0] = drinkSprites[drinkRoll * 2 + drinkSizeRoll];
         orderSprites[1] = pastrySprites[snackRoll];
         orderSprites[2] = teaFlowerSprites[flowerRoll];
         
@@ -266,6 +267,11 @@ public class CustomerManager : MonoBehaviour
         {
             //Make the Game Object slowly fade away
             StartCoroutine(FadeOutSprite(customerGO[index]));
+            //Check if the Customer was an anomaly
+            if (customers[index].isAnomaly)
+            {
+                deleteAnomalyDamage(customers[index], index);
+            }
             customers.RemoveAt(index);
             customerGO.RemoveAt(index);
             
@@ -297,12 +303,59 @@ public class CustomerManager : MonoBehaviour
         {
             //Make the Game Object slowly fade away
             StartCoroutine(FadeOutSprite(customerGO[index]));
+            if (customers[index].isAnomaly)
+            {
+                deleteAnomalyDamage(customers[index], index);
+            }
             customers.RemoveAt(index);
             customerGO.RemoveAt(index);
 
             return true;
         }
         return false;
+    }
+
+    public void deleteAnomalyDamage(Customer customer, int index)
+    {
+        switch (customer.anomalyIndex)
+        {
+            case 0:
+                if(index != 0)
+                {
+                    if (customers[0] != null)
+                    {
+                        customers[0].dispelHallicination();
+                    }
+                }
+                break;
+            case 1:
+                //Do nothing lmao
+                break;
+            case 2:
+                //Do nothing lmao
+                break;
+            case 3:
+                //Do nothing lmao
+                break; 
+            case 4:
+                AnomalyManager.backroomRenderer.sprite = AnomalyManager.normalBackRoomSprite;
+                break;
+            case 5:
+                AnomalyManager.backroomRenderer.sprite = AnomalyManager.normalBackRoomSprite;
+                break;
+            case 6:
+                AnomalyManager.backroomRenderer.sprite = AnomalyManager.normalBackRoomSprite;
+                break;
+            case 7:
+                AnomalyManager.mainRoomRenderer.sprite = AnomalyManager.normalRoomSprite;
+                break;
+            case 8:
+                AnomalyManager.TVRenderer.sprite = AnomalyManager.currentTVSprite;
+                break;
+            case 9:
+                //Do nothing lmao?
+                break;
+        }
     }
 
     private IEnumerator FadeOutSprite(GameObject obj)

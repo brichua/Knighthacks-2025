@@ -19,6 +19,7 @@ public class Customer : MonoBehaviour
     //Anomaly Variables
     public Anomaly anomaly;
     public bool isAnomaly;
+    public int anomalyIndex = -1;
     public bool hallucinating;
     public bool hasActivated = false;
     public string[] fakeOrder;
@@ -49,5 +50,10 @@ public class Customer : MonoBehaviour
         hallucinating = true;
         fakeOrder = (string[])order.Clone();
         fakeOrder[2] = null;
+    }
+
+    public void dispelHallicination()
+    {
+        hallucinating = false;
     }
 }
