@@ -354,7 +354,6 @@ public class TaskManager : MonoBehaviour
         kettle.transform.position = kettleStove.position;
         stoveOn.SetActive(true);
         StartCoroutine(waitForBoil());
-        waterBoiled = true;
     }
 
     public IEnumerator waitForBoil()
