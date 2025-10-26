@@ -215,19 +215,7 @@ public class CustomerManager : MonoBehaviour
     public void moveCustomerToRegister(GameObject customer)
     {
         // Play the register SFX once when the customer starts moving to register
-        if (registerSfxClip != null)
-        {
-            if (sfxSource != null)
-            {
-                sfxSource.PlayOneShot(registerSfxClip);
-            }
-            else
-            {
-                // fallback: play at customer position
-                AudioSource.PlayClipAtPoint(registerSfxClip, customer != null ? customer.transform.position : Vector3.zero);
-            }
-        }
-
+        taskManager.currentOrderingCustomer = customer.GetComponent<Customer>();
         Vector3 targetPosition = new Vector3(7.4f, -0.76f, 10f);
         float speed = 5f;
         StartCoroutine(MoveCustomerCoroutine(customer, targetPosition, speed));

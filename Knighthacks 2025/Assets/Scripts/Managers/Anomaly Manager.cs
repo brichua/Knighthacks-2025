@@ -51,55 +51,62 @@ public class AnomalyManager : MonoBehaviour
     }
 
     private void Update()
+{
+    // Only trigger anomalies when the player has looked back
+    if (customerManager.TaskManager.lookedBack)
     {
-        //This will check if the user is turned to the backside to trigger anomalies
-        if (customerManager.TaskManager.lookedBack == true)
-        {
-            customerManager.TaskManager.lookedBack = false;
+        customerManager.TaskManager.lookedBack = false;
+
+        Customer currentOrdering = customerManager.TaskManager.currentOrderingCustomer;
+            Debug.Log(currentOrdering);
+
             for (int i = 0; i < customerManager.customers.Count; i++)
+        {
+            Customer c = customerManager.customers[i];
+
+            // Skip if this customer is the one currently being served at the register
+            if (c == currentOrdering)
+                continue;
+
+            // If the customer is an anomaly and hasn't been activated yet, activate it
+            if (c.isAnomaly && !c.hasActivated)
             {
-                //If the customer is an anomaly AND has not been activated, activate it
-                if (customerManager.customers[i].isAnomaly == true && customerManager.customers[i].hasActivated == false)
+                switch (c.anomalyIndex)
                 {
-                    switch (customerManager.customers[i].anomalyIndex)
-                    {
-                        case 0:
-                            customerManager.customers[i].updateHallucination();
-                            customerManager.customers[i].hasActivated = true;
-                            break;
-                        case 1:
-                            customerManager.customers[i].anomaly.ApplyToCustomer(customerManager.customers[i]);
-                            break;
-                        case 2:
-                            customerManager.customers[i].anomaly.ApplyToCustomer(customerManager.customers[i]);
-                            break;
-                        case 3:
-                            customerManager.customers[i].anomaly.ApplyToCustomer(customerManager.customers[i]);
-                            break;
-                        case 4:
-                            backroomRenderer.sprite = missingBackRoomSprite;
-                            break;
-                        case 5:
-                            backroomRenderer.sprite = swappedBackRoomSprite;
-                            break;
-                        case 6:
-                            backroomRenderer.sprite = sameLabelBackRoomSprite;
-                            break;
-                        case 7:
-                            mainRoomRenderer.sprite = anomalyRoomSprite;
-                            break;
-                        case 8:
-                            currentTVSprite = TVRenderer.sprite;
-                            TVRenderer.sprite = tvErrorSprite;
-                            break;
-                        case 9:
-                            customerManager.customers[i].anomaly.changeGameObjectSprite(kettle, kettleRenderer, kettleSprite, -227f, 26f, 10);
-                            break;
-                    }
+                    case 0:
+                        c.updateHallucination();
+                        c.hasActivated = true;
+                        break;
+                    case 1:
+                    case 2:
+                    case 3:
+                        c.anomaly.ApplyToCustomer(c);
+                        break;
+                    case 4:
+                        backroomRenderer.sprite = missingBackRoomSprite;
+                        break;
+                    case 5:
+                        backroomRenderer.sprite = swappedBackRoomSprite;
+                        break;
+                    case 6:
+                        backroomRenderer.sprite = sameLabelBackRoomSprite;
+                        break;
+                    case 7:
+                        mainRoomRenderer.sprite = anomalyRoomSprite;
+                        break;
+                    case 8:
+                        currentTVSprite = TVRenderer.sprite;
+                        TVRenderer.sprite = tvErrorSprite;
+                        break;
+                    case 9:
+                        c.anomaly.changeGameObjectSprite(kettle, kettleRenderer, kettleSprite, -227f, 26f, 10);
+                        break;
                 }
             }
         }
     }
+}
+
 
     //Determines if a customer rolls into being an anomaly
     public bool rollForAnomaly()

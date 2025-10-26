@@ -84,6 +84,7 @@ public class TaskManager : MonoBehaviour
     public GameObject front;
     public GameObject back;
     public bool lookedBack = false;
+    public bool tookOrder = false;
     public bool inBack = false;
 
     public Animator kettleAnim;
@@ -94,6 +95,8 @@ public class TaskManager : MonoBehaviour
     public AudioSource pourAudioSource;
     public AudioClip pourAudioClip;
 
+    public Customer currentOrderingCustomer;
+
     public void takeOrder(GameObject customer1, Customer customer2)
     {
         Debug.Log("Taking order from customer.");
@@ -101,8 +104,11 @@ public class TaskManager : MonoBehaviour
         background.sprite = trayBackground;
         dialogueManager.PlayOrderSequenceForCustomer(customer2);
         StartCoroutine(WaitForDialogue(customer1));
-        lookedBack = false;
+
+        lookedBack = true;
+        tookOrder = true;
     }
+
 
     public IEnumerator WaitForDialogue(GameObject customer)
     {
