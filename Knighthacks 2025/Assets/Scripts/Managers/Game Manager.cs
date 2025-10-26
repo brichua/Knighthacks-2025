@@ -212,9 +212,6 @@ public class GameManager : MonoBehaviour
             yield return new WaitForSeconds(flickerDelay);
         }
 
-        // Now apply the health penalty
-        health--;
-
         // Reset tasks after applying the health change (preserves original behavior)
         taskManager.resetTasks();
 

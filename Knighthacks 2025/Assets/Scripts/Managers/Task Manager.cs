@@ -73,6 +73,7 @@ public class TaskManager : MonoBehaviour
     public GameObject strainer;
     public GameObject teaFlower;
     public GameObject kettle;
+    public GameObject stoveOn;
 
     public int step = 0;
     public bool kettleOnStove = false;
@@ -85,7 +86,7 @@ public class TaskManager : MonoBehaviour
     public bool lookedBack = false;
     public bool inBack = false;
 
-    public Animation kettleAnim;
+    public Animator kettleAnim;
     public GameObject sparkleAnim;
 
     public void takeOrder(GameObject customer1, Customer customer2)
@@ -299,6 +300,10 @@ public class TaskManager : MonoBehaviour
         tea = "green";
         step = 3;
         strainer.GetComponent<SpriteRenderer>().sprite = greenStrainer;
+        if(size == "small")
+            strainer.transform.position = strainerSmall.position;
+        else
+            strainer.transform.position = strainerLarge.position;
         strainer.SetActive(true);
     }
 
@@ -312,6 +317,10 @@ public class TaskManager : MonoBehaviour
         tea = "oolong";
         step = 3;
         strainer.GetComponent<SpriteRenderer>().sprite = oolongStrainer;
+        if (size == "small")
+            strainer.transform.position = strainerSmall.position;
+        else
+            strainer.transform.position = strainerLarge.position;
         strainer.SetActive(true);
     }
 
@@ -325,12 +334,18 @@ public class TaskManager : MonoBehaviour
         tea = "oolong";
         step = 3;
         strainer.GetComponent<SpriteRenderer>().sprite = blackStrainer;
+        if (size == "small")
+            strainer.transform.position = strainerSmall.position;
+        else
+            strainer.transform.position = strainerLarge.position;
         strainer.SetActive(true);
     }
 
     public void boilWater()
     {
+        Debug.Log("Boiling water.");
         kettle.transform.position = kettleStove.position;
+        stoveOn.SetActive(true);
         StartCoroutine(waitForBoil());
         waterBoiled = true;
     }
@@ -350,43 +365,42 @@ public class TaskManager : MonoBehaviour
             StartCoroutine(fadeText());
             return;
         }
+
+        stoveOn.SetActive(false);
+        StartCoroutine(PourRoutine());
+    }
+
+    private IEnumerator PourRoutine()
+    {
+        // Move kettle to cup
         kettle.transform.position = kettleCup.position;
-        //pouring animation
+
+        // Wait while pouring
+        yield return new WaitForSeconds(1.5f);
+
+        // Optional: play pouring animation
+        kettleAnim.Play("boiling");
+
+        // Move kettle to table after pouring
         kettle.transform.position = kettleTable.position;
+
+        // Update cup sprite based on tea & size
         if (size == "small")
         {
-            if (tea == "green")
-            {
-                teaFlower.GetComponent<SpriteRenderer>().sprite = smallGreenTea;
-            }
-            else if (tea == "oolong")
-            {
-                teaFlower.GetComponent<SpriteRenderer>().sprite = smallOolongTea;
-            }
-            else if (tea == "black")
-            {
-                teaFlower.GetComponent<SpriteRenderer>().sprite = smallBlackTea;
-            }
+            if (tea == "green") cup.GetComponent<SpriteRenderer>().sprite = smallGreenTea;
+            else if (tea == "oolong") cup.GetComponent<SpriteRenderer>().sprite = smallOolongTea;
+            else if (tea == "black") cup.GetComponent<SpriteRenderer>().sprite = smallBlackTea;
         }
-        else if (size == "large")
+        else // large
         {
-            if (tea == "green")
-            {
-                teaFlower.GetComponent<SpriteRenderer>().sprite = largeGreenTea;
-            }
-            else if (tea == "oolong")
-            {
-                teaFlower.GetComponent<SpriteRenderer>().sprite = largeOolongTea;
-            }
-            else if (tea == "black")
-            {
-                teaFlower.GetComponent<SpriteRenderer>().sprite = largeBlackTea;
-            }
+            if (tea == "green") cup.GetComponent<SpriteRenderer>().sprite = largeGreenTea;
+            else if (tea == "oolong") cup.GetComponent<SpriteRenderer>().sprite = largeOolongTea;
+            else if (tea == "black") cup.GetComponent<SpriteRenderer>().sprite = largeBlackTea;
         }
+
         strainer.SetActive(false);
         kettleAnim.Play("idle");
-        waterBoiled = true;
-        kettle.transform.position = kettleTable.position;
+        waterBoiled = false;
         step = 4;
         sparkleAnim.SetActive(true);
     }

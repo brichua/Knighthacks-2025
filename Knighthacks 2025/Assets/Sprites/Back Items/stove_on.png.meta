@@ -1,16 +1,25 @@
 fileFormatVersion: 2
-guid: ae0c86a55754b7048bd8d8edf58be953
+guid: 29f1b65bbd3a01747b5d26998fc7b898
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6723171800769458889
-    second: kettle2_0
+      213: 245558681338792701
+    second: stove_on_0
   - first:
-      213: 2621143500699575960
-    second: kettle2_1
+      213: 3221233005561901135
+    second: stove_on_1
   - first:
-      213: -1979984188141826192
-    second: kettle2_2
+      213: -5937263026904507563
+    second: stove_on_2
+  - first:
+      213: 4045990105439774058
+    second: stove_on_3
+  - first:
+      213: -8112537800213339249
+    second: stove_on_4
+  - first:
+      213: 528924412053884343
+    second: stove_on_5
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -119,13 +128,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: kettle2_0
+      name: stove_on_0
       rect:
         serializedVersion: 2
-        x: 162
-        y: 147
-        width: 94
-        height: 87
+        x: 39
+        y: 84
+        width: 74
+        height: 50
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -134,20 +143,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9c279c4c1218d4d50800000000000000
-      internalID: 6723171800769458889
+      spriteID: dfa46b4d156686300800000000000000
+      internalID: 245558681338792701
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: kettle2_1
+      name: stove_on_1
       rect:
         serializedVersion: 2
-        x: 234
-        y: 214
-        width: 9
-        height: 8
+        x: 80
+        y: 121
+        width: 29
+        height: 13
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -156,20 +165,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 896a580602c206420800000000000000
-      internalID: 2621143500699575960
+      spriteID: f40f74b0a5e14bc20800000000000000
+      internalID: 3221233005561901135
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: kettle2_2
+      name: stove_on_2
       rect:
         serializedVersion: 2
-        x: 238
-        y: 195
-        width: 15
-        height: 24
+        x: 39
+        y: 99
+        width: 33
+        height: 17
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -178,8 +187,74 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 07f8aec0fdea584e0800000000000000
-      internalID: -1979984188141826192
+      spriteID: 55bdb47ebba9a9da0800000000000000
+      internalID: -5937263026904507563
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stove_on_3
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 99
+        width: 33
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a65ab77709e362830800000000000000
+      internalID: 4045990105439774058
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stove_on_4
+      rect:
+        serializedVersion: 2
+        x: 49
+        y: 84
+        width: 23
+        height: 11
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f83ea5f4ad97a6f80800000000000000
+      internalID: -8112537800213339249
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stove_on_5
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 84
+        width: 23
+        height: 11
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7bd018d43fd175700800000000000000
+      internalID: 528924412053884343
       vertices: []
       indices: 
       edges: []
@@ -188,7 +263,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: b04267274e742be4b97babb60eb72eb7
+    spriteID: 9f25f4f76b1856b4b883121f78d046ae
     internalID: 0
     vertices: []
     indices: 
@@ -198,9 +273,12 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      kettle2_0: 6723171800769458889
-      kettle2_1: 2621143500699575960
-      kettle2_2: -1979984188141826192
+      stove_on_0: 245558681338792701
+      stove_on_1: 3221233005561901135
+      stove_on_2: -5937263026904507563
+      stove_on_3: 4045990105439774058
+      stove_on_4: -8112537800213339249
+      stove_on_5: 528924412053884343
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

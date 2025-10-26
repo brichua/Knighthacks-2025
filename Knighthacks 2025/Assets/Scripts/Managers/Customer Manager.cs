@@ -35,10 +35,10 @@ public class CustomerManager : MonoBehaviour
 
     void Start()
     {
-        /*double interval = Random.Range(20000, 40000);
+        double interval = Random.Range(20000, 40000);
         customerSpawnTimer = new Timer(interval);
         customerSpawnTimer.Elapsed += (s, e) => { spawnRequested = true; };
-        customerSpawnTimer.Start();*/
+        customerSpawnTimer.Start();
     }
 
     void Update()
@@ -53,7 +53,7 @@ public class CustomerManager : MonoBehaviour
             }
             //Reset timer regardless of whether the customer can spawn or not
             spawnRequested = false;
-            double interval = Random.Range(20000, 40000);
+            double interval = Random.Range(5000, 10000); // 5-10 seconds
             customerSpawnTimer = new Timer(interval);
             customerSpawnTimer.Elapsed += (s, e) => { spawnRequested = true; };
             customerSpawnTimer.Start();
@@ -302,7 +302,7 @@ public class CustomerManager : MonoBehaviour
             customerSpawnTimer.Dispose();
         }
 
-        double interval = Random.Range(20000, 40000); // 20–40 seconds
+        double interval = Random.Range(5000, 10000); // 5-10 seconds
         customerSpawnTimer = new Timer(interval);
         customerSpawnTimer.Elapsed += (s, e) => { spawnRequested = true; };
         customerSpawnTimer.Start();
