@@ -368,8 +368,26 @@ public class TaskManager : MonoBehaviour
 
     private IEnumerator PourRoutine()
     {
-        // Move kettle to cup
+        // Store original rotation
+        Quaternion originalRotation = kettle.transform.rotation;
+
+        // Target rotation to match the cup
+        Quaternion cupRotation = kettleCup.rotation;
+
+        // Smoothly move and rotate to cup
+        float moveDuration = 0.5f; // adjust timing as needed
+        float t = 0f;
+        Vector3 startPos = kettle.transform.position;
+        while (t < moveDuration)
+        {
+            t += Time.deltaTime;
+            float normalized = t / moveDuration;
+            kettle.transform.position = Vector3.Lerp(startPos, kettleCup.position, normalized);
+            kettle.transform.rotation = Quaternion.Lerp(originalRotation, cupRotation, normalized);
+            yield return null;
+        }
         kettle.transform.position = kettleCup.position;
+        kettle.transform.rotation = cupRotation;
 
         // Wait while pouring
         yield return new WaitForSeconds(1.5f);
@@ -377,8 +395,19 @@ public class TaskManager : MonoBehaviour
         // Optional: play pouring animation
         kettleAnim.Play("boiling");
 
-        // Move kettle to table after pouring
+        // Smoothly move and rotate back to table
+        t = 0f;
+        startPos = kettle.transform.position;
+        while (t < moveDuration)
+        {
+            t += Time.deltaTime;
+            float normalized = t / moveDuration;
+            kettle.transform.position = Vector3.Lerp(startPos, kettleTable.position, normalized);
+            kettle.transform.rotation = Quaternion.Lerp(cupRotation, originalRotation, normalized);
+            yield return null;
+        }
         kettle.transform.position = kettleTable.position;
+        kettle.transform.rotation = originalRotation;
 
         // Update cup sprite based on tea & size
         if (size == "small")
@@ -400,6 +429,7 @@ public class TaskManager : MonoBehaviour
         step = 4;
         sparkleAnim.SetActive(true);
     }
+
 
     public void finishTea()
     {

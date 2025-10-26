@@ -53,8 +53,9 @@ public class CustomerManager : MonoBehaviour
                 SpawnCustomer();
             }
             //Reset timer regardless of whether the customer can spawn or not
+            Debug.Log("Spawn Timer Reset");
             spawnRequested = false;
-            double interval = Random.Range(5000, 10000); // 5-10 seconds
+            double interval = Random.Range(20000, 40000);
             customerSpawnTimer = new Timer(interval);
             customerSpawnTimer.Elapsed += (s, e) => { spawnRequested = true; };
             customerSpawnTimer.Start();
