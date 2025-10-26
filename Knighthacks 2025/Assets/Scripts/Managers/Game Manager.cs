@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     public GameObject tvObject;
     public GameObject endButton;
 
+    public AudioSource bgMusic;
     public Volume mainVolume;
     public Volume scareVolume;
     private Vignette vignette;
@@ -99,6 +100,7 @@ public class GameManager : MonoBehaviour
         day = 1;
         canvas.SetActive(true);
         startDay(day);
+        bgMusic.Play();
         customerManager.StartCustomerSpawnTimer();
     }
 
