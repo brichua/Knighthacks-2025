@@ -8,6 +8,7 @@ public class AnomalyManager : MonoBehaviour
     //Variables for AnomalyManager
     public CustomerManager customerManager;
     public GameManager gameManager;
+    public TaskManager taskManager;
     public GameObject[] possibleAnomalies;
     public List<GameObject> activeAnomalies;
     public int startingOdds = 10;
@@ -58,6 +59,11 @@ public class AnomalyManager : MonoBehaviour
                         case 3:
                             customerManager.customers[i].anomaly.ApplyToCustomer(customerManager.customers[i]);
                             break;
+                        case 4: 
+                            customerManager.customers[i].anomaly.ApplyToCustomer(customerManager.customers[i]);
+                            break;
+                        //case 5:
+                            
                     }
                 }
             }
