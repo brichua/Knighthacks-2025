@@ -143,7 +143,7 @@ public class AnomalyManager : MonoBehaviour
         {
             if (iterations++ == 1000) { return false; }
             rollAnomaly = Random.Range(1, possibleAnomalies.Length);
-            rollAnomaly = 3;
+            rollAnomaly = 4;
             switch (rollAnomaly)
             {
                 case 0:
