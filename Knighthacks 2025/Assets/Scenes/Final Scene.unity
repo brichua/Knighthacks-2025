@@ -1826,7 +1826,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &460303043
 Transform:
   m_ObjectHideFlags: 0
@@ -8484,7 +8484,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   activeAnomalies: []
-  startingOdds: 6
+  startingOdds: 4
   possibleObviousSprites:
   - {fileID: -6097274898374520218, guid: ea496b69c315bcf4dbf35a7bd7f31c34, type: 3}
   - {fileID: 940144791894296791, guid: e069805f6daf2884fb94f32f2a423821, type: 3}
@@ -8505,7 +8505,6 @@ MonoBehaviour:
   missingBackRoomSprite: {fileID: 4912634911728840606, guid: 8e7699cbc2095d849ae97d78726dd871, type: 3}
   swappedBackRoomSprite: {fileID: -8824931570626994710, guid: 00ca426c680676d4291e52d4f3404121, type: 3}
   sameLabelBackRoomSprite: {fileID: 4114270848842129476, guid: ac71efe83bb8c7446b8e78ec9b48e077, type: 3}
-  missingItemSprite: {fileID: 4912634911728840606, guid: 8e7699cbc2095d849ae97d78726dd871, type: 3}
   tvRoomSprite: {fileID: 3565912861589298917, guid: 214e77b9646dd9c459e8203d6188f820, type: 3}
   tvStatus1: {fileID: -3667019684146795, guid: 030781877fed9844097be6561109e99f, type: 3}
   tvStatus2: {fileID: 2876168249497698210, guid: 63f26867b3b55954cb50aba7665d66d4, type: 3}

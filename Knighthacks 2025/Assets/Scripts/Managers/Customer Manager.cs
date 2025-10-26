@@ -221,7 +221,7 @@ public class CustomerManager : MonoBehaviour
         while (true)
         {
             // Wait for a random interval between spawns (20-40 seconds)
-            float interval = Random.Range(20f, 40f);
+            float interval = Random.Range(10f, 20f);
             Debug.Log($"CustomerSpawnLoop: waiting {interval} seconds (stopSpawning={stopSpawning})");
             yield return new WaitForSeconds(interval);
 

@@ -17,7 +17,19 @@ public class Anomaly3 : Anomaly
 
     public override void ApplyToCustomer(Customer customer)
     {
-        int index = customer.spriteIndex / 2;
+        int index = 0;
+        if (customer.spriteIndex == 4)
+        {
+            index = 2;
+        }
+        else if (customer.spriteIndex == 0)
+        {
+            index = 0;
+        }
+        else if (customer.spriteIndex == 2)
+        {
+            index = 1;
+        }
         if (characterChangeSprites != null && characterChangeSprites.Length > index)
         {
             customer.SpriteRenderer.sprite = characterChangeSprites[index];
