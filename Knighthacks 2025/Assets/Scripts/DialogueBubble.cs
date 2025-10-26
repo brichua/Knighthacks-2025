@@ -11,7 +11,7 @@ public class DialogueBubble : MonoBehaviour
     public Image[] itemImages = new Image[3];
 
     [Header("Behavior")]
-    public Vector3 bubbleWorldOffset = new Vector3(0f, 2f, 0f);
+    public Vector3 bubbleWorldOffset = new Vector3(0f, 20f, 0f);
     public float revealDelay = 0.5f;
     public float mouthToggleInterval = 0.12f;
     public float autoHideAfter = 0.5f;

@@ -46,6 +46,7 @@ public class DialogueManager : MonoBehaviour
         // instantiate under canvas
         Transform parent = uiCanvas != null ? uiCanvas.transform : null;
         GameObject go = Instantiate(bubblePrefab, parent);
+        go.transform.rotation = Quaternion.Euler(0, 0, 45f);
         DialogueBubble bubble = go.GetComponent<DialogueBubble>();
         if (bubble == null)
         {
