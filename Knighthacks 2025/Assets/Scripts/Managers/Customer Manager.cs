@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class CustomerManager : MonoBehaviour
 {
     public GameObject customerPrefab;
+    public GameManager gameManager;
     public TaskManager taskManager;
     public List<Customer> customers = new List<Customer>();
     public List<GameObject> customerGO = new List<GameObject>();
@@ -47,7 +48,7 @@ public class CustomerManager : MonoBehaviour
         if (spawnRequested)
         {
             //Check queues to make sure customer can actually spawn
-            if (customerGO.Count < 3 && customerLine.Count < 3 && maxCustomers > 0)
+            if (customerGO.Count < 3 && customerLine.Count < 3 && maxCustomers > 0 && gameManager.getStartGame())
             {
                 //Spawn can happen
                 SpawnCustomer();
@@ -175,7 +176,7 @@ public class CustomerManager : MonoBehaviour
         orderSprites[2] = teaFlowerSprites[flowerRoll];
         
         //Generate Customer Sprite
-        int spriteIndex = Random.Range(0, 3) * 2;
+        int spriteIndex = Random.Range(0, 2) * 2;
 
         //Roll for if customer will be an anomaly
         if (AnomalyManager.rollForAnomaly()) {

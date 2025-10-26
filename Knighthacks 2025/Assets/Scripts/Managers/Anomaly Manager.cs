@@ -11,7 +11,7 @@ public class AnomalyManager : MonoBehaviour
     public TaskManager taskManager;
     public GameObject[] possibleAnomalies;
     public List<GameObject> activeAnomalies;
-    public int startingOdds = 10;
+    public int startingOdds = 5;
     private int odds;
 
     //Variables that will be passed into different anomaly types
@@ -110,7 +110,7 @@ public class AnomalyManager : MonoBehaviour
             if (roll <= 1)
             {
                 //Succeeds, generate random Anomaly
-                odds = 10;
+                odds = 5;
                 return true;
             }
             //Fails

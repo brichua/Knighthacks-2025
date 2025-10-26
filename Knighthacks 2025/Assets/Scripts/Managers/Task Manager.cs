@@ -327,7 +327,7 @@ public class TaskManager : MonoBehaviour
             StartCoroutine(fadeText());
             return;
         }
-        tea = "oolong";
+        tea = "black";
         step = 3;
         strainer.GetComponent<SpriteRenderer>().sprite = blackStrainer;
         if (size == "small")

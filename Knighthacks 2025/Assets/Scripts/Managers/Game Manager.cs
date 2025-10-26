@@ -22,7 +22,6 @@ public class GameManager : MonoBehaviour
     public GameObject endButton;
 
     public AudioSource bgMusic;
-    public Volume mainVolume;
     public Volume scareVolume;
     private Vignette vignette;
 
@@ -30,7 +29,7 @@ public class GameManager : MonoBehaviour
     public Sprite[] scareSprites;
     public CanvasGroup fadeCanvasGroup;
 
-    public float vignetteMaxIntensity = 0.6f;
+    public float vignetteMaxIntensity = 1;
     public float vignetteGrowTime = 1.2f;
     public float scareDuration = 0.6f;
 
@@ -51,6 +50,7 @@ public class GameManager : MonoBehaviour
     public int health;
     public int day;
     public bool dayEnd = false;
+    public bool gameStart = true;
 
     // Prevent overlapping error sequences
     private bool isHandlingTvError = false;
@@ -96,6 +96,7 @@ public class GameManager : MonoBehaviour
         canvas.SetActive(true);
         startDay(day);
         bgMusic.Play();
+        gameStart = true;
         customerManager.StartCustomerSpawnTimer();
     }
 
@@ -249,12 +250,21 @@ public class GameManager : MonoBehaviour
         background.sprite = night;
     }
 
+    public bool getStartGame()
+    {
+        return gameStart;
+    }
+
     public IEnumerator ScareAndResetSequence()
     {
         Debug.Log("Starting scare sequence...");
-
+        background.sprite= night;
+        for(int i = 0; i < customerManager.customerGO.Count; i++){
+            customerManager.destroyCustomer(i);
+        }
+        gameStart = false;
         // --- PREPARE ---
-        if (mainVolume == null || scareVolume == null)
+        if (scareVolume == null)
         {
             Debug.LogWarning("Missing volume references!");
             yield break;
@@ -263,10 +273,6 @@ public class GameManager : MonoBehaviour
         if (scareVolume.profile.TryGet(out Vignette vignetteEffect))
         {
             vignette = vignetteEffect;
-        }
-        else if (mainVolume.profile.TryGet(out Vignette fallbackVignette))
-        {
-            vignette = fallbackVignette;
         }
         else
         {
@@ -283,15 +289,6 @@ public class GameManager : MonoBehaviour
 
         // --- 1. GROW VIGNETTE + BLEND IN SECOND VOLUME ---
         float elapsed = 0f;
-        while (elapsed < vignetteGrowTime)
-        {
-            elapsed += Time.deltaTime;
-            float t = elapsed / vignetteGrowTime;
-
-            vignette.intensity.Override(Mathf.Lerp(0f, vignetteMaxIntensity, t));
-            scareVolume.weight = Mathf.Lerp(0f, 1f, t);
-            yield return null;
-        }
         vignette.intensity.Override(vignetteMaxIntensity);
         scareVolume.weight = 1f;
 
