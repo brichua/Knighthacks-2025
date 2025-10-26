@@ -4,8 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(RectTransform))]
+[RequireComponent(typeof(Button))]
 public class DialogueBubble : MonoBehaviour
 {
+    private Button completeOrderButton;
+    public TaskManager taskManager;
+    public GameManager gameManager;
     public Image speechBubbleImage;
     public Sprite speechBubbleSprite;
     public Image[] itemImages = new Image[3];
@@ -27,7 +31,13 @@ public class DialogueBubble : MonoBehaviour
     private Coroutine mouthCoroutine;
     public event Action onBubbleDestroyed;
 
-    void Awake() => rect = GetComponent<RectTransform>();
+    void Awake()
+    {
+        rect = GetComponent<RectTransform>();
+        completeOrderButton = GetComponent<Button>();
+        if (completeOrderButton != null)
+            completeOrderButton.onClick.AddListener(CompleteOrder);
+    }
 
     void Update()
     {
@@ -53,6 +63,12 @@ public class DialogueBubble : MonoBehaviour
         this.uiCanvas = canvas ?? FindObjectOfType<Canvas>();
         this.worldCamera = cam ?? Camera.main;
         this.canvasRect = uiCanvas != null ? uiCanvas.GetComponent<RectTransform>() : null;
+        
+        // Find managers if they haven't been assigned
+        if (taskManager == null)
+            taskManager = FindObjectOfType<TaskManager>();
+        if (gameManager == null)
+            gameManager = FindObjectOfType<GameManager>();
 
         if (speechBubbleImage != null && speechBubbleSprite != null)
             speechBubbleImage.sprite = speechBubbleSprite;
@@ -160,6 +176,78 @@ public class DialogueBubble : MonoBehaviour
         Camera camParam = (uiCanvas.renderMode == RenderMode.ScreenSpaceOverlay) ? null : cam;
         if (RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPoint, camParam, out Vector2 localPoint))
             rect.anchoredPosition = localPoint;
+    }
+
+    private IEnumerator QuarantineAndDestroy()
+    {
+        yield return new WaitForSeconds(2f);
+        if (customer != null && taskManager != null)
+        {
+            taskManager.customerManager.destroyCustomer(customer);
+        }
+    }
+
+    public void CompleteOrder()
+    {
+        if (customer == null || taskManager == null || gameManager == null) return;
+        
+        bool sizeMatch = taskManager.tea == customer.order[0];
+        bool teaMatch = taskManager.size == customer.order[1];
+        bool snackMatch = taskManager.snack == customer.order[2];
+        bool flowerMatch = taskManager.flower == customer.order[3];
+        bool orderMatch = sizeMatch && teaMatch && snackMatch && flowerMatch;
+        
+        Debug.Log($"Order Match Details:\n" +
+                  $"Size: {taskManager.tea} vs {customer.order[0]} = {teaMatch}\n" +
+                  $"Tea: {taskManager.size} vs {customer.order[1]} = {sizeMatch}\n" +
+                  $"Snack: {taskManager.snack} vs {customer.order[2]} = {snackMatch}\n" +
+                  $"Flower: {taskManager.flower} vs {customer.order[3]} = {flowerMatch}\n" +
+                  $"Overall Match: {orderMatch}");
+        
+        bool accusationCorrect = Accusation.accuse(taskManager.anomaly, customer);
+        Debug.Log($"Accusation correct: {accusationCorrect} (Customer isAnomaly: {customer.isAnomaly}, Accused anomaly: {taskManager.anomaly})");
+        
+        // If either order is wrong or accusation is incorrect, subtract health
+        if (!orderMatch || !accusationCorrect)
+        {
+            gameManager.subtractHealth();
+        }
+        
+        // Only mark as served if both order and accusation are correct
+        if (orderMatch && accusationCorrect)
+        {
+            customer.served = true;
+        }
+
+        // Hide all objects
+        if (taskManager.snackObject != null) taskManager.snackObject.SetActive(false);
+        if (taskManager.teaObject != null) taskManager.teaObject.SetActive(false);
+        if (taskManager.decorationObject != null) taskManager.decorationObject.SetActive(false);
+        if (taskManager.teaFlower != null) taskManager.teaFlower.SetActive(false);
+
+        // Check remaining customers and update background
+        GameObject[] remainingCustomers = GameObject.FindGameObjectsWithTag("Customer");
+        if (remainingCustomers.Length <= 2) // 1 because current customer hasn't been destroyed yet
+        {
+            taskManager.background.sprite = taskManager.noTrayBackground;
+            taskManager.tray = false;
+        }
+        else
+        {
+            taskManager.background.sprite = taskManager.trayBackground;
+            taskManager.tray = true;
+        }
+
+        // Start quarantine sequence and reset tasks
+        StartCoroutine(QuarantineAndDestroy());
+        taskManager.resetTasks();
+        DestroySelf();
+    }
+
+    private void OnDestroy()
+    {
+        if (completeOrderButton != null)
+            completeOrderButton.onClick.RemoveListener(CompleteOrder);
     }
 
     private void DestroySelf()

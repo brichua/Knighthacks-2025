@@ -4170,8 +4170,8 @@ MonoBehaviour:
   - {fileID: 8567584238836716854, guid: 017b918a1b43b124092502d93f2b39cb, type: 3}
   teaFlowerSprites:
   - {fileID: 857312311372029537, guid: acd1966c9d7fe214e874147e50ec917f, type: 3}
-  - {fileID: 4452753326731172654, guid: 5545aa6b3602bb44996a07590bf9bf04, type: 3}
   - {fileID: -3436096000771677994, guid: d5069c9cf1c7c764980de2994abcabea, type: 3}
+  - {fileID: 4452753326731172654, guid: 5545aa6b3602bb44996a07590bf9bf04, type: 3}
 --- !u!4 &1198674599
 Transform:
   m_ObjectHideFlags: 0
@@ -8259,13 +8259,25 @@ MonoBehaviour:
   possibleSpookySprites:
   - {fileID: -3543814495099850191, guid: 0d953f450e1e5e040a86cd245a21af1f, type: 3}
   - {fileID: 1893780208129416594, guid: 13b2a8699bc0e674ab424d1ebdfacba0, type: 3}
+  mainRoomRenderer: {fileID: 0}
   normalRoomSprite: {fileID: -4364034832326165938, guid: 017de083c84eb3a44a1691108a095e6f, type: 3}
   anomalyRoomSprite: {fileID: -8483731395159641348, guid: 50ddbcfbea40ff842bcb59d4752358c3, type: 3}
+  backroomRenderer: {fileID: 0}
+  normalBackRoomSprite: {fileID: 0}
+  missingBackRoomSprite: {fileID: 0}
+  swappedBackRoomSprite: {fileID: 0}
+  sameLabelBackRoomSprite: {fileID: 0}
   tvStatus1: {fileID: -3667019684146795, guid: 030781877fed9844097be6561109e99f, type: 3}
   tvStatus2: {fileID: 2876168249497698210, guid: 63f26867b3b55954cb50aba7665d66d4, type: 3}
   tvStatus3: {fileID: 4318337310983461068, guid: 3b2cdcbd625fce448aae7f6a315b8dd5, type: 3}
   normalTVSprite: {fileID: -3667019684146795, guid: 030781877fed9844097be6561109e99f, type: 3}
   anomalyTVSprite: {fileID: -3742553133711965971, guid: 51f24b49fd57965499070761f1b5da41, type: 3}
+  currentTVSprite: {fileID: 0}
+  TVRenderer: {fileID: 0}
+  tvErrorSprite: {fileID: 0}
+  kettle: {fileID: 0}
+  kettleRenderer: {fileID: 0}
+  kettleSprite: {fileID: 0}
 --- !u!4 &2135412579
 Transform:
   m_ObjectHideFlags: 0

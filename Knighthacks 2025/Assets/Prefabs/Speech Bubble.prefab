@@ -109,7 +109,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -45.807}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 21.7, y: -5.9}
+  m_AnchoredPosition: {x: 21.2, y: -6.4}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6540362745144255818
@@ -162,6 +162,7 @@ GameObject:
   - component: {fileID: 2209512081511347397}
   - component: {fileID: 1376858689709024973}
   - component: {fileID: 7841413404256971212}
+  - component: {fileID: 5288166542915725863}
   m_Layer: 5
   m_Name: Speech Bubble
   m_TagString: Untagged
@@ -241,6 +242,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bca162d2c26b0cf4f8d9953d2017f8b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DialogueBubble
+  taskManager: {fileID: 0}
+  gameManager: {fileID: 0}
   speechBubbleImage: {fileID: 0}
   speechBubbleSprite: {fileID: 0}
   itemImages:
@@ -253,6 +256,50 @@ MonoBehaviour:
   autoHideAfter: 0.5
   keepUntilServed: 1
   followLerp: 0.15
+--- !u!114 &5288166542915725863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3020507565353312504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 1376858689709024973}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &8478068171274842786
 GameObject:
   m_ObjectHideFlags: 0
@@ -287,7 +334,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -91.564}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -18.4, y: -21.6}
+  m_AnchoredPosition: {x: -21.7, y: -24.9}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5609334883955594144
@@ -318,7 +365,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 857312311372029537, guid: acd1966c9d7fe214e874147e50ec917f, type: 3}
+  m_Sprite: {fileID: -3436096000771677994, guid: d5069c9cf1c7c764980de2994abcabea, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
