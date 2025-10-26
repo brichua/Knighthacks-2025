@@ -29,6 +29,11 @@ public class GameManager : MonoBehaviour
     public Sprite[] scareSprites;
     public CanvasGroup fadeCanvasGroup;
 
+    // --- SFX for scare ---
+    [Header("Scare SFX")]
+    public AudioSource sfxSource;
+    public AudioClip boomClip;
+
     public float vignetteMaxIntensity = 1;
     public float vignetteGrowTime = 1.2f;
     public float scareDuration = 0.6f;
@@ -228,7 +233,8 @@ public class GameManager : MonoBehaviour
             else if (health == 1 && tvStatus3 != null)
             {
                 tv.sprite = tvStatus3;
-            } else if (health <= 0)
+            }
+            else if (health <= 0)
             {
                 StartCoroutine(ScareAndResetSequence());
             }
@@ -259,15 +265,19 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Starting scare sequence...");
         background.sprite = night;
-        for (int i = 0; i < customerManager.customerGO.Count; i++) {
+        for (int i = 0; i < customerManager.customerGO.Count; i++)
+        {
             customerManager.destroyCustomer(i);
         }
-        try {
+        try
+        {
             for (int i = 0; i <= customerManager.customerGO.Count; i++)
             {
                 customerManager.destroyCustomer(i);
             }
-        }catch (System.Exception e) {
+        }
+        catch (System.Exception e)
+        {
         }
         gameStart = false;
         // --- PREPARE ---
@@ -302,7 +312,22 @@ public class GameManager : MonoBehaviour
         // --- 2. SPAWN RANDOM SCARE SPRITE ---
         if (scareSprites != null && scareSprites.Length > 0 && scareSpriteRenderer != null)
         {
-            scareSpriteRenderer.sprite = scareSprites[Random.Range(0, scareSprites.Length)];
+            int selectedIndex = Random.Range(0, scareSprites.Length);
+            scareSpriteRenderer.sprite = scareSprites[selectedIndex];
+
+            // Play boom SFX once if selected sprite index == 0
+            if (selectedIndex == 0 && boomClip != null)
+            {
+                if (sfxSource != null)
+                {
+                    sfxSource.PlayOneShot(boomClip);
+                }
+                else
+                {
+                    AudioSource.PlayClipAtPoint(boomClip, Camera.main != null ? Camera.main.transform.position : Vector3.zero);
+                }
+            }
+
             scareSpriteRenderer.gameObject.SetActive(true);
             scareSpriteRenderer.transform.localScale = Vector3.one * 0.8f;
 

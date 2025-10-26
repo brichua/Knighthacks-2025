@@ -89,6 +89,11 @@ public class TaskManager : MonoBehaviour
     public Animator kettleAnim;
     public GameObject sparkleAnim;
 
+    [Header("Audio")]
+    // Assign an AudioSource in the inspector; optionally assign a clip.
+    public AudioSource pourAudioSource;
+    public AudioClip pourAudioClip;
+
     public void takeOrder(GameObject customer1, Customer customer2)
     {
         Debug.Log("Taking order from customer.");
@@ -390,7 +395,21 @@ public class TaskManager : MonoBehaviour
         kettle.transform.rotation = cupRotation;
 
         // Wait while pouring
+        // Start pour SFX (looping) if assigned
+        if (pourAudioSource != null)
+        {
+            if (pourAudioClip != null) pourAudioSource.clip = pourAudioClip;
+            pourAudioSource.loop = true;
+            pourAudioSource.Play();
+        }
+
         yield return new WaitForSeconds(1.5f);
+
+        // Stop pour SFX as soon as pouring wait finishes
+        if (pourAudioSource != null && pourAudioSource.isPlaying)
+        {
+            pourAudioSource.Stop();
+        }
 
         // Optional: play pouring animation
         kettleAnim.Play("boiling");
@@ -408,6 +427,12 @@ public class TaskManager : MonoBehaviour
         }
         kettle.transform.position = kettleTable.position;
         kettle.transform.rotation = originalRotation;
+
+        // Ensure SFX is stopped at end of coroutine (safety)
+        if (pourAudioSource != null && pourAudioSource.isPlaying)
+        {
+            pourAudioSource.Stop();
+        }
 
         // Update cup sprite based on tea & size
         if (size == "small")
