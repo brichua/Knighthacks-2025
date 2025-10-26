@@ -90,8 +90,14 @@ public class TaskManager : MonoBehaviour
         tray = true;
         background.sprite = trayBackground;
         dialogueManager.PlayOrderSequenceForCustomer(customer2);
-        customerManager.moveCustomerToWaitingLine(customer1);
+        StartCoroutine(WaitForDialogue(customer1));
         lookedBack = false;
+    }
+
+    public IEnumerator WaitForDialogue(GameObject customer)
+    {
+        yield return new WaitForSeconds(1.5f);
+        customerManager.moveCustomerToWaitingLine(customer);
     }
 
     public bool completeOrder(CustomerManager customerManager)

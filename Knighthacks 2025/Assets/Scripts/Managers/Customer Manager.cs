@@ -9,10 +9,8 @@ public class CustomerManager : MonoBehaviour
 {
     public GameObject customerPrefab;
     public TaskManager taskManager;
-    //Determines who's in line waiting for an order
     public List<Customer> customers = new List<Customer>();
     public List<GameObject> customerGO = new List<GameObject>();
-    //Determines who's in line waiting to order
     public List<GameObject> customerLine = new List<GameObject>();
     public int maxCustomers = 12;
     public AnomalyManager AnomalyManager;
@@ -47,23 +45,16 @@ public class CustomerManager : MonoBehaviour
     {
         if (spawnRequested)
         {
-            // Check if there are fewer than 3 customers waiting
-            int waitingCount = customerGO.Count; // or use customerLine.Count if that better reflects "waiting area"
-
-            // Only spawn if there�s room in the waiting area
-            if (waitingCount < 3 && maxCustomers > 0)
+            //Check queues to make sure customer can actually spawn
+            if (customerGO.Count <= 3 && customerLine.Count <= 3 && maxCustomers > 0)
             {
+                //Spawn can happen
                 SpawnCustomer();
             }
-            else
-            {
-                Debug.Log("Spawn paused � waiting area full.");
-            }
-
-            // Reset spawn timer regardless
+            //Reset timer regardless of whether the customer can spawn or not
             spawnRequested = false;
             double interval = Random.Range(20000, 40000);
-            customerSpawnTimer = new System.Timers.Timer(interval);
+            customerSpawnTimer = new Timer(interval);
             customerSpawnTimer.Elapsed += (s, e) => { spawnRequested = true; };
             customerSpawnTimer.Start();
         }
@@ -84,8 +75,6 @@ public class CustomerManager : MonoBehaviour
 
     public void SpawnCustomer()
     {
-        //Generate Prefab
-        
         GameObject newCustomer = Instantiate(customerPrefab, new Vector3(13f, -0.76f, 10f), Quaternion.identity);
         Customer customer = newCustomer.GetComponent<Customer>();
         maxCustomers--;
@@ -190,7 +179,7 @@ public class CustomerManager : MonoBehaviour
         if (AnomalyManager.rollForAnomaly()) {
             // Customer is an anomaly
             Debug.Log("Anomaly Spawned");
-            customer.Initialize(choices, true, spriteIndex, orderSprites);
+            customer.Initialize(choices, true, spriteIndex * 2, orderSprites);
             AnomalyManager.generateAnomaly(customer);
         }
         else {
@@ -229,35 +218,33 @@ public class CustomerManager : MonoBehaviour
         Canvas canvas = customer.GetComponentInChildren<Canvas>(true);
         if (canvas != null)
         {
-            canvas.gameObject.SetActive(false);
-        }
-
+            //canvas.gameObject.SetActive(false);
+        }   
         Vector3 targetPosition = new Vector3(0, 0, 10f);
         float speed = 5f;
-
-        // Determine this customer's position in line
-        int indexInLine = customerLine.IndexOf(customer);
-
-        switch (indexInLine)
+        for (int i = 0; i < customerGO.Count; i++)
         {
-            case 0:
-                targetPosition.x = -8.08f;
-                targetPosition.y = 0.53f;
-                break;
-            case 1:
-                targetPosition.x = -4.65f;
-                targetPosition.y = 0.53f;
-                break;
-            case 2:
-                targetPosition.x = -1.18f;
-                targetPosition.y = 0.53f;
-                break;
+            if (customerGO[i] != null) 
+            {
+                switch (i){
+                    case 0:
+                        targetPosition.x = -8.08f;
+                        targetPosition.y = 0.53f;
+                        break;
+                    case 1:
+                        targetPosition.x = -4.65f;
+                        targetPosition.y = 0.53f;
+                        break;
+                    case 2:
+                        targetPosition.x = -1.18f;
+                        targetPosition.y = 0.53f;
+                        break;
+                }
+            }
         }
-
         StartCoroutine(MoveCustomerCoroutine(customer, targetPosition, speed));
         registerOccupied = false;
     }
-
     //Smoothly moves the customer
     private IEnumerator MoveCustomerCoroutine(GameObject customer, Vector3 targetPos, float speed)
     {
@@ -315,7 +302,7 @@ public class CustomerManager : MonoBehaviour
             customerSpawnTimer.Dispose();
         }
 
-        double interval = Random.Range(20000, 40000); // 20�40 seconds
+        double interval = Random.Range(20000, 40000); // 20–40 seconds
         customerSpawnTimer = new Timer(interval);
         customerSpawnTimer.Elapsed += (s, e) => { spawnRequested = true; };
         customerSpawnTimer.Start();
