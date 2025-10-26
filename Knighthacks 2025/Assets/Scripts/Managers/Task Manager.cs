@@ -105,7 +105,7 @@ public class TaskManager : MonoBehaviour
         customerManager.moveCustomerToWaitingLine(customer);
     }
 
-    public void completeOrder()
+    public void completeOrder(Customer customer)
     {
         if (snackChosen && teaChosen && flowerChosen)
         {
@@ -116,16 +116,12 @@ public class TaskManager : MonoBehaviour
                 background.sprite = noTrayBackground;
             }
 
-            for (int i = 0; i < customerManager.customers.Count; i++)
+            if (size == customer.order[0] && tea == customer.order[1] && snack == customer.order[2] && flower == customer.order[3])
             {
-                if (size == customerManager.customers[i].order[0] && tea == customerManager.customers[i].order[1] &&
-                    snack == customerManager.customers[i].order[2] && flower == customerManager.customers[i].order[3])
+                if (Accusation.accuse(anomaly, customer))
                 {
-                    if (Accusation.accuse(anomaly, customerManager.customers[i]))
-                    {
-                        customerManager.customers[i].served = true;
-                        customerManager.destroyCustomer(i);
-                    }
+                    customer.served = true;
+                    customerManager.destroyCustomer(customer);
                 }
             }
             gameManager.subtractHealth();
