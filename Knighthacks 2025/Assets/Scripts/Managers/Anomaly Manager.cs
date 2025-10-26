@@ -37,6 +37,7 @@ public class AnomalyManager : MonoBehaviour
         //This will check if the user is turned to the backside to trigger anomalies
         if (customerManager.TaskManager.lookedBack == true)
         {
+            customerManager.TaskManager.lookedBack = false;
             for (int i = 0; i < customerManager.customers.Count; i++)
             {
                 //If the customer is an anomaly AND has not been activated, activate it
