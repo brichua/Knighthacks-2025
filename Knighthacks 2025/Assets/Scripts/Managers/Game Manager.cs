@@ -66,6 +66,8 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         SetCursor(cursorDefault);
+        health = 3;
+        day = 1;
     }
 
     public void SetCursor(Texture2D texture)
@@ -116,8 +118,6 @@ public class GameManager : MonoBehaviour
     public void startGame()
     {
         startButton.SetActive(false);
-        health = 3;
-        day = 1;
         canvas.SetActive(true);
         startDay(day);
         bgMusic.Play();
@@ -181,6 +181,7 @@ public class GameManager : MonoBehaviour
         }
 
         yield return new WaitForSeconds(holdAfterFadeToBlack);
+        
 
         // Fade from black
         t = 0f;
@@ -278,6 +279,7 @@ public class GameManager : MonoBehaviour
     {
         dayEnd = false;
         endButton.SetActive(true);
+        startButton.SetActive(true);
         day++;
         background.sprite = night;
     }
@@ -291,6 +293,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Starting scare sequence...");
         background.sprite = night;
+        taskManager.background.sprite = taskManager.noTrayBackground;
         for (int i = 0; i < customerManager.customerGO.Count; i++)
         {
             customerManager.destroyCustomer(i);
@@ -425,6 +428,10 @@ public class GameManager : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
+        startButton.SetActive(true);
+        tvObject.SetActive(false);
+        day++;
+        if (tvStatus1 != null) tv.sprite = tvStatus1;
         // --- 5. FADE FROM BLACK ---
         elapsed = 0f;
         while (elapsed < fadeDuration)
@@ -437,7 +444,6 @@ public class GameManager : MonoBehaviour
         fadeCanvasGroup.gameObject.SetActive(false);
 
         // --- 6. ENABLE START BUTTON AGAIN ---
-        startButton.SetActive(true);
 
         Debug.Log("Scare and reset complete.");
     }
