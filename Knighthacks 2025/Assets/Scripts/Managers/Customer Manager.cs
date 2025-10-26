@@ -46,7 +46,7 @@ public class CustomerManager : MonoBehaviour
         if (spawnRequested)
         {
             //Check queues to make sure customer can actually spawn
-            if (customerGO.Count <= 3 && customerLine.Count <= 3 && maxCustomers > 0)
+            if (customerGO.Count < 3 && customerLine.Count < 3 && maxCustomers > 0)
             {
                 //Spawn can happen
                 SpawnCustomer();
