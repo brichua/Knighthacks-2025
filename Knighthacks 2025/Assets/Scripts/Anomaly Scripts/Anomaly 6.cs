@@ -2,10 +2,12 @@ using UnityEngine;
 
 public class Anomaly6 : Anomaly
 {
-
-    public Anomaly6()
+    public Sprite primaryRoom;
+    public Sprite alternateRoom;
+    public Anomaly6(Sprite primaryRoom, Sprite alternateRoom)
     {
-
+        this.primaryRoom = primaryRoom;
+        this.alternateRoom = alternateRoom;
     }
     public override bool CanSpawn()
     {
@@ -17,10 +19,13 @@ public class Anomaly6 : Anomaly
     }
 
     // Set temp sprite so that we can swap sprites
-    public void swapSprites(SpriteRenderer stock1, SpriteRenderer stock2, Sprite sprite1, Sprite sprite2)
+    public void changeGameObjectSprite(SpriteRenderer obj)
     {
-        Sprite tempSprite1 = sprite1;
-        stock1.sprite = sprite2;
-        stock2.sprite = tempSprite1;
+        obj.sprite = alternateRoom;
+    }
+
+    public void resetLobby(SpriteRenderer obj)
+    {
+        obj.sprite = primaryRoom;
     }
 }

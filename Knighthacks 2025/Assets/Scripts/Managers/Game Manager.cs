@@ -60,10 +60,30 @@ public class GameManager : MonoBehaviour
     // Prevent overlapping error sequences
     private bool isHandlingTvError = false;
 
+    [SerializeField] private Texture2D cursorDefault;
+    [SerializeField] private Texture2D cursorHover;
+
     void Start()
     {
-
+        SetCursor(cursorDefault);
     }
+
+    public void SetCursor(Texture2D texture)
+    {
+        if (texture != null)
+        {
+            Cursor.SetCursor(texture, Vector2.zero, CursorMode.Auto);
+        }
+        else
+        {
+            // Reset to system cursor if texture is missing
+            Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+        }
+    }
+
+    // Example: call these on mouse hover events
+    public void OnHoverStart() => SetCursor(cursorHover);
+    public void OnHoverEnd() => SetCursor(cursorDefault);
 
     // Update is called once per frame
     void Update()

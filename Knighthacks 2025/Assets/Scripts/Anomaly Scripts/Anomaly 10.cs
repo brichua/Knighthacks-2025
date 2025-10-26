@@ -34,7 +34,7 @@ public class Anomaly10 : Anomaly
         throw new System.NotImplementedException();
     }
 
-    public void changeGameObjectSprite(GameObject kettle, SpriteRenderer normalKettle, Sprite hotKettle, float xpos, float ypos, float zpos)
+    public override void changeGameObjectSprite(GameObject kettle, SpriteRenderer normalKettle, Sprite hotKettle, float xpos, float ypos, float zpos)
     {
         kettle.transform.position = new Vector3(xpos, ypos, zpos);
         normalKettle.sprite = hotKettle;

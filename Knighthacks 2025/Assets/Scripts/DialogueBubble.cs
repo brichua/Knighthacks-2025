@@ -214,10 +214,10 @@ public class DialogueBubble : MonoBehaviour
 
         // Update tray background
         GameObject[] remainingCustomers = GameObject.FindGameObjectsWithTag("Customer");
-        taskManager.background.sprite = (remainingCustomers.Length <= 2)
+        taskManager.background.sprite = (remainingCustomers.Length <= 1)
             ? taskManager.noTrayBackground
             : taskManager.trayBackground;
-        taskManager.tray = remainingCustomers.Length > 2;
+        taskManager.tray = remainingCustomers.Length > 1;
 
         // Show result + fade out
         StartCoroutine(ShowResultAndRemoveCustomer());

@@ -215,11 +215,12 @@ public class CustomerManager : MonoBehaviour
     public void moveCustomerToRegister(GameObject customer)
     {
         // Play the register SFX once when the customer starts moving to register
-        taskManager.currentOrderingCustomer = customer.GetComponent<Customer>();
         Vector3 targetPosition = new Vector3(7.4f, -0.76f, 10f);
         float speed = 5f;
         StartCoroutine(MoveCustomerCoroutine(customer, targetPosition, speed));
         SetCustomerOrderButtonActive(customer, true);
+
+        taskManager.currentOrderingCustomer = customer.GetComponent<Customer>();
     }
 
     //Function that moves le customer to the waiting line
@@ -382,25 +383,42 @@ public class CustomerManager : MonoBehaviour
     }
 
     public IEnumerator FadeOutSprite(GameObject obj)
+{
+    if (obj == null) yield break;
+
+    SpriteRenderer sr = obj.GetComponent<SpriteRenderer>();
+    if (sr == null) yield break;
+
+    Color color = sr.color;
+    float startAlpha = color.a;
+    float fadeDuration = 2f;
+
+    // Fade loop
+    for (float t = 0; t < fadeDuration; t += Time.deltaTime)
     {
-        SpriteRenderer sr = obj.GetComponent<SpriteRenderer>();
-        Color color = sr.color;
-        float startAlpha = color.a;
-
-        float fadeDuration = 2f;
-
-        for(float t = 0; t < fadeDuration; t+= Time.deltaTime)
-        {
-            float normalizedTime = t / fadeDuration;
-            color.a = Mathf.Lerp(startAlpha, 0f, normalizedTime);
-            sr.color = color;
-            yield return null;
-        }
-
-        color.a = 0f;
+        float normalizedTime = t / fadeDuration;
+        color.a = Mathf.Lerp(startAlpha, 0f, normalizedTime);
         sr.color = color;
+        yield return null;
+    }
+
+    color.a = 0f;
+    sr.color = color;
+
+    // ✅ After fading, destroy via CustomerManager logic
+    int index = customerGO.IndexOf(obj);
+    if (index != -1)
+    {
+        // Run the proper destroy logic (handles anomaly cleanup, waiting list, etc.)
+        destroyCustomer(index);
+    }
+    else
+    {
+        // Fallback if somehow not in list anymore
         Destroy(obj);
     }
+}
+
 
     public void StartCustomerSpawnTimer()
     {

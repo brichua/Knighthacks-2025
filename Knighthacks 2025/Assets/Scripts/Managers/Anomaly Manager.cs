@@ -28,6 +28,7 @@ public class AnomalyManager : MonoBehaviour
     public Sprite missingBackRoomSprite;
     public Sprite swappedBackRoomSprite;
     public Sprite sameLabelBackRoomSprite;
+    public Sprite tvRoomSprite;
 
 
     public Sprite tvStatus1;
@@ -66,7 +67,7 @@ public class AnomalyManager : MonoBehaviour
 
             // Skip if this customer is the one currently being served at the register
             if (c == currentOrdering)
-                continue;
+                break;
 
             // If the customer is an anomaly and hasn't been activated yet, activate it
             if (c.isAnomaly && !c.hasActivated)
@@ -94,13 +95,14 @@ public class AnomalyManager : MonoBehaviour
                     case 7:
                         mainRoomRenderer.sprite = anomalyRoomSprite;
                         break;
-                    case 8:
-                        currentTVSprite = TVRenderer.sprite;
-                        TVRenderer.sprite = tvErrorSprite;
+                    //case 8:
+                    //    currentTVSprite = TVRenderer.sprite;
+                    //    TVRenderer.sprite = tvErrorSprite;
+                    //    mainRoomRenderer.sprite = tvRoomSprite;
                         break;
-                    case 9:
-                        c.anomaly.changeGameObjectSprite(kettle, kettleRenderer, kettleSprite, -227f, 26f, 10);
-                        break;
+                    // case 9:
+                    //     c.anomaly.changeGameObjectSprite(kettle, kettleRenderer, kettleSprite, -227f, 26f, 10);
+                    //     break;
                 }
             }
         }
@@ -117,7 +119,7 @@ public class AnomalyManager : MonoBehaviour
             if (roll <= 1)
             {
                 //Succeeds, generate random Anomaly
-                odds = 4;
+                odds = 6;
                 return true;
             }
             //Fails
@@ -165,20 +167,6 @@ public class AnomalyManager : MonoBehaviour
                     }
                     break;
                 case 2:
-                    //Subtle Sprite Change Anomaly REMOVED
-                    /* Anomaly3 anomaly3 = new Anomaly3(possibleSubtleSprites);
-                    if (anomaly3.CanSpawn() == true)
-                    {
-                        //Generate Anomaly
-                        activeAnomalies.Add(possibleAnomalies[2]);
-                        customer.anomaly = anomaly3;
-                        customer.anomalyIndex = 2;
-                        //anomaly3.ApplyToCustomer(customer);
-                        return true;
-                    }
-                    */
-                    break;
-                case 3:
                     //Spooky Sprite Change Anomaly
                     Anomaly4 anomaly4 = new Anomaly4(possibleSpookySprites);
                     if (anomaly4.CanSpawn() == true)
@@ -190,7 +178,7 @@ public class AnomalyManager : MonoBehaviour
                         return true;
                     }
                     break;
-                case 4:
+                case 3:
                     // Stock disappearance anomaly
                     Anomaly5 anomaly5 = new Anomaly5();
                     if (anomaly5.CanSpawn() == true)
@@ -203,9 +191,9 @@ public class AnomalyManager : MonoBehaviour
                         return true;
                     }
                     break;
-                case 5:
+                case 4:
                     // Stock swap
-                    Anomaly6 anomaly6 = new Anomaly6();
+                    Anomaly6 anomaly6 = new Anomaly6(normalRoomSprite, swappedBackRoomSprite);
                     if (anomaly6.CanSpawn() == true)
                     {
                         activeAnomalies.Add(possibleAnomalies[5]);
@@ -216,7 +204,7 @@ public class AnomalyManager : MonoBehaviour
                         return true;
                     }
                     break;
-                case 6:
+                case 5:
                     // Stock label copy
                     Anomaly7 anomaly7 = new Anomaly7();
                     if (anomaly7.CanSpawn() == true)
@@ -229,7 +217,7 @@ public class AnomalyManager : MonoBehaviour
                         return true;
                     }
                     break;
-                case 7:
+                case 6:
                     // Major room change
                     Anomaly8 anomaly8 = new Anomaly8(normalRoomSprite, anomalyRoomSprite);
                     if (anomaly8.CanSpawn() == true)
@@ -242,32 +230,32 @@ public class AnomalyManager : MonoBehaviour
                         return true;
                     }
                     break;
-                case 8:
-                    // Minor room change
-                    if (gameManager.getHealth() == 1)
-                    {
-                        normalTVSprite = tvStatus1;
-                    }
-                    else if (gameManager.getHealth() == 2)
-                    {
-                        normalTVSprite = tvStatus2;
-                    }
-                    else
-                    {
-                        normalTVSprite = tvStatus3;
-                    }
-                        Anomaly9 anomaly9 = new Anomaly9(normalTVSprite, anomalyTVSprite);
-                    if (anomaly9.CanSpawn() == true)
-                    {
-                        activeAnomalies.Add(possibleAnomalies[8]);
-                        customer.anomaly = anomaly9;
-                        customer.anomalyIndex = 8;
-                        // Swap in sprite for the TV sprite renderer
-                        //anomaly9.changeGameObjectSprite(customer.SpriteRenderer);
-                        return true;
-                    }
-                    break;
-                case 9:
+                //case 7:
+                //    // Minor room change
+                //    if (gameManager.getHealth() == 1)
+                //    {
+                //        normalTVSprite = tvStatus1;
+                //    }
+                //    else if (gameManager.getHealth() == 2)
+                //    {
+                //        normalTVSprite = tvStatus2;
+                //    }
+                //    else
+                //    {
+                //        normalTVSprite = tvStatus3;
+                //    }
+                //        Anomaly9 anomaly9 = new Anomaly9(normalTVSprite, anomalyTVSprite);
+                //    if (anomaly9.CanSpawn() == true)
+                //    {
+                //        activeAnomalies.Add(possibleAnomalies[8]);
+                //        customer.anomaly = anomaly9;
+                //        customer.anomalyIndex = 8;
+                //        // Swap in sprite for the TV sprite renderer
+                //        //anomaly9.changeGameObjectSprite(customer.SpriteRenderer);
+                //        return true;
+                //    }
+                //    break;
+                /*case 9:
                     // The water boiler
                     Anomaly10 anomaly10 = new Anomaly10();
                     if (anomaly10.CanSpawn() == true)
@@ -280,7 +268,7 @@ public class AnomalyManager : MonoBehaviour
                         //anomaly4.changeGameObjectSprite(customer.SpriteRenderer);
                         return true;
                     }
-                    break;
+                    break;*/
                 default:
                     //Do nothing lmao?
                     break;

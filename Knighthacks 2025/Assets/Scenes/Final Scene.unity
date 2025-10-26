@@ -1714,13 +1714,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 254203012}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.95126224, y: 0.53988034, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.95126224, y: 0.59986705, z: 0}
+  m_LocalScale: {x: 1, y: 1.1111112, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 169235307}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1883118160}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &354276438
 GameObject:
@@ -2631,10 +2631,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -5471,10 +5471,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -6106,6 +6106,8 @@ MonoBehaviour:
   day: 1
   dayEnd: 0
   gameStart: 1
+  cursorDefault: {fileID: 2800000, guid: c2c51a45aa2cdfd47ae6fdf0236002a7, type: 3}
+  cursorHover: {fileID: 2800000, guid: c2c51a45aa2cdfd47ae6fdf0236002a7, type: 3}
 --- !u!4 &1546779041
 Transform:
   m_ObjectHideFlags: 0
@@ -7420,13 +7422,14 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 0.95, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1125052648}
   - {fileID: 460303043}
   - {fileID: 613042281}
   - {fileID: 1043465266}
+  - {fileID: 254203014}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &1883118161
@@ -8607,8 +8610,11 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   activeAnomalies: []
-  startingOdds: 4
+  startingOdds: 6
   possibleObviousSprites:
   - {fileID: -6097274898374520218, guid: ea496b69c315bcf4dbf35a7bd7f31c34, type: 3}
   - {fileID: 940144791894296791, guid: e069805f6daf2884fb94f32f2a423821, type: 3}
@@ -8629,6 +8635,7 @@ MonoBehaviour:
   missingBackRoomSprite: {fileID: 4912634911728840606, guid: 8e7699cbc2095d849ae97d78726dd871, type: 3}
   swappedBackRoomSprite: {fileID: -8824931570626994710, guid: 00ca426c680676d4291e52d4f3404121, type: 3}
   sameLabelBackRoomSprite: {fileID: 4114270848842129476, guid: ac71efe83bb8c7446b8e78ec9b48e077, type: 3}
+  tvRoomSprite: {fileID: 0}
   tvStatus1: {fileID: -3667019684146795, guid: 030781877fed9844097be6561109e99f, type: 3}
   tvStatus2: {fileID: 2876168249497698210, guid: 63f26867b3b55954cb50aba7665d66d4, type: 3}
   tvStatus3: {fileID: 4318337310983461068, guid: 3b2cdcbd625fce448aae7f6a315b8dd5, type: 3}
@@ -8856,6 +8863,5 @@ SceneRoots:
   - {fileID: 739625988}
   - {fileID: 1964501144}
   - {fileID: 1927277379}
-  - {fileID: 254203014}
   - {fileID: 163662805}
   - {fileID: 106631413}

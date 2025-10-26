@@ -4,6 +4,8 @@ public class Anomaly9 : Anomaly
 {
     public Sprite goodTVSprite;
     public Sprite evilTVSprite;
+    public Sprite tvRoomSprite;
+    public Sprite regularRoomSprite;
 
     public Anomaly9(Sprite goodTVSprite, Sprite evilTVSprite)
     {
