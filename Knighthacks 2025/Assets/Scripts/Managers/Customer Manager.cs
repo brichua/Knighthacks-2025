@@ -258,11 +258,13 @@ public class CustomerManager : MonoBehaviour
         SetCustomerOrderButtonActive(customer, true);
 
         taskManager.currentOrderingCustomer = customer.GetComponent<Customer>();
+        Debug.Log("Current Ordering Customer Set");
     }
 
     //Function that moves le customer to the waiting line
     public void moveCustomerToWaitingLine(GameObject customer)
     {
+        taskManager.currentOrderingCustomer = null;
         SetCustomerOrderButtonActive(customer, false);
         Canvas canvas = customer.GetComponentInChildren<Canvas>(true);
         if (canvas != null)

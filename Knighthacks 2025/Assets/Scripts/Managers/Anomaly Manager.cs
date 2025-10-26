@@ -72,6 +72,7 @@ public class AnomalyManager : MonoBehaviour
                 // If the customer is an anomaly and hasn't been activated yet, activate it
                 if (c.isAnomaly && !c.hasActivated)
                 {
+                    Debug.Log("Activating anomaly for customer at index " + i + " with anomaly index " + c.anomalyIndex);
                     switch (c.anomalyIndex)
                     {
                         case 0:
