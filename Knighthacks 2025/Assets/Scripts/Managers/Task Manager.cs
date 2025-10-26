@@ -10,6 +10,7 @@ public class TaskManager : MonoBehaviour
 {
     public DialogueManager dialogueManager;
     public CustomerManager customerManager;
+    public GameManager gameManager;
     public string snack;
     public string size;
     public string tea;
@@ -84,6 +85,9 @@ public class TaskManager : MonoBehaviour
     public bool lookedBack = false;
     public bool inBack = false;
 
+    public Animation kettleAnim;
+    public GameObject sparkleAnim;
+
     public void takeOrder(GameObject customer1, Customer customer2)
     {
         Debug.Log("Taking order from customer.");
@@ -100,7 +104,7 @@ public class TaskManager : MonoBehaviour
         customerManager.moveCustomerToWaitingLine(customer);
     }
 
-    public bool completeOrder(CustomerManager customerManager)
+    public void completeOrder()
     {
         if (snackChosen && teaChosen && flowerChosen)
         {
@@ -120,13 +124,12 @@ public class TaskManager : MonoBehaviour
                     {
                         customerManager.customers[i].served = true;
                         customerManager.destroyCustomer(i);
-                        return true;
                     }
                 }
             }
-            return false;
+            gameManager.subtractHealth();
         }
-        return false;
+        StartCoroutine(fadeText());
 
     }
 
@@ -328,9 +331,16 @@ public class TaskManager : MonoBehaviour
     public void boilWater()
     {
         kettle.transform.position = kettleStove.position;
-        //wait for some time to simulate boiling
-        //finished boiling animation
+        StartCoroutine(waitForBoil());
         waterBoiled = true;
+    }
+
+    public IEnumerator waitForBoil()
+    {
+        yield return new WaitForSeconds(2.5f);
+        kettleAnim.Play("boiling");
+        waterBoiled = true;
+
     }
 
     public void pourTea()
@@ -374,8 +384,11 @@ public class TaskManager : MonoBehaviour
             }
         }
         strainer.SetActive(false);
+        kettleAnim.Play("idle");
+        waterBoiled = true;
+        kettle.transform.position = kettleTable.position;
         step = 4;
-        //cup sparkle animation
+        sparkleAnim.SetActive(true);
     }
 
     public void finishTea()
@@ -411,6 +424,9 @@ public class TaskManager : MonoBehaviour
         }
         teaObject.SetActive(true);
         flowerObject.SetActive(true);
+        cup.SetActive(false);
+        teaFlower.SetActive(false);
+        sparkleAnim.SetActive(false);
         teaChosen = true;
     }
 

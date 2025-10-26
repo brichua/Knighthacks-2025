@@ -70,21 +70,16 @@ public class GameManager : MonoBehaviour
                 EndDaySequence();
             }
         }
-        if (taskManager.snackChosen && taskManager.teaChosen && taskManager.flowerChosen) 
+    }
+
+    public void subtractHealth()
+    {
+        health --;
+        if (!isHandlingTvError)
         {
-            if (!taskManager.completeOrder(customerManager))
-            {
-                // If an order failed, run the TV error sequence which handles the health decrement
-                if (!isHandlingTvError)
-                {
-                    StartCoroutine(HandleOrderFailureSequence());
-                }
-            }
-            else 
-            {
-                taskManager.resetTasks();
-            }
+            StartCoroutine(HandleOrderFailureSequence());
         }
+        taskManager.resetTasks();
     }
 
     public int getHealth()
