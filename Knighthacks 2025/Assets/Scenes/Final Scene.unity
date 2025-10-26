@@ -1704,7 +1704,7 @@ MonoBehaviour:
   m_IsGlobal: 1
   priority: 0
   blendDistance: 0
-  weight: 0
+  weight: 0.412
   sharedProfile: {fileID: 11400000, guid: 83bc7e569a1c45443b282e2f4d21bf2b, type: 2}
 --- !u!4 &254203014
 Transform:
@@ -8469,28 +8469,31 @@ MonoBehaviour:
   possibleObviousSprites:
   - {fileID: -6097274898374520218, guid: ea496b69c315bcf4dbf35a7bd7f31c34, type: 3}
   - {fileID: 940144791894296791, guid: e069805f6daf2884fb94f32f2a423821, type: 3}
+  - {fileID: 4529935679018320529, guid: 30d0c3227a9b36b4db25c92a3344101e, type: 3}
   possibleSubtleSprites:
   - {fileID: -9145568248037843510, guid: 4d0548150beea0546805f74febf76876, type: 3}
   - {fileID: -222607851706403029, guid: 3ae47f1af7773e74384ea2b48a38eb98, type: 3}
+  - {fileID: 1944921302010482682, guid: bdf2eba26c681b84c9ad09a3e3138e0c, type: 3}
   possibleSpookySprites:
   - {fileID: -3543814495099850191, guid: 0d953f450e1e5e040a86cd245a21af1f, type: 3}
   - {fileID: 1893780208129416594, guid: 13b2a8699bc0e674ab424d1ebdfacba0, type: 3}
-  mainRoomRenderer: {fileID: 0}
+  - {fileID: 299069027816977391, guid: b1e931ae4a80c154b98160162c1b2cea, type: 3}
+  mainRoomRenderer: {fileID: 1323318286}
   normalRoomSprite: {fileID: -4364034832326165938, guid: 017de083c84eb3a44a1691108a095e6f, type: 3}
   anomalyRoomSprite: {fileID: -8483731395159641348, guid: 50ddbcfbea40ff842bcb59d4752358c3, type: 3}
-  backroomRenderer: {fileID: 0}
-  normalBackRoomSprite: {fileID: 0}
-  missingBackRoomSprite: {fileID: 0}
-  swappedBackRoomSprite: {fileID: 0}
-  sameLabelBackRoomSprite: {fileID: 0}
+  backroomRenderer: {fileID: 486532216}
+  normalBackRoomSprite: {fileID: -1941874844597891200, guid: caaca1ebf34c97f4bac805ce1961db18, type: 3}
+  missingBackRoomSprite: {fileID: 4912634911728840606, guid: 8e7699cbc2095d849ae97d78726dd871, type: 3}
+  swappedBackRoomSprite: {fileID: -8284479117646025989, guid: ffbd1c9862354e3428478da5de9656ab, type: 3}
+  sameLabelBackRoomSprite: {fileID: 4114270848842129476, guid: ac71efe83bb8c7446b8e78ec9b48e077, type: 3}
   tvStatus1: {fileID: -3667019684146795, guid: 030781877fed9844097be6561109e99f, type: 3}
   tvStatus2: {fileID: 2876168249497698210, guid: 63f26867b3b55954cb50aba7665d66d4, type: 3}
   tvStatus3: {fileID: 4318337310983461068, guid: 3b2cdcbd625fce448aae7f6a315b8dd5, type: 3}
   normalTVSprite: {fileID: -3667019684146795, guid: 030781877fed9844097be6561109e99f, type: 3}
   anomalyTVSprite: {fileID: -3742553133711965971, guid: 51f24b49fd57965499070761f1b5da41, type: 3}
-  currentTVSprite: {fileID: 0}
-  TVRenderer: {fileID: 0}
-  tvErrorSprite: {fileID: 0}
+  currentTVSprite: {fileID: -3667019684146795, guid: 030781877fed9844097be6561109e99f, type: 3}
+  TVRenderer: {fileID: 131679598}
+  tvErrorSprite: {fileID: -8231274721179829771, guid: 51f24b49fd57965499070761f1b5da41, type: 3}
   kettle: {fileID: 0}
   kettleRenderer: {fileID: 0}
   kettleSprite: {fileID: 0}
