@@ -274,6 +274,37 @@ public class CustomerManager : MonoBehaviour
         return false;
     }
 
+    public bool destroyCustomer(Customer customer)
+    {
+        int index = 0;
+        bool isEqual = true;
+        for (int i = 0; i < customers.Count; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                if (customers[i].order[j] != customer.order[j])
+                {
+                    isEqual = false;
+                }
+            }
+            if (isEqual)
+            {
+                index = i;
+                break;
+            }
+        }
+        if (!(index >= customerGO.Count))
+        {
+            //Make the Game Object slowly fade away
+            StartCoroutine(FadeOutSprite(customerGO[index]));
+            customers.RemoveAt(index);
+            customerGO.RemoveAt(index);
+
+            return true;
+        }
+        return false;
+    }
+
     private IEnumerator FadeOutSprite(GameObject obj)
     {
         SpriteRenderer sr = obj.GetComponent<SpriteRenderer>();
