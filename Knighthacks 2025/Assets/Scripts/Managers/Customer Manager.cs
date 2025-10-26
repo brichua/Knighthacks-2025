@@ -399,6 +399,7 @@ public class CustomerManager : MonoBehaviour
 
         color.a = 0f;
         sr.color = color;
+        Destroy(obj);
     }
 
     public void StartCustomerSpawnTimer()

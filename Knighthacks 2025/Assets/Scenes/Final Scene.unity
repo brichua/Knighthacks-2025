@@ -4499,6 +4499,10 @@ MonoBehaviour:
   customers: []
   customerGO: []
   customerLine: []
+  customerWaiting:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   maxCustomers: 12
   AnomalyManager: {fileID: 2135412578}
   DialogueManager: {fileID: 1071829121}
@@ -6213,11 +6217,13 @@ MonoBehaviour:
   front: {fileID: 1125052647}
   back: {fileID: 460303042}
   lookedBack: 0
+  tookOrder: 0
   inBack: 0
   kettleAnim: {fileID: 126568866}
   sparkleAnim: {fileID: 1437066942}
   pourAudioSource: {fileID: 106631412}
   pourAudioClip: {fileID: 8300000, guid: 18c4c4f28d3150146980f5c4ec1654ea, type: 3}
+  currentOrderingCustomer: {fileID: 0}
 --- !u!4 &1572841598
 Transform:
   m_ObjectHideFlags: 0
@@ -8480,11 +8486,11 @@ MonoBehaviour:
   - {fileID: 299069027816977391, guid: b1e931ae4a80c154b98160162c1b2cea, type: 3}
   mainRoomRenderer: {fileID: 1323318286}
   normalRoomSprite: {fileID: -4364034832326165938, guid: 017de083c84eb3a44a1691108a095e6f, type: 3}
-  anomalyRoomSprite: {fileID: -8483731395159641348, guid: 50ddbcfbea40ff842bcb59d4752358c3, type: 3}
+  anomalyRoomSprite: {fileID: -2936082688151201256, guid: d68d634ac8eba6644b19865323c823eb, type: 3}
   backroomRenderer: {fileID: 486532216}
   normalBackRoomSprite: {fileID: -1941874844597891200, guid: caaca1ebf34c97f4bac805ce1961db18, type: 3}
   missingBackRoomSprite: {fileID: 4912634911728840606, guid: 8e7699cbc2095d849ae97d78726dd871, type: 3}
-  swappedBackRoomSprite: {fileID: -8284479117646025989, guid: ffbd1c9862354e3428478da5de9656ab, type: 3}
+  swappedBackRoomSprite: {fileID: -8824931570626994710, guid: 00ca426c680676d4291e52d4f3404121, type: 3}
   sameLabelBackRoomSprite: {fileID: 4114270848842129476, guid: ac71efe83bb8c7446b8e78ec9b48e077, type: 3}
   tvStatus1: {fileID: -3667019684146795, guid: 030781877fed9844097be6561109e99f, type: 3}
   tvStatus2: {fileID: 2876168249497698210, guid: 63f26867b3b55954cb50aba7665d66d4, type: 3}
